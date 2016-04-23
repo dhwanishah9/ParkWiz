@@ -1,0 +1,73 @@
+<link href="/stylesheets/payment.css" rel="stylesheet">
+<div id="partialview" class="phonespacing" style="padding-top: 4.7%">
+	<div class="form-container">
+		<div class="panel panel-default credit-card-box">
+			<div class="panel-heading display-table">
+				<div class="row display-tr">
+					<span style="float: left; padding-top: 10px; font-weight: bold; padding-left: 2%">Payment
+						Details</span>
+					<div class="display-td" style="float: right;">
+						<img class="img-responsive pull-right"
+							src="http://i76.imgup.net/accepted_c22e0.png">
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end of personal-information -->
+		<div class="row">
+			<div class="col-md-12">
+				<input id="input-field" type="text" name="streetaddress"
+					required="required" autocomplete="on" maxlength="45"
+					placeholder="Streed Address" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<input type="text" name="city" required="required" autocomplete="on"
+					maxlength="20" placeholder="City" />
+			</div>
+			<div class="col-md-6">
+				<input type="text" name="zipcode" required="required"
+					autocomplete="on" pattern="[0-9]*" maxlength="5"
+					placeholder="ZIP code" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<input id="input-field" type="email" name="email"
+					required="required" autocomplete="on" maxlength="40"
+					placeholder="Email" />
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="card-wrapper"></div>
+			<div class="col-md-6">
+				<input type="text" name="first-name" placeholder="First Name" />
+			</div>
+			<div class="col-md-6">
+				<input type="text" name="last-name" placeholder="Surname" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<input id="input-field" type="text" name="number"
+					placeholder="Card Number" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<input type="text" name="expiry" placeholder="MM / YY" />
+			</div>
+			<div class="col-md-6">
+				<input type="text" name="cvc" placeholder="CCV" />
+			</div>
+		</div>
+		<div class="row" style="padding-top: 15px;">
+			<div class="col-md-12">
+				<input id="input-button" type="submit" value="Submit" />
+			</div>
+		</div>
+	</div>
+	<!-- end of form-container -->
+</div>

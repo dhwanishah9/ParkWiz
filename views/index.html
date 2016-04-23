@@ -72,7 +72,7 @@
 													<i class="fa fa-child fa-fw menuSize"></i>
 												</p>
 												<p align="center">User Details</p></a></li>
-										<li onclick="onClickBillingHistory();"><a class="aNav" href="#"><p align="center">
+										<li ng-click="billing();"><a class="aNav" href="#"><p align="center">
 													<i class="fa fa-money fa-fw menuSize"></i>
 												</p>
 												<p align="center">Billing</p></a></li>
@@ -292,6 +292,34 @@
 		}
 		location.reload();
 	}
+	
+	function bookingModule($scope, $http){
+		$scope.booktemplate = [{
+			name : 'BookingOverview',
+			url : '/bookingoverview'
+		},{
+			name : 'BookingHistory',
+			url : '/bookinghistory'
+		},{
+			name : 'MyBookings',
+			url : '/mylisting'
+		}];
+		
+		$scope.bookingtemplate = $scope.booktemplate[0];
+		
+		$scope.overview = function(){
+			$scope.bookingtemplate = $scope.booktemplate[0];
+		};
+		
+		$scope.history = function(){
+			$scope.bookingtemplate = $scope.booktemplate[1];
+		};
+		
+		$scope.mybooking = function(){
+			$scope.bookingtemplate = $scope.booktemplate[2];
+		};
+	}
+	
 	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
@@ -302,6 +330,11 @@
 				sessionStorage.removeItem("template");
 			}
 		}
+		
+		$scope.billing = function(){
+			$scope.template = $scope.templates[2];
+			$("#navMenus").toggle();
+		};
 
 		$scope.templates = [ {
 			name : 'Search Page',
@@ -311,6 +344,9 @@
 			name : 'My Billing History',
 			url : '/billing',
 			initializeFunction : undefined
+		}, {
+			name : 'Billing',
+			url : '/payment'
 		}, {
 			name : 'My Account',
 			url : '/profile',
@@ -345,6 +381,7 @@
 				} ];
 			}
 		} ];
+		
 		$scope.templates.forEach(function(template) {
 			if (template['name'] == templateName) {
 				$scope.template = template;
@@ -378,6 +415,14 @@
 
 		this.className = "aNav active";
 	});
+	
+	function togglenav(e){
+		$(".bookingnav").each(function(val) {
+			this.className = "bookingnav";
+		});
+		
+		e.className = "bookingnav active";
+	}
 </script>
 
 

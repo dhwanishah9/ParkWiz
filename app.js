@@ -37,6 +37,12 @@ app.get('/', routes.index);
 app.get('/abc', routes.abc);
 app.get('/profile', routes.profile);
 app.get('/bookings', routes.bookings);
+app.get('/payment', routes.payment);
+
+
+app.get('/bookingoverview', routes.bookingoverview);
+app.get('/bookinghistory', routes.bookinghistory);
+app.get('/mylisting', routes.mylisting);
 
 
 app.get('/panaroma', routes.panaroma);

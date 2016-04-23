@@ -410,6 +410,9 @@ table.dataTable thead .sorting:after {
 	#partialview {
 		margin-top: 5%;
 	}
+	.phonespacing{
+	  padding-top: 8.5%!important;
+	}
 }
 
 /*

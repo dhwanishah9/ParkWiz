@@ -23,8 +23,32 @@ exports.profile = function(req, res) {
 	});
 };
 
+exports.payment = function(req, res) {
+	res.render('payment', {
+		title : 'ParkWiz'
+	});
+};
+
 exports.bookings = function(req, res) {
 	res.render('bookings', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.bookingoverview = function(req, res) {
+	res.render('bookingoverview', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.bookinghistory = function(req, res) {
+	res.render('bookinghistory', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.mylisting = function(req, res) {
+	res.render('mylisting', {
 		title : 'ParkWiz'
 	});
 };

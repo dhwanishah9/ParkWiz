@@ -7054,12 +7054,10 @@ body {
     height: 100px;
 }
 }.main-padding main {
-    margin-top: 5%;
     padding-top: 25px;
 }
 @media (min-width:768px) {
     .main-padding main {
-    margin-top: 5%;
     padding-top: 25px;
 }
 body main aside.sidemenu {
