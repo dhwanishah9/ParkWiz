@@ -108,21 +108,9 @@ app.get('/api/loggedin_userinfo',function(req,res){
 	}*/
 });
 
-/*app.post('/api/loggedin_userinfo',function(req,res){
-	
-	//console.log(req.secret);
-	//
-	
-	if(req.body){
-		req.session.data = req.param("sessionData");
-		res.send(JSON.stringify({"response" : req.session.data}));
-	}
-	else{
-		
-		req.session.data = req.param("sessionData");
-		res.send(JSON.stringify({"response" : req.session.data}));
-	}
-});*/
+app.post('/api/loggedin_userinfo',function(req,res){
+	user.updateuserinfo(req.body,res);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
