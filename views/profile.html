@@ -9,80 +9,85 @@
 			<h1>{{ userInfo['firstname'] }} {{ userInfo['lastname'] }}</h1>
 			<div>
 				<div class="row">
-					<div class="col-md-2 col-md-offset-2" id="col">
-						<div class="progress-container" style="margin-top: 10%">
-							<div class="progress progress-striped active">
-								<div title="Profile Completion"
-									class="progress-bar progress-bar-primary">
-									<p id="status"
-										style="vertical-align: middle; font-weight: bold; margin-top: 7px;">75%</p>
+					<div>
+						<div class="col-md-2" id="col" style="margin-top: 5%;">
+							<div class="progress-container" style="margin-top: 10%">
+								<div class="progress progress-striped active">
+									<div title="Profile Completion"
+										class="progress-bar progress-bar-primary">
+										<p id="status"
+											style="vertical-align: middle; font-weight: bold; margin-top: 7px;">75%</p>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div>
-							<button type="button" style="width: 100%" class="btn btn-danger">
-								Booking <span style="width: 20%" c class="badge">0</span>
-							</button>
-						</div>
-						<br />
-						<div>
-							<button type="button" style="width: 100%" class="btn btn-success">
-								Sites <span style="width: 20%" title="0" class="badge">0</span>
-							</button>
-						</div>
-						<br />
-					</div>
-					<div class="col-md-9 col-md-offset-9"
-						style="margin-left: 0% !important;">
-						<div class="login-panel panel panel-default">
-							<div class="panel-heading"
-								style="background-color: rgba(51, 51, 51, 0.4);">
-								<h3 class="panel-title" style="color: #fff">My Account</h3>
+							<div>
+								<button type="button" style="width: 100%" class="btn btn-danger">
+									Booking <span style="width: 20%" c class="badge">0</span>
+								</button>
 							</div>
-							<div class="panel-body"
-								style="border-bottom: 2px solid #ccc; border: 1px solid #ccc;">
-								<form role="form">
-									<fieldset>
-										<div class="form-group">
-											<label class="labelclass">First Name</label> <input
-												class="form-control textboxclass"
-												value="{{ userInfo.firstname }}" placeholder="First Name"
-												autofocus ng-model="userInfo.firstname">
-										</div>
-										<div class="form-group">
-											<label class="labelclass">Last Name</label> <input
-												class="form-control textboxclass"
-												value="{{ userInfo.lastname }}" placeholder="Last Name" ng-model="userInfo.lastname">
-										</div>
-										<div class="form-group">
-											<label class="labelclass">Email</label> <input
-												class="form-control textboxclass"
-												value="{{ userInfo.email }}" placeholder="Email"
-												ng-model="userInfo.email" type="email">
-										</div>
-										<div class="form-group">
-											<label class="labelclass">Password</label> <input
-												class="form-control textboxclass" value="{{ userInfo.password }}"
-												type="password" ng-model="userInfo.password" placeholder="Password">
-										</div>
-										<div class="form-group">
-											<label class="labelclass">Address</label>
-											<textarea class="form-control textboxclass"
-												placeholder="Address" ng-model="userInfo.address">{{ userInfo.address }}</textarea>
-										</div>
-										<div class="form-group">
-											<label class="labelclass">Mobile No.</label> <input
-												class="form-control textboxclass" placeholder="999-999-9999"
-												value="{{ userInfo.phoneno }}" type="tel" ng-model="userInfo.phoneno"
-												class="textboxclass">
-										</div>
-										<br />
-										<div class="form-group">
-											<label class="labelclass"></label> <input type="submit"
-												class="btn btn-lg btn-success textboxclass" ng-click="updateInfo()" value="Save">
-										</div>
-									</fieldset>
-								</form>
+							<br />
+							<div>
+								<button type="button" style="width: 100%"
+									class="btn btn-success">
+									Sites <span style="width: 20%" title="0" class="badge">0</span>
+								</button>
+							</div>
+							<br />
+						</div>
+						<div class="col-md-9" style="margin-left: 0% !important; margin-top: 1.7%;">
+							<div class="login-panel panel panel-default">
+								<div class="panel-heading"
+									style="background-color: rgba(51, 51, 51, 0.4);">
+									<h3 class="panel-title" style="color: #fff">My Account</h3>
+								</div>
+								<div class="panel-body"
+									style="border-bottom: 2px solid #ccc; border: 1px solid #ccc;">
+									<form role="form">
+										<fieldset>
+											<div class="form-group">
+												<label class="labelclass">First Name</label> <input
+													class="form-control textboxclass"
+													value="{{ userInfo.firstname }}" placeholder="First Name"
+													autofocus ng-model="userInfo.firstname">
+											</div>
+											<div class="form-group">
+												<label class="labelclass">Last Name</label> <input
+													class="form-control textboxclass"
+													value="{{ userInfo.lastname }}" placeholder="Last Name"
+													ng-model="userInfo.lastname">
+											</div>
+											<div class="form-group">
+												<label class="labelclass">Email</label> <input
+													class="form-control textboxclass"
+													value="{{ userInfo.email }}" placeholder="Email"
+													ng-model="userInfo.email" type="email">
+											</div>
+											<div class="form-group">
+												<label class="labelclass">Password</label> <input
+													class="form-control textboxclass"
+													value="{{ userInfo.password }}" type="password"
+													ng-model="userInfo.password" placeholder="Password">
+											</div>
+											<div class="form-group">
+												<label class="labelclass">Address</label>
+												<textarea class="form-control textboxclass"
+													placeholder="Address" ng-model="userInfo.address">{{ userInfo.address }}</textarea>
+											</div>
+											<div class="form-group">
+												<label class="labelclass">Mobile No.</label> <input
+													class="form-control textboxclass"
+													placeholder="999-999-9999" value="{{ userInfo.phoneno }}"
+													type="tel" ng-model="userInfo.phoneno" class="textboxclass">
+											</div>
+											<br />
+											<div class="form-group">
+												<label class="labelclass"></label> <input type="submit"
+													class="btn btn-lg btn-success textboxclass"
+													ng-click="updateInfo()" value="Save">
+											</div>
+										</fieldset>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
