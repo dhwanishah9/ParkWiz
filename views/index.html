@@ -225,10 +225,10 @@
 										class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 								</a>
 									<ul class="dropdown-menu dropdown-user">
-										<li id="myaccount" onclick="onClickMyAccount();"><a
+										<li id="myaccount" ng-click="account();"><a
 											href="#"><i class="fa fa-user fa-fw"></i> My Account</a></li>
 										<li class="divider"></li>
-										<li id="bookinghistory" onclick="onClickBookingHistory();">
+										<li id="bookinghistory" ng-click="bookinghistory();">
 											<a href="#"><i class="fa fa-calendar fa-fw"></i> Booking
 												History</a>
 										</li>
@@ -278,25 +278,6 @@
 
 	var autocomplete;
 
-	function onClickMyAccount() {
-		if (typeof (Storage) !== "undefined") {
-			sessionStorage.setItem("template", "My Account");
-		}
-		location.reload();
-	}
-	function onClickBookingHistory() {
-		if (typeof (Storage) !== "undefined") {
-			sessionStorage.setItem("template", "My Booking History");
-		}
-		location.reload();
-	}
-	function onClickBillingHistory() {
-		if (typeof (Storage) !== "undefined") {
-			sessionStorage.setItem("template", "My Billing History");
-		}
-		location.reload();
-	}
-
 	function bookingModule($scope, $http) {
 		$scope.booktemplate = [ {
 			name : 'BookingOverview',
@@ -345,7 +326,17 @@
 
 		$scope.billing = function() {
 			$scope.template = $scope.templates[2];
-			$("#navMenus").toggle();
+			$("#navMenus").hide();
+		};
+		
+		$scope.bookinghistory = function() {
+			$scope.template = $scope.templates[4];
+			$("#navMenus").hide();
+		};
+		
+		$scope.account = function() {
+			$scope.template = $scope.templates[3];
+			$("#navMenus").hide();
 		};
 
 		$scope.templates = [ {
@@ -441,9 +432,6 @@
 	});
 </script>
 <script>
-	// This example uses SVG path notation to add a vector-based symbol
-	// as the icon for a marker. The resulting icon is a star-shaped symbol
-	// with a pale yellow fill and a thick yellow border.
 
 	function initMap() {
 
