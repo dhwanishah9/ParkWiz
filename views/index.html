@@ -76,7 +76,7 @@
 													<i class="fa fa-money fa-fw menuSize"></i>
 												</p>
 												<p align="center">Billing</p></a></li>
-										<li><a class="aNav" href="#"><p align="center">
+										<li onclick="onClickAddListingPage();"><a class="aNav" href="#"><p align="center">
 													<i class="fa fa-dashboard fa-fw menuSize"></i>
 												</p>
 												<p align="center">Graphs</p></a></li>
@@ -292,6 +292,12 @@
 		}
 		location.reload();
 	}
+	function onClickAddListingPage() {
+		if (typeof (Storage) !== "undefined") {
+			sessionStorage.setItem("template", "Add Listings Page");
+		}
+		location.reload();
+	}
 	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
@@ -306,6 +312,10 @@
 		$scope.templates = [ {
 			name : 'Search Page',
 			url : '/search',
+			initializeFunction : undefined
+		}, {
+			name : 'Add Listings Page',
+			url : '/addListings',
 			initializeFunction : undefined
 		}, {
 			name : 'My Billing History',

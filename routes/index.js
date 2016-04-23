@@ -70,6 +70,11 @@ exports.billing = function(req, res) {
 		title : 'ParkWiz'
 	});
 };
+exports.addListings = function(req, res) {
+	res.render('addListings', {
+		title : 'ParkWiz'
+	});
+};
 
 /*
  upload image
