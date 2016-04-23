@@ -454,13 +454,13 @@
 			},
 			zoom : 10
 		});
-		
-		autocomplete = new google.maps.places.Autocomplete((document.getElementById('txtAddress')), {
-			types : [ 'geocode' ]
-		});
 	}
 
-	function geolocate() {
+	function geolocate() {		
+		autocomplete = new google.maps.places.Autocomplete((document.getElementsByClassName('locationservice')[0]), {
+			types : [ 'geocode' ]
+		});
+		
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {

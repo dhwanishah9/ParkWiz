@@ -5,4 +5,27 @@
 			<li class="active">Add Listing</li>
 		</ol>
 	</div>
+	<div id=radiobuttons>
+		<form name='mcForm'>
+			<table width="100%">
+				<tr>
+					<td style="width: 20%">Location</td>
+					<td colspan="2"><div>
+							<input class="form-control locationservice" placeholder="Enter your Address"
+								type="text" id="txtLocation" onFocus="geolocate()">
+						</div></td>
+				</tr>
+				<tr>
+					<td style="width: 20%">Types of Spaces</td>
+					<td><input type='radio' name='mcq' id='radio-choice-1'
+						value='1' /> <label for="radio-choice-1" onclick="">Parking
+							Space 1</label></td>
+					<td><input type='radio' name='mcq' id='radio-choice-2'
+						value='2' /> <label for="radio-choice-2" onclick="">Lockup
+							or Garage 2</label></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
 </section>
