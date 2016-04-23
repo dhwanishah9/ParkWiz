@@ -12,7 +12,7 @@
 <title>ParkWiz</title>
 
 <script async defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFNJakTcBDyGbyNZHQNSpamaxlpWl3c0">
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFNJakTcBDyGbyNZHQNSpamaxlpWl3c0&libraries=places">
 	
 </script>
 
@@ -22,7 +22,7 @@
 <!-- Angular Core javascript -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-<script	src="/js/MyAccount.js"></script>
+<script src="/js/MyAccount.js"></script>
 <!-- MetisMenu CSS -->
 <link href="/stylesheets/metisMenu.min.css" rel="stylesheet">
 
@@ -72,7 +72,8 @@
 													<i class="fa fa-child fa-fw menuSize"></i>
 												</p>
 												<p align="center">User Details</p></a></li>
-										<li ng-click="billing();"><a class="aNav" href="#"><p align="center">
+										<li ng-click="billing();"><a class="aNav" href="#"><p
+													align="center">
 													<i class="fa fa-money fa-fw menuSize"></i>
 												</p>
 												<p align="center">Billing</p></a></li>
@@ -274,6 +275,9 @@
 </body>
 
 <script>
+
+	var autocomplete;
+
 	function onClickMyAccount() {
 		if (typeof (Storage) !== "undefined") {
 			sessionStorage.setItem("template", "My Account");
@@ -292,42 +296,42 @@
 		}
 		location.reload();
 	}
-	
-	function bookingModule($scope, $http){
-		$scope.booktemplate = [{
+
+	function bookingModule($scope, $http) {
+		$scope.booktemplate = [ {
 			name : 'BookingOverview',
 			url : '/bookingoverview'
-		},{
+		}, {
 			name : 'BookingHistory',
 			url : '/bookinghistory'
-		},{
+		}, {
 			name : 'MyBookings',
 			url : '/mylisting'
-		},{
+		}, {
 			name : 'Payment',
 			url : '/payment'
-		}];
-		
+		} ];
+
 		$scope.bookingtemplate = $scope.booktemplate[0];
-		
-		$scope.overview = function(){
+
+		$scope.overview = function() {
 			$scope.bookingtemplate = $scope.booktemplate[0];
 		};
-		
-		$scope.history = function(){
+
+		$scope.history = function() {
 			$scope.bookingtemplate = $scope.booktemplate[1];
 		};
-		
-		$scope.mybooking = function(){
+
+		$scope.mybooking = function() {
 			$scope.bookingtemplate = $scope.booktemplate[2];
 		};
-		
-		$scope.payment = function(){
+
+		$scope.payment = function() {
 			$scope.bookingtemplate = $scope.booktemplate[3];
 		};
 	}
-	
-	function layoutmodule($scope, $http) {
+
+	function layoutmodule($scope, $http) {		
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
 			templateName = sessionStorage.getItem("template");
@@ -337,8 +341,9 @@
 				sessionStorage.removeItem("template");
 			}
 		}
-		
-		$scope.billing = function(){
+
+
+		$scope.billing = function() {
 			$scope.template = $scope.templates[2];
 			$("#navMenus").toggle();
 		};
@@ -380,7 +385,7 @@
 				} ];
 			}
 		} ];
-		
+
 		$scope.templates.forEach(function(template) {
 			if (template['name'] == templateName) {
 				$scope.template = template;
@@ -414,12 +419,12 @@
 
 		this.className = "aNav active";
 	});
-	
-	function togglenav(e){
+
+	function togglenav(e) {
 		$(".bookingnav").each(function(val) {
 			this.className = "bookingnav";
 		});
-		
+
 		e.className = "bookingnav active";
 	}
 </script>
@@ -454,6 +459,26 @@
 			},
 			zoom : 10
 		});
+		
+		autocomplete = new google.maps.places.Autocomplete((document.getElementById('txtAddress')), {
+			types : [ 'geocode' ]
+		});
+	}
+
+	function geolocate() {
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				var geolocation = {
+					lat : position.coords.latitude,
+					lng : position.coords.longitude
+				};
+				var circle = new google.maps.Circle({
+					center : geolocation,
+					radius : position.coords.accuracy
+				});
+				autocomplete.setBounds(circle.getBounds());
+			});
+		}
 	}
 </script>
 

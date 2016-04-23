@@ -1,5 +1,6 @@
 <!-- /.row -->
-<div id="partialview" style="padding-top: 3%" ng-controller="searchmodule">
+<div id="partialview" style="padding-top: 3%"
+	ng-controller="searchmodule">
 	<div class="baseline">
 		<!--<h3 class="page-header">Search</h3> -->
 		<ol class="breadcrumb margin-top">
@@ -103,7 +104,8 @@
 							<label style="padding-top: 5px;">Address</label>
 						</div>
 						<div class="col-sm-10">
-							<input class="form-control" type="text" id="sm">
+							<input class="form-control" placeholder="Enter your Address"
+								type="text" id="txtAddress" onFocus="geolocate()">
 						</div>
 						<div class="col-sm-1" style="float: right;">
 							<button type="button" class="btn btn-primary">Search</button>
@@ -116,12 +118,72 @@
 	<div id="mapContent"
 		style="margin-top: 1%; min-height: 350px; background-color: #fff">
 		<ul class="nav nav-tabs" id="tabs">
-			<li class="active"><a class="searchtab" data-target="#mapview" data-toggle="tab">Map View</a></li>
-			<li><a data-target="#tabularview"
-				data-toggle="tab">Tabular View</a></li>
+			<li class="active"><a class="searchtab" data-target="#mapview"
+				data-toggle="tab">Map View</a></li>
+			<li><a data-target="#tabularview" data-toggle="tab">Tabular
+					View</a></li>
 		</ul>
 		<div class="tab-content">
-			<div  class="tab-pane" id="tabularview">Tabular View</div>
+			<div class="tab-pane" id="tabularview">
+				<table class="table table-bordered">
+					<thead class="thead-inverse">
+						<tr>
+							<th><div align="center">Image</div></th>
+							<th><div align="center">Location</div></th>
+							<th><div align="center">Details</div></th>
+							<th><div align="center">Reserve</div></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="width: 20%"><div align="center" class="image">
+									<img style="width: 30%; height: 30%;"
+										src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
+										alt="Parking on 84 N 7th Street, ">
+								</div></td>
+							<td style="width: 60%"><div align="center">Parking on
+									84 N 7th Street, 84 N 7th Street, San Jose, 95112</div></td>
+							<td><div align="center">
+									<a href="javascript:void(0);" class="bookingnav">Details</a>
+								</div></td>
+							<td><div align="center">
+									<button type="button" class="btn btn-success">Reserve</button>
+								</div></td>
+						</tr>
+						<tr>
+							<td style="width: 20%"><div align="center" class="image">
+									<img style="width: 30%; height: 30%;"
+										src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
+										alt="Parking on 84 N 7th Street, ">
+								</div></td>
+							<td style="width: 60%"><div align="center">Parking on
+									84 N 7th Street, 84 N 7th Street, San Jose, 95112</div></td>
+							<td><div align="center">
+									<a href="javascript:void(0);" class="bookingnav">Details</a>
+								</div></td>
+							<td><div align="center">
+									<button type="button" class="btn btn-success">Reserve</button>
+								</div></td>
+						</tr>
+						<tr>
+							<td style="width: 20%"><div align="center" class="image">
+									<img style="width: 30%; height: 30%;"
+										src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
+										alt="Parking on 84 N 7th Street, ">
+								</div></td>
+							<td style="width: 60%"><div align="center">Parking on
+									84 N 7th Street, 84 N 7th Street, San Jose, 95112</div></td>
+							<td><div align="center">
+									<a href="javascript:void(0);" class="bookingnav">Details</a>
+								</div></td>
+							<td><div align="center">
+									<button type="button" class="btn btn-success">Reserve</button>
+								</div></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
 			<div class="tab-pane active" id="mapview">
 				<div id="map" class="maparea"></div>
 			</div>
