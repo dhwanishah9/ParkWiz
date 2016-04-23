@@ -22,7 +22,7 @@
 <!-- Angular Core javascript -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
-
+<script	src="/js/MyAccount.js"></script>
 <!-- MetisMenu CSS -->
 <link href="/stylesheets/metisMenu.min.css" rel="stylesheet">
 
@@ -350,15 +350,7 @@
 		}, {
 			name : 'My Account',
 			url : '/profile',
-			initializeFunction : function($scope) {
-				$scope.userInfo = {
-					'firstname' : 'Shivi',
-					'lastname' : 'Jain',
-					'email' : 'blah@foo.com',
-					'address' : 'blah st, San Jose, Ca',
-					'phoneno' : '111-222-3333'
-				};
-			}
+			initializeFunction : initializeMyAccount
 		}, {
 			name : 'My Booking History',
 			url : '/bookings',
