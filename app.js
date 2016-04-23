@@ -38,6 +38,7 @@ app.get('/abc', routes.abc);
 app.get('/profile', routes.profile);
 app.get('/bookings', routes.bookings);
 app.get('/payment', routes.payment);
+app.get('/addlisting', routes.addlisting);
 
 
 app.get('/bookingoverview', routes.bookingoverview);

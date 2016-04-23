@@ -322,7 +322,11 @@
 				sessionStorage.removeItem("template");
 			}
 		}
-
+		
+		$scope.addlistings = function(){
+			$scope.template = $scope.templates[5];
+			$("#navMenus").hide();
+		};
 
 		$scope.billing = function() {
 			$scope.template = $scope.templates[2];
@@ -375,6 +379,9 @@
 					'status' : 'Completed'
 				} ];
 			}
+		},{
+			name : 'AddListing',
+			url : '/addlisting'
 		} ];
 
 		$scope.templates.forEach(function(template) {
