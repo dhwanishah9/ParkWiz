@@ -303,6 +303,9 @@
 		},{
 			name : 'MyBookings',
 			url : '/mylisting'
+		},{
+			name : 'Payment',
+			url : '/payment'
 		}];
 		
 		$scope.bookingtemplate = $scope.booktemplate[0];
@@ -317,6 +320,10 @@
 		
 		$scope.mybooking = function(){
 			$scope.bookingtemplate = $scope.booktemplate[2];
+		};
+		
+		$scope.payment = function(){
+			$scope.bookingtemplate = $scope.booktemplate[3];
 		};
 	}
 	

@@ -10,7 +10,7 @@
 		<!--<h3 class="page-header">Search</h3> -->
 		<ol class="breadcrumb">
 			<li class="active"><i class="fa fa fa-bookmark"></i> Home</li>
-			<li class="active">Bookings</li>
+			<li class="active">Bookings History</li>
 		</ol>
 	</div>
 	<div class="page-accountlandlorddashboard main-padding"
@@ -20,28 +20,38 @@
 				<main>
 				<div class="container">
 					<div class="row">
-						<aside class="sidemenu">
-							<h2>Navigation</h2>
-							<ul>
-								<li ng-click="overview();"><a onclick="togglenav(this);" href="javascript:void(0)" class="bookingnav active"> <i
-										class="fa fa-bar-chart"></i> <span>Overview</span> <i
-										class="fa fa-chevron-right"></i>
-								</a></li>
-								<li ng-click="history();"><a onclick="togglenav(this);" class="bookingnav" href="javascript:void(0)"> <i
-										class="fa fa-list-ul"></i> <span>My Listings</span> <i
-										class="fa fa-chevron-right"></i>
-								</a></li>
-								<li ng-click="mybooking();"><a onclick="togglenav(this);" class="bookingnav" href="javascript:void(0)"> <i
-										class="fa fa-calendar"></i> <span>My Bookings</span> <i
-										class="fa fa-chevron-right"></i>
-								</a></li>
-								<li><a onclick="togglenav(this);" class="bookingnav" href="javascript:void(0)"> <i
-										class="fa fa-credit-card"></i> <span>Payment
-											Preferences</span> <i class="fa fa-chevron-right"></i>
-								</a></li>
-							</ul>
-						</aside>
-						<section class="content">
+						<table class="table" id="tblnavMenu">
+							<thead>
+								<tr>
+									<th class="active"><ul class="list-unstyled">
+											<li ng-click="overview();"><a onclick="togglenav(this);"
+												href="javascript:void(0)" class="bookingnav active"> <i
+													class="fa fa-bar-chart"></i> <span>Overview</span>
+											</a></li>
+										</ul></th>
+									<th><ul class="list-unstyled">
+											<li ng-click="history();"><a onclick="togglenav(this);"
+												class="bookingnav" href="javascript:void(0)"> <i
+													class="fa fa-list-ul"></i> <span>My Listings</span>
+											</a></li>
+										</ul></th>
+									<th><ul class="list-unstyled">
+											<li ng-click="mybooking();"><a
+												onclick="togglenav(this);" class="bookingnav"
+												href="javascript:void(0)"> <i class="fa fa-calendar"></i>
+													<span>My Bookings</span>
+											</a></li>
+										</ul></th>
+									<th><ul class="list-unstyled">
+											<li ng-click="payment();"><a onclick="togglenav(this);"
+												class="bookingnav" href="javascript:void(0)"> <i
+													class="fa fa-credit-card"></i> <span>Payment</span>
+											</a></li>
+										</ul></th>
+								</tr>
+							</thead>
+						</table>
+						<section class="content" style="width: 100% !important">
 							<div ng-include src="bookingtemplate.url"></div>
 						</section>
 					</div>

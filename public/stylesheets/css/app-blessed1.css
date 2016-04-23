@@ -2221,7 +2221,7 @@ pre code {
     background-color: #f9f9f9;
 }
 .table-hover>tbody>tr:hover, .table>tbody>tr.active>td, .table>tbody>tr.active>th, .table>tbody>tr>td.active, .table>tbody>tr>th.active, .table>tfoot>tr.active>td, .table>tfoot>tr.active>th, .table>tfoot>tr>td.active, .table>tfoot>tr>th.active, .table>thead>tr.active>td, .table>thead>tr.active>th, .table>thead>tr>td.active, .table>thead>tr>th.active {
-    background-color: #f5f5f5;
+    background-color: #fff;
 }
 table col[class*=col-] {
     position: static;
@@ -7153,8 +7153,7 @@ body main aside.sidemenu ul li.switch .button-outer>a:after, body main aside.sid
     transform: rotateX(-90deg);
 }
 body main section.content {
-    float: left;
-    width: 66.66666667%}
+    float: left;}
 }body main aside.sidemenu ul li.switch .button-outer a {
     text-align: center;
     font-size: 13px;
@@ -7202,12 +7201,10 @@ body main section.content {
 }
 @media (min-width:992px) {
     body main section.content {
-    float: left;
-    width: 75%}
+    float: left;}
 }@media (min-width:1200px) {
     body main section.content {
-    float: left;
-    width: 79.16666667%}
+    float: left;}
 }body main section.content h1 {
     margin: 0 0 30px;
     font-weight: 400;
@@ -8308,7 +8305,6 @@ tdbody.page-accountlandlorddashboard .section .ftable .frow .fcol .fcol-mobile-h
 }
 }.page-accountlandlorddashboard .account-progress, body.page-confirmmonthlyavailability .account-progress {
     border-radius: 7px;
-    border: 1px solid #E5E6E6;
     margin-bottom: 50px;
     padding: 25px;
     position: relative;
@@ -8378,7 +8374,7 @@ tdbody.page-accountlandlorddashboard .section .ftable .frow .fcol .fcol-mobile-h
 }
 .page-accountlandlorddashboard .account-progress ul li, body.page-confirmmonthlyavailability .account-progress ul li {
     float: left;
-    width: 14.285714286%}
+    width: 19.585714286%}
 }.page-accountlandlorddashboard .account-progress ul li, body.page-confirmmonthlyavailability .account-progress ul li {
     padding: 0 2px;
     position: relative;
