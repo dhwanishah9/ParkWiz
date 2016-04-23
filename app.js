@@ -5,7 +5,8 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , user = require('./routes/user')
+  //, user = require('./routes/user')
+  , user = require('./Modules/user')
   , http = require('http')
   , signin=require('./routes/signin')
   , signup=require('./routes/signup')
