@@ -354,7 +354,7 @@
 		}, {
 			name : 'My Booking History',
 			url : '/bookings',
-			initializeFunction : function($scope) {
+			initializeFunction : function($scope, $http) {
 				$scope.bookingInfo = [ {
 					'location' : 'blah st, San Jose, Ca',
 					'from' : '01/01/2016',
@@ -381,7 +381,7 @@
 			if (template['name'] == templateName) {
 				$scope.template = template;
 				if (template.initializeFunction) {
-					template.initializeFunction($scope);
+					template.initializeFunction($scope, $http);
 				}
 			}
 		});
