@@ -309,6 +309,8 @@
 		
 		$scope.account = function() {
 			$scope.template = $scope.templates[3];
+			initializeMyAccount($scope, $http);
+
 			$("#navMenus").hide();
 		};
 
