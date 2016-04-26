@@ -6,27 +6,29 @@
 	<table class="table table-inverse table-striped table-bordered">
 		<thead class="thead-inverse">
 			<tr>
-				<th>Image</th>
-				<th>Address</th>
-				<th>Status</th>
-				<th><div align="center">Action</div></th>
+				<th style = "text-align : center">Image</th>
+				<th style = "text-align : center">Address</th>
+				<th style = "text-align : center">Status</th>
+				<!--<th><div align="center">Action</div></th>-->
 			</tr>
 		</thead>
-		<tbody>
+		<tbody ng-repeat="booking in allbookings">
 			<tr>
-				<td style="width: 20%"><div align="center" class="image">
+				<td style="width: 20%">
+					<div align="center" class="image">
 						<img style="width: 40%; height: 40%;"
-							src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
+							ng-src="{{ booking.imageurl }}"
 							alt="Parking on 84 N 7th Street, ">
-					</div></td>
-				<td style="width: 40%"><div align="center">Parking on 84
-						N 7th Street, 84 N 7th Street, San Jose, 95112</div></td>
-				<td><div align="center" class="status status_active">
-						<span class="label label-success">Active</span>
+					</div>
+				</td>
+				<td style="width: 40%"><div align="center" ng-model="booking.address">{{ booking.address }}</div></td>
+				<td>
+					<div align="center" class="status status_active">
+						<span class="label label-success" ng-model="booking.status">{{ booking.status }}</span>
 					</div>
 
 
-					<div align="center" class="price">
+					<!--<div align="center" class="price">
 						<strong>Monthly Price:</strong> £10.00
 					</div></td>
 				<td><div class="button-outer" align="center">
@@ -35,9 +37,9 @@
 							aria-controls="actions0">
 							<i class="fa fa-cog"></i> Actions
 						</button>
-					</div></td>
+					</div></td>-->
 			</tr>
-			<tr>
+			<!--<tr>
 				<td style="width: 20%"><div align="center" class="image">
 						<img style="width: 40%; height: 40%;"
 							src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
@@ -84,7 +86,7 @@
 							<i class="fa fa-cog"></i> Actions
 						</button>
 					</div></td>
-			</tr>
+			</tr>-->
 		</tbody>
 	</table>
 </section>

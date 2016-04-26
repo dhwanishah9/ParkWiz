@@ -130,6 +130,10 @@ app.get('/api/bookingoverview',function(req,res){
 	booking.gettopbookings(userid, res);
 });
 
+app.get('/api/mylisting',function(req,res){
+	userid = 1;
+	booking.getallbookings(userid, res);
+});
 
 app.post('/api/loggedin_userinfo',function(req,res){
 	user.updateuserinfo(req.body,res);

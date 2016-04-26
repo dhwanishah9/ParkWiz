@@ -29,7 +29,8 @@ exports.gettopbookings = function(userid, res) {
 
 exports.getallbookings = function(userid, res) {
 	
-	var getBooking = "SELECT CONCAT(s.addressline1, \" \", s.addressline2) AS address, r.status FROM spot s JOIN ( SELECT spotid, status, startdate from reservation where userid ='"+ userid + "') r WHERE s.spotid = r.spotid ORDER BY r.startdate DESC";
+	//var getBooking = "SELECT CONCAT(s.addressline1, \" \", s.addressline2) AS address, r.status FROM spot s JOIN ( SELECT spotid, status, startdate from reservation where userid ='"+ userid + "') r WHERE s.spotid = r.spotid ORDER BY r.startdate DESC";
+	var getBooking = "SELECT CONCAT(s.addressline1, \" \", s.addressline2) AS address, r.status,i.imageurl FROM spot s JOIN image i ON i.spotid = s.spotid JOIN reservation r ON s.spotid = r.spotid WHERE r.userid = "+ userid + " ORDER BY r.startdate DESC";
 	console.log("Query is:" + getBooking);
 	
 	//Calling the fetch method using mysql module

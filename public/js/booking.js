@@ -13,7 +13,11 @@ function BookingService($http) {
 	return {
 		getOverview : function() {
 			return $http.get('/api/bookingoverview');
-		}/*,
+		},
+		getBookings: function() {
+			return $http.get('/api/mylisting');
+		}
+		/*,
 		getSpaces : function() {
 			return $http.get('/api/bookingoverview');
 		}
@@ -56,6 +60,7 @@ function BookingService($http) {
 
 		$scope.mybooking = function() {
 			$scope.bookingtemplate = $scope.booktemplate[2];
+			getAllBookings($scope, service);
 		};
 
 		$scope.payment = function() {
@@ -97,7 +102,14 @@ function BookingService($http) {
 		.success(function(data) {
 			$scope.spaceoverview = data;
 		});*/
-	}
 
+		
+	}
+function getAllBookings($scope, service){
+	service.getBookings()
+		.success(function(data) {
+			$scope.allbookings = data;
+		});
+}
 
 
