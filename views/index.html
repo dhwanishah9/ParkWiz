@@ -23,6 +23,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
 <script src="/js/MyAccount.js"></script>
+<script src="/js/booking.js"></script>
 <!-- MetisMenu CSS -->
 <link href="/stylesheets/metisMenu.min.css" rel="stylesheet">
 
@@ -278,39 +279,7 @@
 
 	var autocomplete;
 
-	function bookingModule($scope, $http) {
-		$scope.booktemplate = [ {
-			name : 'BookingOverview',
-			url : '/bookingoverview'
-		}, {
-			name : 'BookingHistory',
-			url : '/bookinghistory'
-		}, {
-			name : 'MyBookings',
-			url : '/mylisting'
-		}, {
-			name : 'Payment',
-			url : '/payment'
-		} ];
 
-		$scope.bookingtemplate = $scope.booktemplate[0];
-
-		$scope.overview = function() {
-			$scope.bookingtemplate = $scope.booktemplate[0];
-		};
-
-		$scope.history = function() {
-			$scope.bookingtemplate = $scope.booktemplate[1];
-		};
-
-		$scope.mybooking = function() {
-			$scope.bookingtemplate = $scope.booktemplate[2];
-		};
-
-		$scope.payment = function() {
-			$scope.bookingtemplate = $scope.booktemplate[3];
-		};
-	}
 
 	function layoutmodule($scope, $http) {		
 		var templateName = "Search Page"; // Search is the default url.
