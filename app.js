@@ -130,6 +130,11 @@ app.get('/api/bookingoverview',function(req,res){
 	booking.gettopbookings(userid, res);
 });
 
+app.get('/api/getspaces',function(req,res){
+	userid = 1;
+	booking.getspaces(userid, res);
+});
+
 app.get('/api/mylisting',function(req,res){
 	userid = 1;
 	booking.getallbookings(userid, res);

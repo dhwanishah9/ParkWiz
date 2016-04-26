@@ -266,36 +266,36 @@
 		</div>
 	</div>
 </div>
-<!--<div class="section active">
+<div class="section active">
 	<h2>
-		Your Spaces <span>(1)</span>
+		Your Spaces <span>({{ spaceoverview.length }})</span>
 	</h2>
 	<div class="ftable">
 		<div class="frow fheader">
-			<div class="fcol">Postcode</div>
-			<div class="fcol">Listing Type</div>
-			<div class="fcol">Price</div>
+			<div class="fcol">Address</div>
+			<div class="fcol">Parking Type</div>
+			<!--<div class="fcol">Price</div>-->
 			<div class="fcol">Status</div>
-			<div class="fcol">Lifetime Earnings</div>
+			<!--<div class="fcol">Lifetime Earnings</div>-->
 			<div class="fcol"></div>
 		</div>
-		<div class="frow">
-			<div class="fcol">
-				<div class="fcol-mobile-header">Postcode</div>
-				W112BQ
+		<div class="frow" ng-repeat="space in spaceoverview">
+			<div class="fcol" ng-model="space.address">
+				<div class="fcol-mobile-header"  >Address</div>
+				{{ space.address }}
 			</div>
-			<div class="fcol">
-				<div class="fcol-mobile-header">Listing Type</div>
-				Parking Space
+			<div class="fcol" ng-model="space.listingtype">
+				<div class="fcol-mobile-header">Parking Type</div>
+				{{ space.listingtype }}
 			</div>
-			<div class="fcol">
+			<!--<div class="fcol">
 				<div class="fcol-mobile-header">Price</div>
 				£1.25
+			</div>-->
+			<div class="fcol column_status" ng-model="space.status">
+				<div class="status status_active">{{ space.status }}</div>
 			</div>
-			<div class="fcol column_status">
-				<div class="status status_active">Active</div>
-			</div>
-			<div class="fcol">
+			<!--<div class="fcol">
 				<div class="fcol-mobile-header">Lifetime Earnings</div>
 				£ 2.5
 			</div>
@@ -309,7 +309,7 @@
 				<div class="button-outer">
 					<a href="/locations/show/20482975">View</a>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
-</div>-->
+</div>

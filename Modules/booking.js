@@ -48,8 +48,8 @@ exports.getallbookings = function(userid, res) {
 	
 };
 
-/*exports.getspace = function(userid, res) {	
-	var getBooking = "SELECT CONCAT(s.addressline1, \" \", s.addressline2) AS address, r.status FROM spot s JOIN (SELECT spotid, status, startdate from reservation where userid ="+ userid + ") r WHERE s.spotid = r.spotid ORDER BY r.startdate DESC LIMIT 2";
+exports.getspaces = function(userid, res) {	
+	var getBooking = "SELECT CONCAT(s.addressline1, \" \", s.addressline2) AS address, s.listingtype, r.status FROM spot s JOIN (SELECT spotid, status, startdate from reservation where userid ="+ userid + ") r WHERE s.spotid = r.spotid ORDER BY r.startdate DESC LIMIT 2";
 	console.log("Query is:" + getBooking);
 	
 	//Calling the fetch method using mysql module
@@ -65,4 +65,4 @@ exports.getallbookings = function(userid, res) {
 		}
 	}, getBooking);
 	
-};*/
+};
