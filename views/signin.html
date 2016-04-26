@@ -1,150 +1,192 @@
 <!DOCTYPE html>
 <html ng-app="">
-  <head>
-    <title>Login</title>
-     <link rel='stylesheet' href='/stylesheets/style.css' />
-     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<style>
-	.alert{
-		height:45px;
-		
-	}
-	</style>
-  </head>
-  <body style="margin-top: 0px;padding: 0;" background='/images/background2.png'> 
-  <div  ng-controller="signInController">
-  <div class="container" style="margin-top:250px;height:350px;width:300px;background-color:#f2f2f2;vertical-align: middle;text-align: left;" align='center'> 
-  			<form>
-		        <div class="form-group"></div>
-		         <div class="alert alert-danger fade in" id="error" style="display:none">
-	        				<a href="#" class="close">&times;</a>
-	        				
-				</div>
-		        <div class="form-group"> 
-		         <label for="email">Email</label>
-		        <input type="email" ng-model="signinemail" ng-required="true" name="email" id="email" placeholder="Email" class="form-control">
-		        </div>
-		       <div class="form-group">
-		        <label for="password">Password</label>
-		        <input type="password" ng-model="signinpassword" ng-required="true" name="password" id="password" placeholder="Password" class="form-control">
-		        </div>
-		        <div class="form-group" align='center'>
-		        <button type="button" class="btn btn-primary" ng-click="signin()">Sign In</button>
-		        </div>
-		         <div class="form-group" align='center'>
-		         <a data-toggle="modal" data-target="#myModal"  data-backdrop="static" data-keyboard="false">Forgot password?</a>
-		        </div>
-		         <div class="form-group" align='center'>
-		        Want to Join? <a href="#" ng-click="register()">Register</a>
-		        </div>
-		     </form>
-	        </div> 
-	        
-	        <div class="modal fade container" id="myModal" role="dialog" align="center" style="margin-top:220px;height:480px;width:500px;position: fixed;">
-		    <div class="modal-dialog modal-sm">
-		      <div class="modal-content" style="background-color:#f2f2f2;">
-		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal" ng-click="reload()">&times;</button>
-		          <h4 class="modal-title" id="resetpwdresult">Enter New Password!!</h4>
-		        </div>
-		        <div class="modal-body" id="resetpwdbody">
-		             <form class="form-horizontal">
-						  <div class="form-group">
-						    <div class="col-sm-10">
-						      <input type="email" class="form-control" id="username" placeholder="Email" ng-required="true" ng-model="username">
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <div class="col-sm-10">
-						      <input type="password" class="form-control" id="newpwd" placeholder="Password" ng-required="true" ng-model="newpassword">
-						    </div>
-						  </div>
-						  <div class="form-group">
-						   	<div class="col-sm-10">
-						      <input type="password" class="form-control" id="newcpwd" placeholder="Confirm Password" ng-required="true" ng-model="confirmpassword">
-						    </div>
-						  </div>
-						  <div class="form-group">
-						    <div class="col-sm-offset-2 col-sm-10">
-						      <button type="submit" class="btn btn-primary pull-left" ng-click="resetpwd()">Reset</button>
-						    </div>
-						  </div>
-					</form>
-		        </div>
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="reload()">Close</button>
-		        </div>
-		      </div>
-		    </div>
-		  </div>
-  </div>
-   
-  </body>
-  <script>
-  $('.close').click(function() {
-	  
-	  $('strong').remove();
-	  $('.alert').hide();
+<head>
+<title>Login</title>
+<link rel='stylesheet' href='/stylesheets/style.css' />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<style>
+.alert {
+	height: 45px;
+}
+</style>
+</head>
+<body style="margin-top: 0px; padding: 0;"
+	background='/images/background2.png'>
+	<div ng-controller="signInController">
+		<div class="container"
+			style="margin-top: 12%; height: 100%; width: 300px; background-color: #f2f2f2; vertical-align: middle; text-align: left;"
+			align='center'>
+			<form>
+				<div class="form-group"></div>
+				<div class="alert alert-danger fade in" id="error"
+					style="display: none">
+					<a href="#" class="close">&times;</a>
 
-  });
-  function signInController($scope,$http,$location) {
-	   
-	 
-	  $scope.signin = function() {
-		   if(document.getElementById("email").checkValidity()&&document.getElementById("password").checkValidity()){
-		    	$http({
-		            method: 'POST',
-		            url: '/checksignin',
-		            data: { "email": $scope.signinemail, "password": $scope.signinpassword }
-		            
-		         }).success(function(response){
-		             if(response.login == "Success")
-		           		    alert("success");
-		           	 else{
-		           		    
-		        	 		$('#error').append("<strong>Error!!!Invalid Login.Try again.</strong>");
-		        	 		$('.alert').show();
-		           	 }
-		         }).error(function(error){
-		        	 $('#error').append("<strong>Error!!Signin failed.Try again.</strong>");
-		        	 $('.alert').show();
-		        });
-		    }else{
-		    	$('#error').append("<strong>Error!!!Enter required fields.</strong>");
-		    	$('.alert').show();
-		    }
-	   };
-	   
-	   $scope.register = function() {
-		   window.location = '/register';
-	   };
-	   
-	   $scope.resetpwd = function(){
-		   if(document.getElementById("username").checkValidity()&& document.getElementById("newpwd").checkValidity()&&document.getElementById("newcpwd").checkValidity() 
-				   && document.getElementById("newpwd").value==document.getElementById("newcpwd").value){
-		    	$http({
-		            method: 'POST',
-		            url: '/resetpassword',
-		            data: { "username": $scope.username, "newpwd": $scope.newpassword}
-		         }).success(function(response){
-		        	 document.getElementById("resetpwdresult").innerHTML=JSON.stringify(response);
-			         $('#resetpwdbody').hide();
-			         
-		         }).error(function(error){
-		        	 alert(error);
-		        	 document.getElementById("resetpwdresult").innerHTML=JSON.stringify(response);
-		        });
-		    }else{
-		    	document.getElementById("resetpwdresult").innerHTML="Enter all the required values!!"
-		    } 
-	   };
-	   
-	   $scope.reload= function(){
-		   window.location.reload();
-	   }
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label> <input type="email"
+						ng-model="signinemail" ng-required="true" name="email" id="email"
+						placeholder="Email" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label> <input type="password"
+						ng-model="signinpassword" ng-required="true" name="password"
+						id="password" placeholder="Password" class="form-control">
+				</div>
+				<div class="form-group" align='center'>
+					<button style="width: 100%" type="button" class="btn btn-primary"
+						ng-click="signin()">Sign In</button>
+				</div>
+				<div class="form-group" align='center'>
+					<a data-toggle="modal" data-target="#myModal"
+						data-backdrop="static" data-keyboard="false">Forgot password?</a>
+				</div>
+				<div class="form-group" align='center'>
+					Want to Join? <a href="#" ng-click="register()">Register</a>
+				</div>
+			</form>
+		</div>
+
+		<div class="modal fade container" id="myModal" role="dialog"
+			align="center"
+			style="margin-top: 10%; height: 100%; width: 500px; position: fixed;">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content" style="background-color: #f2f2f2;">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							ng-click="reload()">&times;</button>
+						<h4 class="modal-title" id="resetpwdresult">Enter New
+							Password!!</h4>
+					</div>
+					<div class="modal-body" id="resetpwdbody">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="email" class="form-control" id="username"
+										placeholder="Email" ng-required="true" ng-model="username">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="password" class="form-control" id="newpwd"
+										placeholder="Password" ng-required="true"
+										ng-model="newpassword">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<input type="password" class="form-control" id="newcpwd"
+										placeholder="Confirm Password" ng-required="true"
+										ng-model="confirmpassword">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-12">
+									<button style="width: 100%" type="submit"
+										class="btn btn-primary pull-left" ng-click="resetpwd()">Reset</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script>
+	$('.close').click(function() {
+
+		$('strong').remove();
+		$('.alert').hide();
+
+	});
+	function signInController($scope, $http, $location) {
+
+		$scope.signin = function() {
+			if (document.getElementById("email").checkValidity()
+					&& document.getElementById("password").checkValidity()) {
+				$http({
+					method : 'POST',
+					url : '/checksignin',
+					data : {
+						"email" : $scope.signinemail,
+						"password" : $scope.signinpassword
+					}
+
+				})
+						.success(
+								function(response) {
+									if (response.login == "Success")
+										alert("success");
+									else {
+
+										$('#error')
+												.append(
+														"<strong>Error!!!Invalid Login.Try again.</strong>");
+										$('.alert').show();
+									}
+								})
+						.error(
+								function(error) {
+									$('#error')
+											.append(
+													"<strong>Error!!Signin failed.Try again.</strong>");
+									$('.alert').show();
+								});
+			} else {
+				$('#error').append(
+						"<strong>Error!!!Enter required fields.</strong>");
+				$('.alert').show();
+			}
+		};
+
+		$scope.register = function() {
+			window.location = '/register';
+		};
+
+		$scope.resetpwd = function() {
+			if (document.getElementById("username").checkValidity()
+					&& document.getElementById("newpwd").checkValidity()
+					&& document.getElementById("newcpwd").checkValidity()
+					&& document.getElementById("newpwd").value == document
+							.getElementById("newcpwd").value) {
+				$http({
+					method : 'POST',
+					url : '/resetpassword',
+					data : {
+						"username" : $scope.username,
+						"newpwd" : $scope.newpassword
+					}
+				})
+						.success(
+								function(response) {
+									document.getElementById("resetpwdresult").innerHTML = JSON
+											.stringify(response);
+									$('#resetpwdbody').hide();
+
+								})
+						.error(
+								function(error) {
+									alert(error);
+									document.getElementById("resetpwdresult").innerHTML = JSON
+											.stringify(response);
+								});
+			} else {
+				document.getElementById("resetpwdresult").innerHTML = "Enter all the required values!!"
+			}
+		};
+
+		$scope.reload = function() {
+			window.location.reload();
+		}
 	}
-	</script>
+</script>
 </html>
