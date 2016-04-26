@@ -8,6 +8,20 @@
 
 // 4. Create a Booking service. (see the code from myaccount.js) and use this instead of the fake data.
 
+
+function BookingService($http) {
+	return {
+		getOverview : function() {
+			return $http.get('/api/bookingoverview');
+		}/*,
+		create : function(MyAccountData) {
+			return $http.post('/api/loggedin_userinfo', MyAccountData);
+		},
+		delete : function(id) {
+			return $http.delete('/api/todos/' + id);
+		}*/
+	}
+};
 	function bookingModule($scope, $http) {
 		$scope.booktemplate = [ {
 			name : 'BookingOverview',
@@ -23,11 +37,13 @@
 			url : '/payment'
 		} ];
 
+		var service = BookingService($http);
+
 		$scope.bookingtemplate = $scope.booktemplate[0];
 
 		$scope.overview = function() {
 			$scope.bookingtemplate = $scope.booktemplate[0];
-			overview($scope, $http);
+			overview($scope, service);
 		};
 
 		$scope.history = function() {
@@ -45,14 +61,19 @@
 		$scope.overview();
 	}
 
-	function overview($scope, $http){
-		$scope.bookingoverview = [{
+	function overview($scope, service){
+		/*$scope.bookingoverview = [{
 			address: "123424 sjdajdhjad",
 			status: "Active"
 		},
 		{
 			address: "asagagsd dasjkdakdaj",
 			status: "Completed"	
-		}];
+		}];*/
+
+		service.getOverview()
+		.success(function(data) {
+			$scope.bookingoverview = data;
+		});
 	}
 

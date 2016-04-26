@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   //, user = require('./routes/user')
   , user = require('./Modules/user')
+  , booking = require('./Modules/booking')
   , http = require('http')
   , signin=require('./routes/signin')
   , signup=require('./routes/signup')
@@ -123,6 +124,12 @@ app.get('/api/loggedin_userinfo',function(req,res){
 		res.send(JSON.stringify({"response" : "No Session Data to GET"}));
 	}*/
 });
+
+app.get('/api/bookingoverview',function(req,res){
+	userid = 1;
+	booking.gettopbookings(userid, res);
+});
+
 
 app.post('/api/loggedin_userinfo',function(req,res){
 	user.updateuserinfo(req.body,res);
