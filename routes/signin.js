@@ -40,3 +40,41 @@ exports.checksignin = function(req, res){
 	
 };
 
+exports.changepassword = function(req, res){
+	var getUser = "select * from user where email='"
+		+ req.param("username") + "'";
+	console.log("Query is:" + getUser);
+	
+	//Calling the fetch method using mysql module
+	mysql.fetchData(function(err, results) {
+		if (err) {
+		console.log("Error while fetching login results");
+			throw err;
+		} else {
+			if (results.length > 0) {
+				password(req.param("newpwd")).hash(function(error, hash) {
+					if(error)
+						throw new Error('Error hashing the pwd');
+					else{
+						hashedPwd = hash;
+					    var update = "update user set password='"+hashedPwd+"' where email='"+req.param("username")+"'";
+						console.log("Query is:" + update);
+						mysql.insertData(function(err,results) {
+							if (err) {
+								console.log("Error while updating the record.");
+								res.send("Password Update Failed!!");
+							}
+							else {
+								res.send("Password Change Successful!!");
+							}
+						}, update);
+					}
+				});
+			}else{
+				res.send("No Such User!!");
+			}
+		}
+	}, getUser);
+	
+};
+

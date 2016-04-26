@@ -10,6 +10,9 @@ var express = require('express')
   , http = require('http')
   , signin=require('./routes/signin')
   , signup=require('./routes/signup')
+  , review=require('./routes/review')
+  , availability=require('./routes/availabilitychart')
+  , gauge=require('./routes/usergauge')
   , path = require('path');
 
 var app = express();
@@ -39,6 +42,7 @@ app.get('/abc', routes.abc);
 app.get('/profile', routes.profile);
 app.get('/bookings', routes.bookings);
 app.get('/payment', routes.payment);
+app.get('/addlisting', routes.addlisting);
 
 
 app.get('/bookingoverview', routes.bookingoverview);
@@ -60,6 +64,17 @@ app.get('/register', signup.register);
 app.get('/myaccount', routes.myaccount);
 app.get('/bookinghistory', routes.bookinghistory);
 app.get('/billing', routes.billing);
+
+app.post('/resetpassword',signin.changepassword)
+app.get('/review', review.review);
+app.get('/getallreviews', review.getReviews);
+app.get('/getreviewschart', review.getReviewsChart);
+app.post('/savereview', review.saveReview);
+app.get('/availability',availability.availability);
+app.get('/loadavailabilitychart',availability.getAvailabilityChart);
+app.get('/gaugechart',gauge.gaugechart);
+app.get('/loadgaugechart',gauge.getGaugeChart);
+
 app.get('/api/session',function(req,res){
 	
 	if(req.session.data){

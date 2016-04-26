@@ -322,10 +322,14 @@
 				sessionStorage.removeItem("template");
 			}
 		}
-
+		
+		$scope.addlistings = function(){
+			$scope.template = $scope.templates[5];
+			$("#navMenus").hide();
+		};
 
 		$scope.billing = function() {
-			$scope.template = $scope.templates[2];
+			$scope.template = $scope.templates[1];
 			$("#navMenus").hide();
 		};
 		
@@ -375,6 +379,9 @@
 					'status' : 'Completed'
 				} ];
 			}
+		},{
+			name : 'AddListing',
+			url : '/addlisting'
 		} ];
 
 		$scope.templates.forEach(function(template) {
@@ -447,13 +454,13 @@
 			},
 			zoom : 10
 		});
-		
-		autocomplete = new google.maps.places.Autocomplete((document.getElementById('txtAddress')), {
-			types : [ 'geocode' ]
-		});
 	}
 
-	function geolocate() {
+	function geolocate() {		
+		autocomplete = new google.maps.places.Autocomplete((document.getElementsByClassName('locationservice')[0]), {
+			types : [ 'geocode' ]
+		});
+		
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {

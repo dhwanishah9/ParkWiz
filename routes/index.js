@@ -17,6 +17,12 @@ exports.abc = function(req, res) {
 	});
 };
 
+exports.addlisting = function(req, res) {
+	res.render('addlisting', {
+		title : 'ParkWiz'
+	});
+};
+
 exports.profile = function(req, res) {
 	res.render('profile', {
 		title : 'ParkWiz'

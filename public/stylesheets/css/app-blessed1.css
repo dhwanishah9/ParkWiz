@@ -1634,7 +1634,7 @@ dd {
     margin-left: 180px;
 }
 .container {
-    width: 750px;
+    width: 100%;
 }
 }abbr[data-original-title], abbr[title] {
     cursor: help;
@@ -1729,11 +1729,11 @@ pre code {
 }
 @media (min-width:992px) {
     .container {
-    width: 970px;
+    width: 100%;
 }
 }@media (min-width:1200px) {
     .container {
-    width: 1170px;
+    width: 100%;
 }
 }.row {
     margin-left: -15px;
