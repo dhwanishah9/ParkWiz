@@ -74,6 +74,18 @@ function BookingService($http) {
 		service.getOverview()
 		.success(function(data) {
 			$scope.bookingoverview = data;
+			var used =0;
+			var active =0;
+			for(var i = 0; i< data.length;i++){
+				if(data[i].status == "Used"){
+					used +=1;
+				}
+				if(data[i].status =="Active"){
+					active += 1;
+				}
+			}
+			$scope.used = used;
+			$scope.active = active;
 		});
 	}
 

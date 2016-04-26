@@ -111,8 +111,8 @@
 <div class="section recent">
 	<h2>Last 2 Bookings</h2>
 	 <div class="bookings-breakdown">
-               <div class="status status_active">0 Active</div>
-               <div class="status status_complete">2 Complete</div>
+               <div class="status status_active">{{ active }} Active</div>
+               <div class="status status_complete">{{ used }} Used</div>
      </div>
 	<div class="ftable">
 		<div class="frow" ng-repeat="booking in bookingoverview">
