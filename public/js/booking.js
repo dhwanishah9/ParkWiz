@@ -14,6 +14,10 @@ function BookingService($http) {
 		getOverview : function() {
 			return $http.get('/api/bookingoverview');
 		}/*,
+		getSpaces : function() {
+			return $http.get('/api/bookingoverview');
+		}
+		
 		create : function(MyAccountData) {
 			return $http.post('/api/loggedin_userinfo', MyAccountData);
 		},
@@ -87,5 +91,13 @@ function BookingService($http) {
 			$scope.used = used;
 			$scope.active = active;
 		});
+
+
+		/*service.getSpaces()
+		.success(function(data) {
+			$scope.spaceoverview = data;
+		});*/
 	}
+
+
 
