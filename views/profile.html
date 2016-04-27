@@ -1,5 +1,5 @@
 
-<div id="partialview" ng-controller="profilemodule" class="container">
+<div id="partialview"  class="container">
 	<div class="fb-profile">
 		<img align="left" class="fb-image-lg" src="/images/bg.jpg"
 			alt="Profile image example" /> <img align="left"
@@ -14,13 +14,13 @@
 							<div class="progress-container" style="margin-top: 10%">
 								<div class="progress progress-striped active">
 									<div title="Profile Completion"
-										class="progress-bar progress-bar-primary">
+										class="progress-bar progress-bar-primary" >
 										<p id="status"
-											style="vertical-align: middle; font-weight: bold; margin-top: 7px;">75%</p>
+											style="vertical-align: middle; font-weight: bold; margin-top: 7px;">{{ userInfo.complete }} %</p>
 									</div>
 								</div>
 							</div>
-							<div>
+							<!--<div>
 								<button type="button" style="width: 100%" class="btn btn-danger">
 									Booking <span style="width: 20%" c class="badge">0</span>
 								</button>
@@ -31,7 +31,7 @@
 									class="btn btn-success">
 									Sites <span style="width: 20%" title="0" class="badge">0</span>
 								</button>
-							</div>
+							</div>-->
 							<br />
 						</div>
 						<div class="col-md-9" style="margin-left: 0% !important; margin-top: 1.7%;">
