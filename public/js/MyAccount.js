@@ -34,7 +34,7 @@ function initializeMyAccount($scope, $http) {
 				total += 1;
 			}
 
-		activitygauge();
+		activitygauge($scope);
 		$scope.userInfo.complete = Math.round((count*100)/total);
 		$(".progress-bar").animate({
 			width : $scope.userInfo.complete + "%"
@@ -53,15 +53,20 @@ function initializeMyAccount($scope, $http) {
 
 				.success(function(data) {
 					console.log(data);
-
-					
+					for(var key in data){
+				if(data[key] != null && data[key] != ""){
+					count += 1;
+				}
+				total += 1;
+			}
+				$scope.userInfo.complete = Math.round((count*100)/total);	
 				});
 				
 		}
 	};
 }
 
-function activitygauge() {
+function activitygauge($scope) {
 	    var gaugeOptions = {
 
         chart: {
@@ -121,7 +126,7 @@ function activitygauge() {
     $('#activity-gauge').highcharts(Highcharts.merge(gaugeOptions, {
         yAxis: {
             min: 0,
-            max: 200,
+            max: 50,
             title: {
                 text: 'Visits'
             }
@@ -133,7 +138,7 @@ function activitygauge() {
 
         series: [{
             name: 'Visits',
-            data: [80],
+            data: [$scope.userInfo.counter],
             dataLabels: {
                 format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/></div>'
@@ -157,13 +162,13 @@ function activitygauge() {
 
         if (chart) {
             point = chart.series[0].points[0];
-            inc = Math.round((Math.random() - 0.5) * 100);
-            newVal = point.y + inc;
-            //newVal = $scope.userInfo.counter;
+            //inc = Math.round((Math.random() - 0.5) * 100);
+            //newVal = point.y + inc;
+            newVal = $scope.userInfo.counter;
 
-            if (newVal < 0 || newVal > 200) {
+            /*if (newVal < 0 || newVal > 200) {
                 newVal = point.y - inc;
-            }
+            }*/
 
             point.update(newVal);
         }
