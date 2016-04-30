@@ -10,7 +10,7 @@ exports.signin = function(req, res){
 
 exports.checksignin = function(req, res){
 	
-	var getUser = "select userid,email,password from user where email='"
+	var getUser = "select userid,email,password, cast(case when counter is null then 0 else counter end as unsigned)as counter from user where email='"
 		+ req.param("email") + "'";
 	console.log("Query is:" + getUser);
 	
@@ -29,9 +29,23 @@ exports.checksignin = function(req, res){
 					console.log("Invalid Login");
 					res.send({"login":"Invalid Login"});
 				} else {
-					req.session.userid = results[0].userid;
-					console.log("Login Success");
-					res.send({"login":"Success"});
+					var tempuserid=results[0].userid;
+					var counterVal=parseInt(results[0].counter);
+					var updatedCountVal=counterVal+1;
+					var updateCount = "update user set counter='"+updatedCountVal+"' where email='"+req.param("email")+"'";
+					console.log("Query is:" + updateCount);
+					mysql.insertData(function(err,results) {
+						if (err) {
+							console.log("Error while updating counter");
+							res.send({"login":"Login Failed"});
+						}
+						else{
+							req.session.userid = tempuserid;
+							console.log("Login Success");
+							res.send({"login":"Success"});
+						}
+					}, updateCount);
+					
 				}
 			});
 			}
