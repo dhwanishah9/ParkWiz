@@ -37,8 +37,20 @@ exports.savesignup = function(req, res){
 					res.send({"signup":"Not able to signup!!!Try again!!"});
 				}
 				else{
-					req.session.userid=results.insertId;
-					res.send({"signup":"Success"});
+					var updatedCountVal=1;
+					var updateCount = "update user set counter='"+updatedCountVal+"' where email='"+req.param("email")+"'";
+					console.log("Query is:" + updateCount);
+					mysql.insertData(function(err,results) {
+						if (err) {
+							console.log("Error while updating counter");
+							res.send({"signup":"Signup Failed"});
+						}
+						else{
+							req.session.userid=results.insertId;
+							res.send({"signup":"Success"});
+						}
+					}, updateCount);
+					
 				}
 			}, insert);
 		}
