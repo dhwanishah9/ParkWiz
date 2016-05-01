@@ -10,10 +10,10 @@ for(var i = 0; i < maxSizeOfPool; i++){
 
 function getConnection(){
 	var connection = mysql.createConnection({
-		host     : '127.0.0.1',
+		host     : 'ec2-52-90-14-74.compute-1.amazonaws.com',
 		user     : 'root',
-		password : 'sa123',
-		database : 'registration'
+		password : 'parkwiz',
+		database : 'parkwiz'
 	});
 	return connection;
 }
