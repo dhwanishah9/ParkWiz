@@ -11,8 +11,8 @@ for(var i = 0; i < maxSizeOfPool; i++){
 function getConnection(){
 	var connection = mysql.createConnection({
 		host     : 'ec2-52-90-14-74.compute-1.amazonaws.com',
-		user     : 'root',
-		password : 'parkwiz',
+		user     : 'ashoka',
+		password : 'ashoka',
 		database : 'parkwiz'
 	});
 	return connection;
