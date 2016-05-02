@@ -14,6 +14,7 @@ var express = require('express')
   , review=require('./routes/review')
   , availability=require('./routes/availabilitychart')
   , gauge=require('./routes/usergauge')
+  , reservation = require('./routes/reservation')
   , path = require('path');
 
 var app = express();
@@ -131,6 +132,21 @@ app.get('/api/loggedin_userinfo',function(req,res){
 app.get('/api/bookingoverview',function(req,res){
 	userid = 1;
 	booking.gettopbookings(userid, res);
+});
+
+app.get('/privateParking',function(req,res){
+    console.log("Inside app.js /privateParking" +req.query.latitude + " " + req.query.longitude);
+    reservation.getPrivateParking(req,res);
+});
+ 
+app.get('/checkPaymentInfo',function(req,res){
+    console.log("Inside app.js /validatePaymentInfo "+req.query.spotid);
+    reservation.checkPaymentInfo(req,res);
+});
+ 
+app.get('/createReservation',function(req,res){
+    console.log("Inside app.js /createReservation "+req.query.date);
+    //reservation.checkPaymentInfo(req,res);
 });
 
 app.get('/api/getspaces',function(req,res){

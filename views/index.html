@@ -287,7 +287,9 @@
 </body>
 
 <script>
-	var autocomplete;
+var autocomplete;
+var searchdata;
+var privateParkingList;
 
 	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
@@ -385,13 +387,58 @@
 
 		//initialize();
 	}
-	function searchmodule($scope, $http) {
+	
+function searchmodule($scope, $http) {
+		
 		initMap();
+		$scope.searchParking = function(){
+			  
+			searchParkings();
+			
+			setTimeout(function(){
+				var data = getParkingList();
+				//$scope.privateparkingresult = getParkingList();
+				var privateparkingresult = JSON.parse(data);
+				//alert(data[0].state);
+				//console.log(JSON.stringify(data));
+				
+				var htmlval = "";
+				
+				for(var i=0; i<privateparkingresult.length; i++){
+					htmlval += '<tr>';
+					htmlval += '<td style="width: 20%"><div align="center" class="image">';
+					htmlval += '<img style="width: 30%; height: 30%;"';
+					htmlval += 'src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"';
+					htmlval += 'alt="Parking on 84 N 7th Street, "></div></td>';
+					htmlval += '<td style="width: 60%"><div align="center">'+privateparkingresult[i].addressline1+'</div></td>';
+					htmlval += '<td><div align="center"><a href="/details" class="bookingnav" >Details</a>';
+					htmlval += '</div></td><td><div align="center">';
+					htmlval += '<button type="button" class="btn btn-success" ng-click="reserveParking('+privateparkingresult[i].spot_id+')">Reserve</button>';
+					htmlval += '</div></td></tr>';
+				}
+				
+				$("#tbodyTabularview").append(htmlval);
+				//alert("data "+data);
+			},1000);
+			
+		};
+		
+		
+		$scope.reserveParking = function(spotid){
+			alert("Here"+spotid);
+			var userid=1;
+			console.log("... "+$scope.startdate);
+			searchdata = {"startdate": $scope.startdate};
+			console.log("... "+searchdata.startdate);
+			reserveParkingSpot(userid,spotid,searchdata);
+		};
 	}
 
-	function profilemodule($scope, $http) {
-
-	}
+function profilemodule($scope, $http) {
+	$(".progress-bar").animate({
+		width : "70%"
+	}, 2500);
+}
 </script>
 
 <script>
@@ -424,28 +471,162 @@
 	});
 </script>
 <script>
-	function initMap() {
-
+	var map;
+	var infowindow;
+	var locations;
+	function initMap() {	
 		var width = document.getElementById('mapContent').offsetWidth;
 		var height = document.getElementById('mapContent').offsetHeight;
 		$("#map").width(width).height(height);
-
+		
 		var mapDiv = document.getElementById('map');
-		var map = new google.maps.Map(mapDiv, {
+		map = new google.maps.Map(mapDiv, {
 			center : {
-				lat : 37.3352,
-				lng : -121.8811
+				lat : 44.540,
+				lng : -78.546
 			},
-			zoom : 10
+			zoom : 15
 		});
 	}
+ 	function callback(results, status) {
+		if (status === google.maps.places.PlacesServiceStatus.OK) {
+			for (var i = 0; i < results.length; i++) {
+	            createMarker(results[i]);
+			}
+		}
+	}
 
-	function geolocate() {
-		autocomplete = new google.maps.places.Autocomplete((document
-				.getElementsByClassName('locationservice')[0]), {
+	function createMarker(place) {
+	    var placeLoc = place.geometry.location;
+	    var marker = new google.maps.Marker({
+	      map: map,
+	      animation: google.maps.Animation.DROP,
+	      position: place.geometry.location
+	    });
+	
+	    google.maps.event.addListener(marker, 'click', function() {
+	      infowindow.setContent(place.name);
+	      infowindow.open(map, this);
+	    });
+	  }
+
+	function searchParkings(){
+	  //alert("Looking for place: " +document.getElementById('txtAddress').value);
+	  var geocoder = new google.maps.Geocoder();
+	  var address = document.getElementById('txtAddress').value;
+	  var latitude = 44.540, longitude = -78.546;
+	  
+	  //to convert the destination address into lat long values
+	  geocoder.geocode( { 'address': address}, function(results, status) {
+	    if (status == google.maps.GeocoderStatus.OK) {
+	      latitude = results[0].geometry.location.lat();
+	      longitude = results[0].geometry.location.lng();
+	      //alert(latitude);
+	      progressWithLatLong(latitude, longitude);
+	    } 
+	  });
+  }
+	
+	function progressWithLatLong(latitude, longitude){
+
+		  //alert(map.getCenter());
+		  map.setCenter(new google.maps.LatLng(latitude,longitude));
+		  
+		  var pyrmont = {lat: latitude, lng: longitude};
+		  
+		  infowindow = new google.maps.InfoWindow();
+	        var service = new google.maps.places.PlacesService(map);
+	        service.nearbySearch({
+	          location: pyrmont,
+	          radius: 1000,
+	          type: ['parking']
+	        }, callback);
+	        
+	        createDestinationMarker(latitude,longitude);
+	        getPrivateParking(latitude,longitude);
+	}
+	
+	function createDestinationMarker(latitude,longitude){
+		var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_yellow';
+		var markerIcon = MARKER_PATH + 'D' + '.png';
+		var marker = new google.maps.Marker({
+	        map: map,
+	        position: {lat: latitude, lng: longitude},
+	        title: document.getElementById('txtAddress').value,
+	        animation: google.maps.Animation.DROP,
+	        icon: markerIcon
+	        });
+	        marker.addListener('click', function(){
+	          infowindow.open(map,this);
+	          infowindow.setContent(this.title);
+		});
+	}
+	
+	function getPrivateParking(latitude,longitude){
+		var latlongvalues = [];
+		$.ajax({
+            type: 'GET',
+            url: '/privateParking',
+            data: { "latitude": latitude, "longitude": longitude }
+         }).success(function(response){
+			//alert("success");
+       	 	latlongvalues.push(JSON.stringify(response));
+       		var privateparkingjson = {'locations': latlongvalues[0]};
+       		setParkingList(privateparkingjson)
+       		plotPins(privateparkingjson);
+       		//alert("FINISH");
+         }).error(function(error){
+        	 alert("error");
+        });
+	}
+	
+	function getParkingList(){
+		return privateParkingList;
+	}
+	
+	function setParkingList(privateparkingjson){
+		privateParkingList = privateparkingjson.locations;
+		//alert("getting parking" +privateParkingList);
+		//alert("privateParkingList: "+privateParkingList);
+	}
+	
+function plotPins(privateparkingjson){
+	var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_green';
+	var privateparking = privateparkingjson;
+	var locations = JSON.parse(privateparking.locations);
+		
+	for(var i=0; i<locations.length; i++)
+	{
+		var address2 = locations[i].addressline2 == null ? '' : locations[i].addressline2;
+		var addr = locations[i].addressline1+' '+address2;
+		var lat = parseFloat(locations[i].latitude);
+		var lng = parseFloat(locations[i].longitude);
+		var markerLetter = String.fromCharCode('A'.charCodeAt(0) + i);
+		var markerIcon = MARKER_PATH + markerLetter + '.png';
+		var marker = new google.maps.Marker({
+	        map: map,
+	        position: {lat: lat, lng: lng},
+	        title: addr,
+	        animation: google.maps.Animation.DROP,
+	        icon: markerIcon
+	        });
+	        marker.addListener('click', function(){
+	        	var htmlText = document.createElement("html");
+	        	htmlText.innerHTML = 
+				"<head><link href='/stylesheets/bootstrap.min.css' rel='stylesheet'/><link rel='stylesheet' href='style.css'/></head><body style='background-color: #fff!important;'><h5>"
+				+this.title+
+				"</h5><button align='center' type='button' class='btn btn-success'>Reserve</button><body>";
+	          infowindow.open(map,this);
+	          infowindow.setContent(htmlText);
+		});
+	}
+	}
+
+	function geolocate() {		
+		autocomplete = new google.maps.places.Autocomplete((document.getElementsByClassName('locationservice')[0]), {
 			types : [ 'geocode' ]
 		});
-
+		
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {
@@ -459,6 +640,48 @@
 				autocomplete.setBounds(circle.getBounds());
 			});
 		}
+	}
+	
+	function reserveParkingSpot(userid,spotid){
+		alert("searchdata.... "+searchdata);
+		validatePaymentInfo(userid,spotid);
+	}
+	
+	function validatePaymentInfo(userid,spotid){
+		$.ajax({
+            type: 'GET',
+            url: '/checkPaymentInfo',
+            data: { "userid": userid , "spotid": spotid}
+         }).success(function(response){
+        	 if(response){
+        		 createReservation();
+        	 }else{
+        		createReservation();
+        		//location.href="/payment";		 
+        	 }
+			alert("success");
+         }).error(function(error){
+        	 alert("error");
+        });
+	}
+	
+	function createReservation(){
+		console.log("inside create reservation"+searchdata.startdate);
+		/* $.ajax({
+            type: 'GET',
+            url: '/createReservation',
+            data: { "userid": userid , "spotid": spotid}
+         }).success(function(response){
+        	 if(response){
+        		 createReservation();
+        	 }else{
+        		createReservation();
+        		//location.href="/payment";		 
+        	 }
+			alert("success");
+         }).error(function(error){
+        	 alert("error");
+        }); */
 	}
 </script>
 
