@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>ParkWiz</title>
-    <meta name="description" content="Panorama — A-Frame">
-    <script src="/js/aframe.js"></script>
-  </head>
-  <body>
-    <a-scene>
-      <a-sky src="/images/panaromaimages/puydesancy.jpg" rotation="0 -130 0"></a-sky>
-    </a-scene>
-  </body>
+<head>
+<meta charset="utf-8">
+<title>ParkWiz</title>
+<meta name="description" content="Panorama — A-Frame">
+<script src="/js/aframe.js"></script>
+</head>
+<body>
+	<a-scene> <a-sky id="panImage" src="" rotation="0 -130 0"></a-sky>
+	</a-scene>
+</body>
+<script>
+	var url = localStorage.getItem("imageurl");
+	document.getElementById("panImage").outerHTML = '<a-sky id="panImage" src="'
+			+ url + '" rotation="0 -130 0"></a-sky>';
+	localStorage.setItem("imageurl", "");
+</script>
 </html>

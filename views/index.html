@@ -95,11 +95,12 @@
 													<i class="fa fa-dashboard fa-fw menuSize"></i>
 												</p>
 												<p align="center">Graphs</p></a></li>
-										<li><a class="aNav" href="#"><p align="center">
+										<li ng-click="details();"><a class="aNav" href="#"><p align="center">
 													<i class="fa fa-book fa-fw menuSize"></i>
 												</p>
 												<p align="center">Reviews</p></a></li>
-										<li><a class="aNav" href="#"><p align="center">
+										<li><a class="aNav" href="#"><p
+													align="center">
 													<i class="fa fa-sitemap fa-fw menuSize"></i>
 												</p>
 												<p align="center">Multi-Level</p> </span></a></li>
@@ -239,13 +240,12 @@
 										class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
 								</a>
 									<ul class="dropdown-menu dropdown-user">
-										<li id="myaccount" ng-click="account();"><a
-											href="#"><i class="fa fa-user fa-fw"></i> My Account</a></li>
+										<li id="myaccount" ng-click="account();"><a href="#"><i
+												class="fa fa-user fa-fw"></i> My Account</a></li>
 										<li class="divider"></li>
-										<li id="bookinghistory" ng-click="bookinghistory();">
-											<a href="#"><i class="fa fa-calendar fa-fw"></i> Booking
-												History</a>
-										</li>
+										<li id="bookinghistory" ng-click="bookinghistory();"><a
+											href="#"><i class="fa fa-calendar fa-fw"></i> Booking
+												History</a></li>
 										<li class="divider"></li>
 										<li><a href="#"><i class="fa fa-gear fa-fw"></i>
 												Settings</a></li>
@@ -267,6 +267,7 @@
 
 		<div id="page-wrapper">
 			<div ng-include src="template.url"></div>
+			<br />
 		</div>
 		<!-- /#page-wrapper -->
 
@@ -286,12 +287,9 @@
 </body>
 
 <script>
-
 	var autocomplete;
 
-
-
-	function layoutmodule($scope, $http) {		
+	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
 			templateName = sessionStorage.getItem("template");
@@ -301,22 +299,27 @@
 				sessionStorage.removeItem("template");
 			}
 		}
-		
-		$scope.addlistings = function(){
+
+		$scope.addlistings = function() {
 			$scope.template = $scope.templates[5];
 			$("#navMenus").hide();
 		};
+
+		$scope.details = function() {
+			$scope.template = $scope.templates[6];
+			$("#navMenus").hide();
+		}
 
 		$scope.billing = function() {
 			$scope.template = $scope.templates[1];
 			$("#navMenus").hide();
 		};
-		
+
 		$scope.bookinghistory = function() {
 			$scope.template = $scope.templates[4];
 			$("#navMenus").hide();
 		};
-		
+
 		$scope.account = function() {
 			$scope.template = $scope.templates[3];
 			initializeMyAccount($scope, $http);
@@ -360,9 +363,12 @@
 					'status' : 'Completed'
 				} ];
 			}
-		},{
+		}, {
 			name : 'AddListing',
 			url : '/addlisting'
+		}, {
+			name : 'Details',
+			url : '/details'
 		} ];
 
 		$scope.templates.forEach(function(template) {
@@ -384,7 +390,7 @@
 	}
 
 	function profilemodule($scope, $http) {
-		
+
 	}
 </script>
 
@@ -418,7 +424,6 @@
 	});
 </script>
 <script>
-
 	function initMap() {
 
 		var width = document.getElementById('mapContent').offsetWidth;
@@ -435,11 +440,12 @@
 		});
 	}
 
-	function geolocate() {		
-		autocomplete = new google.maps.places.Autocomplete((document.getElementsByClassName('locationservice')[0]), {
+	function geolocate() {
+		autocomplete = new google.maps.places.Autocomplete((document
+				.getElementsByClassName('locationservice')[0]), {
 			types : [ 'geocode' ]
 		});
-		
+
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {
@@ -452,6 +458,59 @@
 				});
 				autocomplete.setBounds(circle.getBounds());
 			});
+		}
+	}
+</script>
+
+<script>
+	function detailsModule($scope, $http) {
+
+		$scope.detailtemplates = [ {
+			name : 'Availability',
+			url : '/availability'
+		}, {
+			name : 'Images',
+			url : '/images'
+		}, {
+			name : 'reviews',
+			url : '/reviews'
+		}, {
+			name : 'Payment',
+			url : '/payment'
+		} ];
+
+		$scope.details = $scope.detailtemplates[0];
+		$scope.availability = function() {
+			$scope.details = $scope.detailtemplates[0];
+		};
+
+		$scope.images = function() {
+			$scope.details = $scope.detailtemplates[1];
+		};
+
+		$scope.reviews = function() {
+			$scope.details = $scope.detailtemplates[2];
+		};
+
+		$scope.payment = function() {
+			$scope.details = $scope.detailtemplates[3];
+		};
+		
+		$('#carouselHacked').carousel();
+	}
+</script>
+
+<script>
+	function opennewwindow(v) {
+		localStorage.setItem("imageurl", v);
+		var win = window.open('/panaroma',
+				'ParkWiz');
+		if (win) {
+			//Browser has allowed it to be opened
+			win.focus();
+		} else {
+			//Broswer has blocked it
+			alert('Please allow popups for this site');
 		}
 	}
 </script>

@@ -50,6 +50,9 @@ app.get('/bookingoverview', routes.bookingoverview);
 app.get('/bookinghistory', routes.bookinghistory);
 app.get('/mylisting', routes.mylisting);
 
+app.get('/images', routes.images);
+app.get('/availability', routes.availability);
+app.get('/reviews', routes.reviews);
 
 app.get('/panaroma', routes.panaroma);
 app.get('/details', routes.details);
