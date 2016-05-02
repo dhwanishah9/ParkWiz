@@ -400,6 +400,7 @@
 	function profilemodule($scope, $http) {
 
 	}
+	angular.module('myApp').controller('bookingModule',bookingModule);
 </script>
 
 <script>
@@ -644,8 +645,7 @@ function reviewController($scope,$http,$location){
 </script>
 
 <script>
-                                    
-	angular.module('myApp').controller('availabilityController',availabilityController);
+    angular.module('myApp').controller('availabilityController',availabilityController);
 	function availabilityController($scope,$http,$location){
 		var spotid=1;
 		var count1=0,
