@@ -1,35 +1,20 @@
-<!DOCTYPE html>
-<html ng-app="myReview">
-<head>
-	<meta charset="ISO-8859-1">
-	<title>Insert title here</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-	 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="https://code.highcharts.com/highcharts.js"></script>
-	<script src="https://code.highcharts.com/highcharts-3d.js"></script>
-	<style>
+<style>
 	.glyphicon-star, .glyphicon-star-empty {
 	  		color:orange;
 		  }
-	</style>
-<script>
-
-</script>
-</head>
-<body>
-	<div ng-controller="reviewController" ng-init="init()">
+</style>
+<div ng-controller="reviewController" ng-init="init()">
+		<h1>
+			<i class="fa fa-list-ul"></i> Reviews
+		</h1>
 		<form>
-		<div style="max-height:500px;margin-top: 100px;padding-left: 50px;">
+		<div style="max-height:500px;margin-top: 50px;padding-left: 50px;">
 		 <div style="vertical-align: top;margin-top: 45px">
-			     <div style="border:1 solid black;"><button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModal"  data-backdrop="static" 
+			     <div style="border:1 solid black;"><button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModalReview"  data-backdrop="static" 
   					 data-keyboard="false">Add Review</button></div>
 	    </div>
 	    
-	    <div class="modal fade" id="myModal" role="dialog">
+	    <div class="modal fade" id="myModalReview" role="dialog">
 		    <div class="modal-dialog modal-sm">
 		      <div class="modal-content">
 		        <div class="modal-header">
@@ -76,135 +61,3 @@
 		
 		</form>
 	</div>
-</body>  
-<script>
-(function(){                                                                      
-
-   angular.module('myReview', ['ngAnimate','ui.bootstrap']);                                     
-   
-    angular.module('myReview').controller('reviewController',function($scope,$http,$location){
-    	var spotid=1;
-    	var userid=1;
-    	var reviewadded=false;
-    	
-		$scope.init = function() {
-			loadChartValues();
-			loadReviews();
-			
-		};
-	
-		$scope.submit= function() {
-			console.log($scope.newRating);
-			console.log($scope.newReview);
-			if($scope.newRating!= null && $scope.newReview!=null){
-				$http({
-		            method: 'POST',
-		            url: '/savereview',
-		            data: { "spotid": spotid, "review":$scope.newReview,"rating":$scope.newRating,"userid" : userid }
-		         }).success(function(response){
-		        	 var resp= JSON.parse(JSON.stringify(response));
-			         document.getElementById("reviewresult").innerHTML=resp;
-			         $('#reviewbody').hide();
-			         console.log(resp);
-			         reviewadded=true;
-			    }).error(function(error){
-			    	document.getElementById("reviewresult").innerHTML="Adding review failed";
-		        });
-			}
-		};
-		
-		$scope.reloadData= function() {
-			if(reviewadded)
-				window.location.reload();
-		};
-		
-		function loadReviews(){
-			$http({
-	            method: 'GET',
-	            url: '/getallreviews?spotid='+spotid
-	        }).success(function(response){
-	        	 var resp= JSON.parse(JSON.stringify(response));
-		         $scope.reviews=resp.reviews; 
-		         console.log($scope.reviews);
-		    }).error(function(error){
-	        	 alert(error);
-	        });
-		}
-		
-		function loadChartValues(){
-			$http({
-	            method: 'GET',
-	            url: '/getreviewschart?spotid='+spotid
-	         }).success(function(response){
-	        	 console.log(JSON.stringify(response));
-	        	 var json = JSON.stringify(response);
-	        	 var chartVal=$.map( response, function( obj,i){
-	        	        return [[ "Rating "+ obj.rating, obj.ratingcnt]];                            
-	        	})
-	        	  console.log(chartVal);
-		          createChart(chartVal);
-	         }).error(function(error){
-	        	 alert(error);
-	    	});
-		}
-		
-		function createChart(chartVal){
-			$(function () {
-				  Highcharts.setOptions({
-					     colors: ['#cc0000', '#ff6600', '#ffcc00', '#99cc00', '#006600']
-					    });
-				 $('#chart').highcharts({
-			            chart: {
-			                plotBackgroundColor: null,
-			                plotBorderWidth: null,
-			                plotShadow: false,
-			                type: 'pie',
-			                options3d: {
-			                    enabled: true,
-			                    alpha: 20,
-			                    beta:3
-			                    
-			                   
-			                }
-			                
-			            },
-			            credits: {
-			                enabled: false
-			             },
-			            title: {
-			                text: null
-			            },
-			            subtitle: {
-			            	text: null
-			            },
-			            tooltip: {
-			                pointFormat: '{series.name}: {point.y}, <b>{point.percentage:.1f}%</b>'
-			            },
-			            plotOptions: {
-			            	 pie: {
-			                     allowPointSelect: true,
-			                     cursor: 'pointer',
-			                     innerSize: 100,
-			                     depth: 45,
-			                     dataLabels: {
-			                    	 enabled: false
-			                     },
-			                     showInLegend: true
-			                 }
-			            },
-			            series: [{
-			                name: 'Ratings',
-			                colorByPoint: true,
-			                data: chartVal
-			            }]
-			        });
-			});
-			
-		} 
-		
-		
-   }); 
-
- })();                                                             
-</script>
-</html>

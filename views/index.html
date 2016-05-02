@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
+<html lang="en" ng-app="myApp">
 
 <head>
 
@@ -10,22 +10,27 @@
 <meta name="author" content="">
 
 <title>ParkWiz</title>
-
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFNJakTcBDyGbyNZHQNSpamaxlpWl3c0&libraries=places">
 	
 </script>
 
 <!-- Bootstrap Core CSS -->
-<link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="/stylesheets/bootstrap.min.css" rel="stylesheet"> -->
 
 <!-- Angular Core javascript -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<!-- <script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script> -->
 
 <!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
+<!-- <script src="/js/jquery.min.js"></script> -->
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <script src="/js/MyAccount.js"></script>
 <script src="/js/booking.js"></script>
@@ -34,9 +39,8 @@
 <!--Gauge graph-->
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/highcharts-more.js"></script>
-
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
 <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
-
 <!-- MetisMenu CSS -->
 <link href="/stylesheets/metisMenu.min.css" rel="stylesheet">
 
@@ -275,7 +279,7 @@
 	<!-- /#wrapper -->
 
 	<!-- Bootstrap Core JavaScript -->
-	<script src="/js/bootstrap.min.js"></script>
+	<!-- <script src="/js/bootstrap.min.js"></script> -->
 
 	<!-- Metis Menu Plugin JavaScript -->
 	<script src="/js/metisMenu.min.js"></script>
@@ -283,12 +287,15 @@
 	<!-- Custom Theme JavaScript -->
 	<script src="/js/sb-admin-2.js"></script>
 
-
+	
 </body>
 
 <script>
-	var autocomplete;
 
+	var autocomplete;
+	angular.module('myApp', ['ngAnimate','ui.bootstrap']);
+	
+	angular.module('myApp').controller('layoutmodule', layoutmodule);
 	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
@@ -385,10 +392,11 @@
 
 		//initialize();
 	}
+	angular.module('myApp').controller('searchmodule', searchmodule);
 	function searchmodule($scope, $http) {
 		initMap();
 	}
-
+	angular.module('myApp').controller('profilemodule', profilemodule);
 	function profilemodule($scope, $http) {
 
 	}
@@ -463,6 +471,7 @@
 </script>
 
 <script>
+angular.module('myApp').controller('detailsModule',detailsModule);
 	function detailsModule($scope, $http) {
 
 		$scope.detailtemplates = [ {
@@ -473,11 +482,15 @@
 			url : '/images'
 		}, {
 			name : 'reviews',
-			url : '/reviews'
+			url : '/review'
 		}, {
 			name : 'Payment',
 			url : '/payment'
-		} ];
+		},
+		   {
+			name : 'AvailabilityChart',
+			url : '/availabilitychart'
+		}];
 
 		$scope.details = $scope.detailtemplates[0];
 		$scope.availability = function() {
@@ -496,8 +509,233 @@
 			$scope.details = $scope.detailtemplates[3];
 		};
 		
+		$scope.availabilitychart = function() {
+			$scope.details = $scope.detailtemplates[4];
+		};
+		
 		$('#carouselHacked').carousel();
 	}
+</script>
+
+<script>
+angular.module('myApp').controller('reviewController',reviewController);
+function reviewController($scope,$http,$location){
+	var spotid=1;
+	var userid=1;
+	var reviewadded=false;
+	
+	$scope.init = function() {
+		loadChartValues();
+		loadReviews();
+		
+	};
+
+	$scope.submit= function() {
+		console.log($scope.newRating);
+		console.log($scope.newReview);
+		if($scope.newRating!= null && $scope.newReview!=null){
+			$http({
+	            method: 'POST',
+	            url: '/savereview',
+	            data: { "spotid": spotid, "review":$scope.newReview,"rating":$scope.newRating,"userid" : userid }
+	         }).success(function(response){
+	        	 var resp= JSON.parse(JSON.stringify(response));
+		         document.getElementById("reviewresult").innerHTML=resp;
+		         $('#reviewbody').hide();
+		         console.log(resp);
+		         reviewadded=true;
+		    }).error(function(error){
+		    	document.getElementById("reviewresult").innerHTML="Adding review failed";
+	        });
+		}
+	};
+	
+	$scope.reloadData= function() {
+		if(reviewadded)
+			window.location.reload();
+	};
+	
+	function loadReviews(){
+		$http({
+            method: 'GET',
+            url: '/getallreviews?spotid='+spotid
+        }).success(function(response){
+        	 var resp= JSON.parse(JSON.stringify(response));
+	         $scope.reviews=resp.reviews; 
+	         console.log($scope.reviews);
+	    }).error(function(error){
+        	 alert(error);
+        });
+	}
+	
+	function loadChartValues(){
+		$http({
+            method: 'GET',
+            url: '/getreviewschart?spotid='+spotid
+         }).success(function(response){
+        	 console.log(JSON.stringify(response));
+        	 var json = JSON.stringify(response);
+        	 var chartVal=$.map( response, function( obj,i){
+        	        return [[ "Rating "+ obj.rating, obj.ratingcnt]];                            
+        	})
+        	  console.log(chartVal);
+	          createChart(chartVal);
+         }).error(function(error){
+        	 alert(error);
+    	});
+	}
+	
+	function createChart(chartVal){
+		$(function () {
+			  Highcharts.setOptions({
+				     colors: ['#cc0000', '#ff6600', '#ffcc00', '#99cc00', '#006600']
+				    });
+			 $('#chart').highcharts({
+		            chart: {
+		                plotBackgroundColor: null,
+		                plotBorderWidth: null,
+		                plotShadow: false,
+		                type: 'pie',
+		                options3d: {
+		                    enabled: true,
+		                    alpha: 20,
+		                    beta:3
+		                    
+		                   
+		                }
+		                
+		            },
+		            credits: {
+		                enabled: false
+		             },
+		            title: {
+		                text: null
+		            },
+		            subtitle: {
+		            	text: null
+		            },
+		            tooltip: {
+		                pointFormat: '{series.name}: {point.y}, <b>{point.percentage:.1f}%</b>'
+		            },
+		            plotOptions: {
+		            	 pie: {
+		                     allowPointSelect: true,
+		                     cursor: 'pointer',
+		                     innerSize: 100,
+		                     depth: 45,
+		                     dataLabels: {
+		                    	 enabled: false
+		                     },
+		                     showInLegend: true
+		                 }
+		            },
+		            series: [{
+		                name: 'Ratings',
+		                colorByPoint: true,
+		                data: chartVal
+		            }]
+		        });
+		});
+		
+	} 
+	
+	
+}
+</script>
+
+<script>
+                                    
+	angular.module('myApp').controller('availabilityController',availabilityController);
+	function availabilityController($scope,$http,$location){
+		var spotid=1;
+		var count1=0,
+		count2=0,
+		count3=0,
+		count4=0
+		count5=0,
+		count6=0,
+		count7=0;
+		
+		
+		$scope.initAvailabilityChart = function() {
+			loadChartValues();
+		};
+		
+		function loadChartValues(){
+			$http({
+	            method: 'GET',
+	            url: '/loadavailabilitychart?spotid='+spotid
+	        }).success(function(response){
+	        	 console.log(JSON.stringify(response));
+	        	$.map( response, function( obj,i){
+	        		console.log(obj.startday);
+	     	        if(obj.startday==="Sunday") 
+	     	        	count1=count1+1;
+	     	        else if(obj.startday==="Monday")
+	     	        	count2=count2+1;
+	     	        else if(obj.startday==="Tuesday")
+	     	        	count3=count3+1;
+	     	       	else if(obj.startday==="Wednesday")
+	     	       		count4=count4+1;
+	     	       	else if(obj.startday==="Thursday")
+	     	       		count5=count5+1;
+	     	       	else if(obj.startday==="Friday")
+	     	       		count6=count6+1;
+	     	       	else if(obj.startday==="Saturday")
+	     	       		count7=count7+1;	
+	     		})
+	     		var chartVal=[count1,count2,count3,count4,count5,count6,count7];
+	        	  console.log(chartVal);
+		          createChart(chartVal);
+	         }).error(function(error){
+	        	 alert(error);
+	    	});
+		}
+		
+		function createChart(chartVal){
+			$(function () {
+				 $('#container').highcharts({
+				        chart: {
+				            type: 'column',
+				            options3d: {
+				                enabled: true
+				               
+				            }
+				        },
+				        title: {
+				            text: 'Space Availability'
+				        },
+				        credits:{
+				        	enabled:false
+				        },
+				        subtitle: {
+				            text: null
+				        },
+				        plotOptions: {
+				            column: {
+				                depth: 25,
+				                pointWidth:50
+				            }
+				        },
+				        xAxis: {
+				            categories: Highcharts.getOptions().lang.weekdays  
+				        },
+				        yAxis: {
+				        	allowDecimals:false,
+				            title: {
+				                text: null
+				            }
+				        },
+				        series: [{
+				            name: 'Reservations',
+				            data: chartVal
+				        }]
+				    });
+
+			});
+		} 
+	}
+
 </script>
 
 <script>
