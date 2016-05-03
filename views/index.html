@@ -754,7 +754,6 @@ angular.module('myApp').controller('detailsModule',detailsModule);
 angular.module('myApp').controller('reviewController',reviewController);
 function reviewController($scope,$http,$location){
 	var spotid=2;
-	var userid=1;
 	var reviewadded=false;
 	
 	$scope.init = function() {
@@ -770,7 +769,7 @@ function reviewController($scope,$http,$location){
 			$http({
 	            method: 'POST',
 	            url: '/savereview',
-	            data: { "spotid": spotid, "review":$scope.newReview,"rating":$scope.newRating,"userid" : userid }
+	            data: { "spotid": spotid, "review":$scope.newReview,"rating":$scope.newRating}
 	         }).success(function(response){
 	        	 var resp= JSON.parse(JSON.stringify(response));
 		         document.getElementById("reviewresult").innerHTML=resp;
