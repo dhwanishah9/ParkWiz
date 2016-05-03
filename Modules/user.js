@@ -37,15 +37,18 @@ exports.updateuserinfo = function(user, res) {
 			//Creating the insert query to save signup data to DB
 			var update = "update user set firstname = '" + user.firstname+"' , lastname = '" + user.lastname + "' , email = '"+ user.email
 					+ "'  , address='"+user.address+"',phoneno='"+user.phoneno
+					//+ "' where userid =" + 1 ;
 					+ "' where userid =" + user.userid ;
 			console.log("Query is:" + update);
 			mysql.insertData(function(err,results) {
+
 				if (err) {
-					console.log("Error while updating db");
-					res.send({"update":"Unable to save!!!Try again!!"});
+					res.writeHead(500, {"Content-Type": "application/json"});
+					res.write(JSON.stringify(err));
+					res.end();
 				}
 				else{
-					res.send({"Update":"Success"});
+					res.send(JSON.stringify(user));
 				}
 			}, update);
 		

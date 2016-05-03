@@ -86,6 +86,12 @@
 													class="btn btn-md btn-success textboxclass"
 													ng-click="updateInfo()" value="Save">
 											</div>
+											<div class="form-group">
+												<label
+													class="form-control textboxclass"
+													value="{{ userInfo.data }}" 
+													ng-model="userInfo.data" style = "border-style: hidden;color: {{userInfo.font}}">{{ userInfo.data }}</label>
+											</div>
 										</fieldset>
 									</form>
 								</div>

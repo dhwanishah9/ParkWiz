@@ -33,6 +33,7 @@ function fetchData(callback,sqlQuery){
 	connection.query(sqlQuery, function(err, rows) {
 		if(err){
 			console.log("ERROR: " + err.message);
+			callback(err, null);
 		}
 		else 
 		{	// return err or result
@@ -50,6 +51,7 @@ function insertData(callback,sqlQuery){
 	connection.query(sqlQuery, function(err, rows, fields) {
 		if(err){
 			console.log("ERROR: " + err.message);
+			callback(err, null);
 		}
 		else 
 		{	releaseConnection(connection);
