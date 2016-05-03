@@ -11,7 +11,7 @@ exports.list = function(req, res){
 
 exports.getuserinfo = function(userid, res) {
 	
-	var getUser = "select * from user where userid='"
+	var getUser = "select u.firstname, u.lastname, u.email,u.address, u.phoneno, u.counter from user u where u.userid='"
 		+ userid + "'";
 	console.log("Query is:" + getUser);
 	
@@ -32,16 +32,12 @@ exports.getuserinfo = function(userid, res) {
 
 exports.updateuserinfo = function(user, res) {
 	
-	password(user.password).hash(function(error, hash) {
-		if(error)
-			throw new Error('Error hashing the pwd');
-		else{
-			hashedPwd = hash;
+	
+			//hashedPwd = hash;
 			//Creating the insert query to save signup data to DB
 			var update = "update user set firstname = '" + user.firstname+"' , lastname = '" + user.lastname + "' , email = '"+ user.email
-					+ "' , password = '"+ hashedPwd+"' , address='"+user.address+"',phoneno='"+user.phoneno
+					+ "'  , address='"+user.address+"',phoneno='"+user.phoneno
 					+ "' where userid =" + user.userid ;
-
 			console.log("Query is:" + update);
 			mysql.insertData(function(err,results) {
 				if (err) {
@@ -52,7 +48,7 @@ exports.updateuserinfo = function(user, res) {
 					res.send({"Update":"Success"});
 				}
 			}, update);
-		}
-	});
+		
+	
 	
 };

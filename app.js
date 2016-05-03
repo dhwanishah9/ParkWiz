@@ -160,6 +160,7 @@ app.get('/api/mylisting',function(req,res){
 });
 
 app.post('/api/loggedin_userinfo',function(req,res){
+	debugger;
 	user.updateuserinfo(req.body,res);
 });
 
