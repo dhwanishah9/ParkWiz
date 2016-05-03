@@ -703,33 +703,35 @@ angular.module('myApp').controller('detailsModule',detailsModule);
 		$scope.detailtemplates = [ {
 			name : 'Availability',
 			url : '/availability'
-		}, {
+		},{
+			name : 'Availability Chart',
+			url : '/availabilitychart'
+		},{
 			name : 'Images',
 			url : '/images'
 		}, {
 			name : 'reviews',
 			url : '/reviews'
-		}, {
-			name : 'Payment',
-			url : '/payment'
-		} ];
+		}];
 
 		$scope.details = $scope.detailtemplates[0];
 		$scope.availability = function() {
 			$scope.details = $scope.detailtemplates[0];
 		};
 
-		$scope.images = function() {
+		$scope.availabilitychart = function() {
 			$scope.details = $scope.detailtemplates[1];
 		};
-
-		$scope.reviews = function() {
+		
+		$scope.images = function() {
 			$scope.details = $scope.detailtemplates[2];
 		};
 
-		$scope.payment = function() {
+		$scope.reviews = function() {
 			$scope.details = $scope.detailtemplates[3];
 		};
+
+		
 		
 		$('#carouselHacked').carousel();
 	}
@@ -861,10 +863,97 @@ function reviewController($scope,$http,$location){
 }                                                   
 </script>
 
-<!-- <script>
+<script>
 angular.module('myApp').controller('availabilityController',availabilityController);
+function availabilityController($scope,$http,$location){
+	var spotid=2;
+	var count1=0,
+	count2=0,
+	count3=0,
+	count4=0
+	count5=0,
+	count6=0,
+	count7=0;
+	
+	$scope.init = function() {
+		loadChartValues();
+	};
+	
+	function loadChartValues(){
+		$http({
+            method: 'GET',
+            url: '/loadavailabilitychart?spotid='+spotid
+        }).success(function(response){
+        	 console.log(JSON.stringify(response));
+        	$.map( response, function( obj,i){
+        		console.log(obj.startday);
+     	        if(obj.startday==="Sunday") 
+     	        	count1=count1+1;
+     	        else if(obj.startday==="Monday")
+     	        	count2=count2+1;
+     	        else if(obj.startday==="Tuesday")
+     	        	count3=count3+1;
+     	       	else if(obj.startday==="Wednesday")
+     	       		count4=count4+1;
+     	       	else if(obj.startday==="Thursday")
+     	       		count5=count5+1;
+     	       	else if(obj.startday==="Friday")
+     	       		count6=count6+1;
+     	       	else if(obj.startday==="Saturday")
+     	       		count7=count7+1;	
+     		})
+     		var chartVal=[count1,count2,count3,count4,count5,count6,count7];
+        	  console.log(chartVal);
+	          createChart(chartVal);
+         }).error(function(error){
+        	 alert(error);
+    	});
+	}
+	
+	function createChart(chartVal){
+		$(function () {
+			 $('#container').highcharts({
+			        chart: {
+			            type: 'column',
+			            options3d: {
+			                enabled: true
+			               
+			            }
+			        },
+			        title: {
+			            text: 'Space Availability'
+			        },
+			        credits:{
+			        	enabled:false
+			        },
+			        subtitle: {
+			            text: null
+			        },
+			        plotOptions: {
+			            column: {
+			                depth: 25,
+			                pointWidth:50
+			            }
+			        },
+			        xAxis: {
+			            categories: Highcharts.getOptions().lang.weekdays  
+			        },
+			        yAxis: {
+			        	allowDecimals:false,
+			            title: {
+			                text: null
+			            }
+			        },
+			        series: [{
+			            name: 'Reservations',
+			            data: chartVal
+			        }]
+			    });
 
-</script> -->
+		});
+	} 
+}
+</script>
 
 <script>
 	function opennewwindow(v) {
