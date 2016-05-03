@@ -1,0 +1,171 @@
+.border{
+	border: 1px solid #222;
+}
+
+.bgm-cyan {
+	background-color: #00bcd4 !important
+}
+
+.bgm-red {
+	background-color: #e91e63 !important;
+}
+
+.bgm-lime {
+	background-color: #cddc39 !important;
+}
+
+.mini-charts-item {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	position: relative;
+	margin-bottom: 30px;
+}
+
+.bgm-lightgreen {
+	background-color: #8bc34a !important;
+}
+
+.bgm-orange {
+	background-color: #ff9800 !important
+}
+
+.mini-charts-item .chart {
+	padding: 15px;
+	float: left;
+}
+
+.mini-charts-item:hover {
+	outline: none !important;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+}
+
+.bgm-teal {
+	background-color: #009688 !important;
+}
+
+.dash-widget-item {
+	position: relative;
+	min-height: 380px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	margin-bottom: 30px;
+}
+
+.bgm-bluegray {
+	background-color: #607d8b !important;
+}
+
+#site-visits .dash-widget-title {
+	bottom: 0;
+	color: rgba(255, 255, 255, 0.9);
+	background: rgba(0, 0, 0, 0.15);
+}
+
+.p-20 {
+	padding: 20px !important;
+}
+
+.dash-widget-item .dash-widget-title {
+	padding: 12px 20px;
+	width: 100%;
+	font-weight: 300;
+}
+
+/* Map style start */
+.state {
+	fill: none;
+	stroke: #a9a9a9;
+	stroke-width: 1;
+}
+
+.state:hover {
+	fill-opacity: 0.5;
+}
+
+#tooltip {
+	position: absolute;
+	text-align: center;
+	padding: 20px;
+	margin: 10px;
+	font: 12px sans-serif;
+	background: lightsteelblue;
+	border: 1px;
+	border-radius: 2px;
+	pointer-events: none;
+}
+
+#tooltip h4 {
+	margin: 0;
+	font-size: 14px;
+}
+
+#tooltip {
+	background: rgba(0, 0, 0, 0.9);
+	border: 1px solid grey;
+	border-radius: 5px;
+	font-size: 12px;
+	width: auto;
+	padding: 4px;
+	color: white;
+	opacity: 0;
+}
+
+#tooltip table {
+	table-layout: fixed;
+}
+
+#tooltip tr td {
+	padding: 0;
+	margin: 0;
+}
+
+#tooltip tr td:nth-child(1) {
+	width: 50px;
+}
+
+#tooltip tr td:nth-child(2) {
+	text-align: center;
+}
+
+/* Map style end */
+.odometer {
+	font-size: 100px;
+}
+
+/* dashboard */
+.axis {
+	font: 10px sans-serif;
+}
+
+.legend tr {
+	border-bottom: 1px solid grey;
+}
+
+.legend tr:first-child {
+	border-top: 1px solid grey;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.x.axis path {
+	display: none;
+}
+
+.legend {
+	margin-bottom: 76px;
+	display: inline-block;
+	border-collapse: collapse;
+	border-spacing: 0px;
+}
+
+.legend td {
+	padding: 4px 5px;
+	vertical-align: bottom;
+}
+
+.legendFreq, .legendPerc {
+	align: right;
+	width: 50px;
+}
