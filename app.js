@@ -75,7 +75,7 @@ app.get('/review', review.review);
 app.get('/getallreviews', review.getReviews);
 app.get('/getreviewschart', review.getReviewsChart);
 app.post('/savereview', review.saveReview);
-app.get('/availability',availability.availability);
+app.get('/availabilitychart',availability.availability);
 app.get('/loadavailabilitychart',availability.getAvailabilityChart);
 app.get('/gaugechart',gauge.gaugechart);
 app.get('/loadgaugechart',gauge.getGaugeChart);
