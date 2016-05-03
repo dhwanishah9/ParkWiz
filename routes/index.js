@@ -17,6 +17,12 @@ exports.abc = function(req, res) {
 	});
 };
 
+exports.dashboard = function(req, res) {
+	res.render('dashboard', {
+		title : 'ParkWiz'
+	});
+};
+
 exports.reviews = function(req, res) {
 	res.render('reviews', {
 		title : 'ParkWiz'
