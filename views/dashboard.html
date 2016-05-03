@@ -1,0 +1,121 @@
+<link media="all" type="text/css" rel="stylesheet"
+	href="/stylesheets/charts.css">
+
+<script src="/js/jquery.sparkline.js"></script>
+
+
+<link rel="stylesheet"
+	href="http://github.hubspot.com/odometer/themes/odometer-theme-car.css" />
+<script src="http://github.hubspot.com/odometer/odometer.js"></script>
+
+
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
+<script src="/js/uStates.js"></script>
+<!-- creates uStates. -->
+
+<div ng-controller="chartModule">
+	<div class="phonespacing" style="padding-top: 4.8%;">
+		<ol class="breadcrumb">
+			<li class="active"><i class="fa fa fa-bookmark"></i> Home</li>
+			<li class="active">Dashboard</li>
+		</ol>
+	</div>
+	<div style="background-color: #fff; margin-top: -15px;" id="content">
+		<div class="row" style="padding-top: 5px;">
+			<div class="col-12">
+				<div class="col-sm-6 col-md-4">
+					<div class="mini-charts-item bgm-cyan border">
+						<div class="clearfix">
+							<div style="background: rgba(0, 0, 0, 0.15);"
+								class="chart stats-bar" id="chart1"></div>
+							<div class="count" align="center">
+								<small>Website Traffics</small>
+								<h2>987,459</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="mini-charts-item bgm-lightgreen border">
+						<div class="clearfix">
+							<div style="background: rgba(0, 0, 0, 0.15);"
+								class="chart stats-bar" id="chart2"></div>
+							<div class="count" align="center">
+								<small>Website Impression</small>
+								<h2>987,459</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="mini-charts-item bgm-orange border">
+						<div class="clearfix">
+							<div style="background: rgba(0, 0, 0, 0.15);"
+								class="chart stats-bar" id="chart3"></div>
+							<div class="count" align="center">
+								<small>Total Sales</small>
+								<h2>987,459</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="col-md-9 col-sm-6">
+					<div class="bgm-bluegray border">
+						<div id="tooltip"></div>
+						<!-- div to hold tooltip. -->
+						<svg width="900" height="600" id="statesvg"></svg>
+						<!-- svg to hold the map. -->
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-6">
+					<div id="site-visits" class="dash-widget-item bgm-teal border">
+						<div class="dash-widget-header">
+							<div align="center" class="p-20">
+								<div class="dash-widget-visits" id="chart4"></div>
+							</div>
+							<div align="center" class="dash-widget-title">For the past
+								30 days</div>
+						</div>
+						<div align="center" class="p-20">
+							<small>Page Views</small>
+							<h3 class="m-0 f-400">47,896,536</h3>
+
+							<br> <small>Site Visitors</small>
+							<h3 class="m-0 f-400">24,456,799</h3>
+
+							<br> <small>Total Clicks</small>
+							<h3 class="m-0 f-400">13,965</h3>
+						</div>
+					</div>
+					<div align="center">
+						<div id="odometer" class="odometer">123</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="padding: 15px !important">
+			<div>
+				<div class="col-12">
+					<div class="bgm-red border">
+						<div id="container"
+							style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="padding: 15px !important">
+			<div>
+				<div class="col-12">
+					<div class="bgm-lime border">
+						<div align="center" id='dashboard'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
