@@ -1,12 +1,15 @@
 var password = require('password-hash-and-salt');
 var mysql = require('./mysql');
+var traffic = require('./traffic');
 
 exports.signup = function(req, res){
-	  res.render('signup', { title: 'ParkWiz' });
+	traffic.trafficupdate();
+	res.render('signup', { title: 'ParkWiz' });
 };
 	
 exports.register = function(req, res){
-		  res.render('signup', { title: 'ParkWiz' });
+	traffic.trafficupdate();
+	res.render('signup', { title: 'ParkWiz' });
 };
 	
 exports.savesignup = function(req, res){
