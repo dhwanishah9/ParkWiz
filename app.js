@@ -17,6 +17,7 @@ var express = require('express')
   , gauge=require('./routes/usergauge')
   , reservation = require('./routes/reservation')
   , image = require('./routes/image')
+  , billing=require('./routes/billing')
   , path = require('path');
 
 var app = express();
@@ -72,6 +73,7 @@ app.get('/register', signup.register);
 app.get('/myaccount', routes.myaccount);
 app.get('/bookinghistory', routes.bookinghistory);
 app.get('/billing', routes.billing);
+app.post('/addPayment', billing.addPayment);
 
 app.post('/resetpassword',signin.changepassword)
 app.get('/review', review.review);

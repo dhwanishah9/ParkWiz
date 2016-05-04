@@ -552,9 +552,23 @@ function reserveParking(spotid){
 			console.log(document.getElementById('cardname').value);
 			console.log(document.getElementById('cardnum').value);
 			console.log(document.getElementById('address').value);
-			console.log(document.getElementById('cvc').value);
+			console.log(document.getElementById('cvv').value);
 			console.log(document.getElementById('month').value);
 			console.log(document.getElementById('year').value);
+
+			$http({
+	            method: 'POST',
+	            url: '/addPayment',
+	            data: { "name": document.getElementById('cardname').value, "creditcard":document.getElementById('cardnum').value ,"address":document.getElementById('address').value,"cvv" : document.getElementById('cvv').value, "month":document.getElementById('month').value, "year" : document.getElementById('year').value, "user_id": "1"}
+	         }).success(function(response){
+	        	 var resp= JSON.parse(JSON.stringify(response));
+		         // document.getElementById("reviewresult").innerHTML=resp;
+		         // $('#reviewbody').hide();
+		         console.log(resp);
+		         //reviewadded=true;
+		    }).error(function(error){
+		    	document.getElementById("reviewresult").innerHTML="Adding review failed";
+	        });
 		}
 	}
 
