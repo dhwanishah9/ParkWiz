@@ -15,6 +15,8 @@ var express = require('express')
   , newlisting=require('./routes/addlistings')
   , availability=require('./routes/availabilitychart')
   , gauge=require('./routes/usergauge')
+  , reservation = require('./routes/reservation')
+  , image = require('./routes/image')
   , path = require('path');
 
 var app = express();
@@ -45,12 +47,16 @@ app.get('/profile', routes.profile);
 app.get('/bookings', routes.bookings);
 app.get('/payment', routes.payment);
 app.get('/addlisting', routes.addlisting);
+app.get('/dashboard', routes.dashboard);
 
 
 app.get('/bookingoverview', routes.bookingoverview);
 app.get('/bookinghistory', routes.bookinghistory);
 app.get('/mylisting', routes.mylisting);
 
+app.get('/images', routes.images);
+app.get('/availability', routes.availability);
+app.get('/reviews', routes.reviews);
 
 app.get('/panaroma', routes.panaroma);
 app.get('/details', routes.details);
@@ -74,6 +80,7 @@ app.get('/getreviewschart', review.getReviewsChart);
 app.post('/savereview', review.saveReview);
 app.post('/addlistings', newlisting.addlistings);
 app.get('/availability',availability.availability);
+app.get('/availabilitychart',availability.availability);
 app.get('/loadavailabilitychart',availability.getAvailabilityChart);
 app.get('/gaugechart',gauge.gaugechart);
 app.get('/loadgaugechart',gauge.getGaugeChart);
@@ -114,7 +121,7 @@ app.del('/api/session',function(req,res){
 });
 
 app.get('/api/loggedin_userinfo',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	user.getuserinfo(userid, res);
 	/*if(req.session.userid) {
 		var userid = req.session.userid;
@@ -128,22 +135,43 @@ app.get('/api/loggedin_userinfo',function(req,res){
 });
 
 app.get('/api/bookingoverview',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.gettopbookings(userid, res);
 });
 
+app.get('/privateParking',function(req,res){
+    console.log("Inside app.js /privateParking" +req.query.latitude + " " + req.query.longitude);
+    reservation.getPrivateParking(req,res);
+});
+ 
+app.get('/checkPaymentInfo',function(req,res){
+    console.log("Inside app.js /validatePaymentInfo "+req.query.spotid);
+    reservation.checkPaymentInfo(req,res);
+});
+ 
+app.get('/createReservation',function(req,res){
+    console.log("Inside app.js /createReservation "+req.query.searchtime);
+    //reservation.checkPaymentInfo(req,res);
+});
+
 app.get('/api/getspaces',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getspaces(userid, res);
 });
 
 app.get('/api/mylisting',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getallbookings(userid, res);
 });
 
 app.post('/api/loggedin_userinfo',function(req,res){
-	user.updateuserinfo(req.body,res);
+	debugger;
+	user.updateuserinfo(req.body, req.session.userid,res);
+});
+
+app.get('/getAllImages',function(req,res){
+    console.log("Inside app.js /getAllImages "+req.query.spotid);
+    image.getAllImages(req,res);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

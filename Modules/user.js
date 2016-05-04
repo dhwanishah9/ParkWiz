@@ -10,8 +10,8 @@ exports.list = function(req, res){
 
 
 exports.getuserinfo = function(userid, res) {
-	
-	var getUser = "select * from user where userid='"
+	debugger;
+	var getUser = "select u.firstname, u.lastname, u.email,u.address, u.phoneno, u.counter from user u where u.userid='"
 		+ userid + "'";
 	console.log("Query is:" + getUser);
 	
@@ -30,29 +30,30 @@ exports.getuserinfo = function(userid, res) {
 	
 };
 
-exports.updateuserinfo = function(user, res) {
+exports.updateuserinfo = function(user,userid, res) {
 	
-	password(user.password).hash(function(error, hash) {
-		if(error)
-			throw new Error('Error hashing the pwd');
-		else{
-			hashedPwd = hash;
+	
+			//hashedPwd = hash;
 			//Creating the insert query to save signup data to DB
+			
 			var update = "update user set firstname = '" + user.firstname+"' , lastname = '" + user.lastname + "' , email = '"+ user.email
-					+ "' , password = '"+ hashedPwd+"' , address='"+user.address+"',phoneno='"+user.phoneno
-					+ "' where userid =" + user.userid ;
-
+					+ "'  , address='"+user.address+"',phoneno='"+user.phoneno
+					//+ "' where userid =" + 1 ;
+					//+ "' where userid =" + user.userid ;
+					+ "' where userid =" + userid ;
 			console.log("Query is:" + update);
 			mysql.insertData(function(err,results) {
+
 				if (err) {
-					console.log("Error while updating db");
-					res.send({"update":"Unable to save!!!Try again!!"});
+					res.writeHead(500, {"Content-Type": "application/json"});
+					res.write(JSON.stringify(err));
+					res.end();
 				}
 				else{
-					res.send({"Update":"Success"});
+					res.send(JSON.stringify(user));
 				}
 			}, update);
-		}
-	});
+		
+	
 	
 };

@@ -11,8 +11,8 @@ for(var i = 0; i < maxSizeOfPool; i++){
 function getConnection(){
 	var connection = mysql.createConnection({
 		host     : 'ec2-52-90-14-74.compute-1.amazonaws.com',
-		user     : 'root',
-		password : 'parkwiz',
+		user     : 'ashoka',
+		password : 'ashoka',
 		database : 'parkwiz'
 	});
 	return connection;
@@ -33,6 +33,7 @@ function fetchData(callback,sqlQuery){
 	connection.query(sqlQuery, function(err, rows) {
 		if(err){
 			console.log("ERROR: " + err.message);
+			callback(err, null);
 		}
 		else 
 		{	// return err or result
@@ -50,6 +51,7 @@ function insertData(callback,sqlQuery){
 	connection.query(sqlQuery, function(err, rows, fields) {
 		if(err){
 			console.log("ERROR: " + err.message);
+			callback(err, null);
 		}
 		else 
 		{	releaseConnection(connection);

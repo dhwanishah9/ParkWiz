@@ -1,34 +1,32 @@
-<section class="content">
-	<h1>
-		<i class="fa fa-calendar"></i> My Bookings
-	</h1>
 
-	<table class="table table-inverse table-striped table-bordered">
-		<thead class="thead-inverse">
-			<tr>
-				<th style = "text-align : center">Image</th>
-				<th style = "text-align : center">Address</th>
-				<th style = "text-align : center">Status</th>
-				<!--<th><div align="center">Action</div></th>-->
-			</tr>
-		</thead>
-		<tbody ng-repeat="booking in allbookings">
-			<tr>
-				<td style="width: 20%">
-					<div align="center" class="image">
-						<img style="width: 40%; height: 40%;"
-							ng-src="{{ booking.imageurl }}"
-							alt="Parking on 84 N 7th Street, ">
-					</div>
-				</td>
-				<td style="width: 40%"><div align="center" ng-model="booking.address">{{ booking.address }}</div></td>
-				<td>
-					<div align="center" class="status status_active">
-						<span class="label label-success" ng-model="booking.status">{{ booking.status }}</span>
-					</div>
+<h1>
+	<i class="fa fa-calendar"></i> My Bookings
+</h1>
 
-
-					<!--<div align="center" class="price">
+<table class="table table-inverse table-striped table-bordered">
+	<thead class="thead-inverse">
+		<tr>
+			<th style="text-align: center">Image</th>
+			<th style="text-align: center">Address</th>
+			<th style="text-align: center">Status</th>
+			<!--<th><div align="center">Action</div></th>-->
+		</tr>
+	</thead>
+	<tbody ng-repeat="booking in allbookings">
+		<tr>
+			<td style="width: 20%">
+				<div align="center" class="image">
+					<img style="width: 40%; height: 40%;"
+						ng-src="{{ booking.imageurl }}" alt="Parking on 84 N 7th Street, ">
+				</div>
+			</td>
+			<td style="width: 40%"><div align="center"
+					ng-model="booking.address">{{ booking.address }}</div></td>
+			<td>
+				<div align="center" class="status status_active">
+					<span class="label label-success" ng-model="booking.status">{{
+						booking.status }}</span>
+				</div> <!--<div align="center" class="price">
 						<strong>Monthly Price:</strong> £10.00
 					</div></td>
 				<td><div class="button-outer" align="center">
@@ -38,8 +36,8 @@
 							<i class="fa fa-cog"></i> Actions
 						</button>
 					</div></td>-->
-			</tr>
-			<!--<tr>
+		</tr>
+		<!--<tr>
 				<td style="width: 20%"><div align="center" class="image">
 						<img style="width: 40%; height: 40%;"
 							src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"
@@ -87,6 +85,5 @@
 						</button>
 					</div></td>
 			</tr>-->
-		</tbody>
-	</table>
-</section>
+	</tbody>
+</table>

@@ -1,0 +1,146 @@
+<style>
+.carousel-fade .carousel-inner .item {
+	opacity: 0;
+	transition-property: opacity;
+}
+
+.carousel-fade .carousel-inner .active {
+	opacity: 1;
+}
+
+.carousel-fade .carousel-inner .active.left, .carousel-fade .carousel-inner .active.right
+	{
+	left: 0;
+	opacity: 0;
+	z-index: 1;
+}
+
+.carousel-fade .carousel-inner .next.left, .carousel-fade .carousel-inner .prev.right
+	{
+	opacity: 1;
+}
+
+.carousel-fade .carousel-control {
+	z-index: 2;
+}
+
+/*
+WHAT IS NEW IN 3.3: "Added transforms to improve carousel performance in modern browsers."
+now override the 3.3 new styles for modern browsers & apply opacity
+*/
+@media all and (transform-3d) , ( -webkit-transform-3d ) {
+	.carousel-fade .carousel-inner>.item.next, .carousel-fade .carousel-inner>.item.active.right
+		{
+		opacity: 0;
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+	.carousel-fade .carousel-inner>.item.prev, .carousel-fade .carousel-inner>.item.active.left
+		{
+		opacity: 0;
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+	.carousel-fade .carousel-inner>.item.next.left, .carousel-fade .carousel-inner>.item.prev.right,
+		.carousel-fade .carousel-inner>.item.active {
+		opacity: 1;
+		-webkit-transform: translate3d(0, 0, 0);
+		transform: translate3d(0, 0, 0);
+	}
+}
+
+.carousel, .carousel-inner, .carousel-inner .item {
+	height: 400px;
+}
+
+.item:nth-child(1) {
+	background: blue;
+}
+
+.item:nth-child(2) {
+	background: red;
+}
+
+.item:nth-child(3) {
+	background: orange;
+}
+</style>
+<h1>
+	<i class="fa fa-bar-chart"></i> Images
+</h1>
+<div id="normalimages" ng-controller="imagemodule" ng-init="init()">
+	<div id="heading" style="background-color: #565656">
+		<a class="filterheading" style="text-decoration: none;"> <i
+			class="fa fa-filter fa-fw head"></i> Normal Images
+		</a>
+	</div>
+	<br />
+
+	<div id="carouselHacked" class="carousel slide carousel-fade"
+		data-ride="carousel">
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox">
+			<div class="item active">
+				<img style="width: 100%; height: 100%" alt=""
+					ng-src="{{activeimage.imageurl}}">
+				<div class="carousel-caption">caption 1</div>
+			</div>
+			<div class="item" ng-repeat="image in spotimages">
+				<img style="width: 100%; height: 100%" alt=""
+					ng-src="{{image.imageurl}}">
+				<div class="carousel-caption">caption 1</div>
+			</div>
+		</div>
+
+		<!-- Controls -->
+		<a class="left carousel-control" href="#carouselHacked" role="button"
+			data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"
+			aria-hidden="true"></span> <span class="sr-only">Previous</span>
+		</a> <a class="right carousel-control" href="#carouselHacked"
+			role="button" data-slide="next"> <span
+			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</div>
+
+<br />
+<div id="panaromaimages">
+	<div id="heading" style="background-color: #565656">
+		<a class="filterheading" style="text-decoration: none;"> <i
+			class="fa fa-filter fa-fw head"></i> 3D Images
+		</a>
+	</div>
+	<br />
+	<div id="carouselHacked" class="carousel slide carousel-fade"
+		data-ride="carousel">
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox">
+			<div class="item active">
+				<a href="javascript:void(0);"><img
+					style="width: 100%; height: 100%" alt=""
+					ng-src="{{activeimage.imageurl}}"></a>
+				<div class="carousel-caption">captionsssssss</div>
+			</div>
+			<div class="item" ng-repeat="img in panaromaimages">
+				<a onclick="opennewwindow('$img.imageurl');"
+					href="javascript:void(0);"><img
+					style="width: 100%; height: 100%" alt=""
+					ng-src="{{ img.imageurl }}"></a>
+				<div class="carousel-caption">{{ img.caption }}</div>
+			</div>
+		</div>
+
+		<!-- Controls -->
+		<a class="left carousel-control" href="#carouselHacked" role="button"
+			data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"
+			aria-hidden="true"></span> <span class="sr-only">Previous</span>
+		</a> <a class="right carousel-control" href="#carouselHacked"
+			role="button" data-slide="next"> <span
+			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+	</div>
+</div>

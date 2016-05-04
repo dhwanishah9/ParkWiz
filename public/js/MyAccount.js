@@ -53,6 +53,8 @@ function initializeMyAccount($scope, $http) {
 
 				.success(function(data) {
 					console.log(data);
+                    $scope.userInfo.data = "Updated successfully";
+                     $scope.userInfo.font = "green";
 					for(var key in data){
 				if(data[key] != null && data[key] != ""){
 					count += 1;
@@ -60,7 +62,14 @@ function initializeMyAccount($scope, $http) {
 				total += 1;
 			}
 				$scope.userInfo.complete = Math.round((count*100)/total);	
-				});
+				})
+
+                
+                .error(function(err){
+                    $scope.userInfo.data = "Update Failed!";
+                    $scope.userInfo.font = "red";
+                    //if (xhr.status != 200) alert(xhr.responseText);
+                });
 				
 		}
 	};

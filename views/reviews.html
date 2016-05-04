@@ -1,0 +1,62 @@
+<style>
+	.glyphicon-star, .glyphicon-star-empty {
+	  		color:orange;
+		  }
+</style>
+<div ng-controller="reviewController" ng-init="init()">
+		<h1>
+			<i class="fa fa-list-ul"></i> Reviews
+		</h1>
+		<form>
+		<div style="margin-top: 2%;padding-left: 2%;">
+			 <div style="vertical-align: top;margin-top: 2%">
+				     <div style="border:1 solid black;"><button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#myModalReview"  data-backdrop="static" 
+	  					 data-keyboard="false">Add Review</button></div>
+		    </div>
+		    <div class="row" style="margin-top: 2%">
+		    		<div class="col-sm-6">
+					    <div class="panel panel-primary" style="width:98%;" ng-repeat="reviewVal in reviews" >
+					    	   	<div class="panel-heading">
+					 			 	<label class="panel-title" ng-model="reviewVal.username">{{reviewVal.username}} 
+					 			 	<uib-rating ng-model="reviewVal.rating" max="5" read-only="true"></uib-rating>
+					 			 	</label>
+					 			 	
+					 			</div>
+								<div class="panel-body">
+								 	<p ng-model="reviewVal.review" style="word-wrap: break-word;">{{reviewVal.review}}</p>
+								</div>
+						 </div>
+					</div>
+					<div class="col-sm-6">
+						<h1 align="center">Ratings Distribution</h1>
+				    	<div id="chart" align="center">
+	  					</div>
+					</div>
+		    </div>
+	    </div>
+		</form>
+		<div class="modal fade" id="myModalReview" role="dialog" style="z-index: 1500">
+		    <div class="modal-dialog modal-lg">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="reloadData()" style="background-color: #006dcc;"></button>
+		        <h5 class="modal-title" id="reviewresult" style="text-align: center;"><strong>Please enter a review!!!</strong></h5>
+		          
+		        </div>
+		        <div class="modal-body" id="reviewbody">
+		             <div style="border:1 solid black;" align="center"><uib-rating ng-model="newRating" max="5" id="newRtng" ng-required="true"></uib-rating></div>
+			             <form>
+							    <div class="form-group">
+							      <label for="comment">Review:</label>
+							      <textarea class="form-control" rows="8" ng-model="newReview" id="newRvw" ng-required="true" style="border:1 solid black;"></textarea>
+							    </div>
+						</form>
+		             <br>
+			    	 <!-- <div style="border:1 solid black;" align="center"><textarea ng-model="newReview" id="newRvw" ng-required="true"></textarea></div><br> -->
+			    	 <div class="row" align="center"><button type="button" class="btn btn-primary" ng-click="submit()" >Submit</button>
+			    	 <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="reloadData()">Close</button> --></div>
+		        </div>
+		     </div>
+		    </div>
+		  </div>
+	</div>

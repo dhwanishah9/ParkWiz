@@ -17,6 +17,30 @@ exports.abc = function(req, res) {
 	});
 };
 
+exports.dashboard = function(req, res) {
+	res.render('dashboard', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.reviews = function(req, res) {
+	res.render('reviews', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.availability = function(req, res) {
+	res.render('availability', {
+		title : 'ParkWiz'
+	});
+};
+
+exports.images = function(req, res) {
+	res.render('images', {
+		title : 'ParkWiz'
+	});
+};
+
 exports.addlisting = function(req, res) {
 	res.render('addlisting', {
 		title : 'ParkWiz'
