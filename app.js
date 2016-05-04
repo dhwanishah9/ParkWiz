@@ -162,7 +162,7 @@ app.get('/api/mylisting',function(req,res){
 
 app.post('/api/loggedin_userinfo',function(req,res){
 	debugger;
-	user.updateuserinfo(req.body,res);
+	user.updateuserinfo(req.body, req.session.userid,res);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
