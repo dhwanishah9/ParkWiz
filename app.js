@@ -15,6 +15,7 @@ var express = require('express')
   , availability=require('./routes/availabilitychart')
   , gauge=require('./routes/usergauge')
   , reservation = require('./routes/reservation')
+  , image = require('./routes/image')
   , path = require('path');
 
 var app = express();
@@ -146,7 +147,7 @@ app.get('/checkPaymentInfo',function(req,res){
 });
  
 app.get('/createReservation',function(req,res){
-    console.log("Inside app.js /createReservation "+req.query.date);
+    console.log("Inside app.js /createReservation "+req.query.searchtime);
     //reservation.checkPaymentInfo(req,res);
 });
 
@@ -163,6 +164,11 @@ app.get('/api/mylisting',function(req,res){
 app.post('/api/loggedin_userinfo',function(req,res){
 	debugger;
 	user.updateuserinfo(req.body, req.session.userid,res);
+});
+
+app.get('/getAllImages',function(req,res){
+    console.log("Inside app.js /getAllImages "+req.query.spotid);
+    image.getAllImages(req,res);
 });
 
 http.createServer(app).listen(app.get('port'), function(){
