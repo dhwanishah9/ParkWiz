@@ -300,7 +300,7 @@
 
 <script>
 var autocomplete;
-var searchdata;
+//var searchdata;
 var privateParkingList;
 
 angular.module('myApp', ['ngAnimate','ui.bootstrap']);
@@ -420,9 +420,34 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 	        });
 		};
 	}
-angular.module('myApp').controller('searchmodule', searchmodule);	
-function searchmodule($scope, $http) {
+	angular.module('myApp').controller('searchmodule', searchmodule);	
+	function searchmodule($scope, $http) {
+	$scope.templates = [ {
+		name : 'Details Page',
+		url : '/details'
+		//initializeFunction : undefined
+	}];
+	
+	$scope.templates.forEach(function(template) {
+		if (template['name'] == 'Details Page') {
+			$scope.template = template;
+		}
+		if (template['name'] == 'Details Page') {
+			$scope.template = template;
+			if (template.initializeFunction) {
+				template.initializeFunction($scope, $http);
+			}
+		}
+	});
+	
+	$scope.details = function(spotid) {
 		
+		$scope.template = $scope.templates[0];
+		alert("sdfds"+$scope.template.url);
+		window.location = $scope.template.url;
+		//$("#navMenus").hide();
+	}
+	
 		initMap();
 		$scope.searchParking = function(){
 			  
@@ -444,9 +469,9 @@ function searchmodule($scope, $http) {
 					htmlval += 'src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"';
 					htmlval += 'alt="Parking on 84 N 7th Street, "></div></td>';
 					htmlval += '<td style="width: 60%"><div align="center">'+privateparkingresult[i].addressline1+'</div></td>';
-					htmlval += '<td><div align="center"><a href="/details" class="bookingnav" >Details</a>';
+					htmlval += '<td><div align="center"><a onclick="getDetails(this,'+privateparkingresult[i].spotid+');" class="bookingnav" >Details</a>';
 					htmlval += '</div></td><td><div align="center">';
-					htmlval += '<button type="button" class="btn btn-success" ng-click="reserveParking('+privateparkingresult[i].spot_id+')">Reserve</button>';
+					htmlval += '<button type="button" class="btn btn-success" onclick="reserveParking('+privateparkingresult[i].spotid+')">Reserve</button>';
 					htmlval += '</div></td></tr>';
 				}
 				
@@ -454,18 +479,24 @@ function searchmodule($scope, $http) {
 				//alert("data "+data);
 			},1000);
 			
-		};
-		
-		
-		$scope.reserveParking = function(spotid){
-			alert("Here"+spotid);
-			var userid=1;
-			console.log("... "+$scope.startdate);
-			searchdata = {"startdate": $scope.startdate};
-			console.log("... "+searchdata.startdate);
-			reserveParkingSpot(userid,spotid,searchdata);
-		};
+		};	
+	
 	}
+	
+function reserveParking(spotid){
+	alert("Here"+spotid);
+	var userid=1;
+	//console.log("... "+$scope.startdate);
+	//searchdata = {"startdate": $scope.startdate};
+	reserveParkingSpot(userid,spotid);
+}
+
+function getDetails(el,spotid){
+	var $scope = angular.element(el).scope();
+	  //$scope.thing = newVal;
+	  $scope.details(spotid);
+}
+
 angular.module('myApp').controller('profilemodule', profilemodule);
 function profilemodule($scope, $http) {
 	$(".progress-bar").animate({
@@ -678,7 +709,6 @@ function plotPins(privateparkingjson){
 	}
 	
 	function reserveParkingSpot(userid,spotid){
-		alert("searchdata.... "+searchdata);
 		validatePaymentInfo(userid,spotid);
 	}
 	
@@ -701,22 +731,16 @@ function plotPins(privateparkingjson){
 	}
 	
 	function createReservation(){
-		console.log("inside create reservation"+searchdata.startdate);
-		/* $.ajax({
+		console.log("inside create reservation");
+		$.ajax({
             type: 'GET',
             url: '/createReservation',
-            data: { "userid": userid , "spotid": spotid}
+            data: { "userid": userid , "spotid": spotid , "searchtime": document.getElementById('#txtorigindate')}
          }).success(function(response){
-        	 if(response){
-        		 createReservation();
-        	 }else{
-        		createReservation();
-        		//location.href="/payment";		 
-        	 }
-			alert("success");
+        	 alert("success");
          }).error(function(error){
         	 alert("error");
-        }); */
+        });
 	}
 </script>
 
@@ -1317,6 +1341,34 @@ function dashboard(id, fData){
 			"<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
 			"</table>";
 	}	
+</script>
+
+<script>
+angular.module('myApp').controller('imagemodule', imagemodule);	
+	function imagemodule($scope, $http) {
+		$scope.init = function(){
+			spotid = 3;
+			$http({
+	            method: 'GET',
+	            url: '/getAllImages?spotid='+spotid
+	        }).success(function(response){
+		         var v =JSON.parse(JSON.stringify(response));
+		         var v1 = v[1];
+		         var v2 = v[0];
+		         $scope.activeimage=v1[0];
+		         v1.shift();
+		         $scope.spotimages = v1;
+		         $scope.panaromaactiveimage = v2[0];
+		         v2.shift();
+		         $scope.panaromaimages = v2;
+		         console.log($scope.spotimages+"..." + $scope.activeimage);
+		         console.log($scope.panaromaactiveimage.imageurl+"..." + $scope.panaromaimages);
+		         alert("success");
+		    }).error(function(error){
+	        	 alert(error);
+	        });
+		};
+	}
 </script>
 
 </html>
