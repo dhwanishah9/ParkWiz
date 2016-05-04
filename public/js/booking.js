@@ -19,6 +19,9 @@ function BookingService($http) {
 		},
 		getSpaces : function() {
 			return $http.get('/api/getspaces');
+		},
+		getcounts : function() {
+			return $http.get('/api/getcounts');
 		}
 		/*
 		create : function(MyAccountData) {
@@ -102,13 +105,28 @@ function BookingService($http) {
 			$scope.spaceoverview = data;
 		});
 
-		
+		service.getcounts()
+		.success(function(data) {
+			
+			var percomplete =0;
+			if(data[0].rcount >0){
+				percomplete +=1;
+			} 
+			if(data[0].pcount > 0){
+				percomplete +=1;
+			}
+			if(data[0].icount > 0){
+				percomplete +=1;
+			}
+			debugger;
+			$scope.percentage = Math.round((percomplete*100)/3);
+		});
 	}
+
+
 function getAllBookings($scope, service){
 	service.getBookings()
 		.success(function(data) {
 			$scope.allbookings = data;
 		});
 }
-
-

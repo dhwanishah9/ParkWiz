@@ -70,3 +70,24 @@ exports.getspaces = function(userid, res) {
 	}, getBooking);
 	
 };
+
+
+exports.getcounts = function(userid, res) {	
+	var getCount = "select(Select count(*) AS rcount from reservation r where r.userid = "+ userid + ") AS rcount,(Select count(*) AS pcount from payment p where p.userid ="+ userid + ") AS pcount,(Select count(DISTINCT imageid) AS icount from image i JOIN reservation r on r.spotid = i.spotid where r.userid = "+ userid + " ) AS icount";
+	console.log("Query is:" + getCount);
+	
+	//Calling the fetch method using mysql module
+	mysql.fetchData(function(err, result) {
+		if (err) {
+			console.log("Error while fetching login results");
+			throw err;
+		} else {
+			// userinfo
+			var bookinginfo = result;
+			// TODO: create userinfo from result
+			res.send(JSON.stringify(bookinginfo));
+		}
+	}, getCount);
+	
+};
+

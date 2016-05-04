@@ -161,6 +161,11 @@ app.get('/api/mylisting',function(req,res){
 	booking.getallbookings(userid, res);
 });
 
+app.get('/api/getcounts',function(req,res){
+	userid = req.session.userid;
+	booking.getcounts(userid, res);
+});
+
 app.post('/api/loggedin_userinfo',function(req,res){
 	debugger;
 	user.updateuserinfo(req.body, req.session.userid,res);
