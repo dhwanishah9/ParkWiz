@@ -30,15 +30,17 @@ exports.getuserinfo = function(userid, res) {
 	
 };
 
-exports.updateuserinfo = function(user, res) {
+exports.updateuserinfo = function(user,userid, res) {
 	
 	
 			//hashedPwd = hash;
 			//Creating the insert query to save signup data to DB
+			debugger;
 			var update = "update user set firstname = '" + user.firstname+"' , lastname = '" + user.lastname + "' , email = '"+ user.email
 					+ "'  , address='"+user.address+"',phoneno='"+user.phoneno
 					//+ "' where userid =" + 1 ;
-					+ "' where userid =" + user.userid ;
+					//+ "' where userid =" + user.userid ;
+					+ "' where userid =" + userid ;
 			console.log("Query is:" + update);
 			mysql.insertData(function(err,results) {
 
