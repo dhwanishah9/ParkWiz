@@ -117,7 +117,7 @@ app.del('/api/session',function(req,res){
 });
 
 app.get('/api/loggedin_userinfo',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	user.getuserinfo(userid, res);
 	/*if(req.session.userid) {
 		var userid = req.session.userid;
@@ -131,7 +131,7 @@ app.get('/api/loggedin_userinfo',function(req,res){
 });
 
 app.get('/api/bookingoverview',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.gettopbookings(userid, res);
 });
 
@@ -151,12 +151,12 @@ app.get('/createReservation',function(req,res){
 });
 
 app.get('/api/getspaces',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getspaces(userid, res);
 });
 
 app.get('/api/mylisting',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getallbookings(userid, res);
 });
 
