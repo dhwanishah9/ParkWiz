@@ -425,6 +425,7 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 	        });
 		};
 	}
+	angular.module('myApp').controller('addListingController', addListingController);
 	function addListingController($scope, $http) {
 			$scope.addlisting1 = function(){
 				var location = document.getElementById('txtLocation').value;
@@ -544,11 +545,25 @@ function reserveParking(spotid){
 	function profilemodule($scope, $http) {
 		
 	}
+
+	angular.module('myApp').controller('addPaymentController', addPaymentController);
 	function addPaymentController($scope, $http) {
 		$scope.addPaymentMethod = function() {
-			console.log("http-equivdfsgeshrt");
-		};
+			console.log(document.getElementById('cardname').value);
+			console.log(document.getElementById('cardnum').value);
+			console.log(document.getElementById('address').value);
+			console.log(document.getElementById('cvc').value);
+			console.log(document.getElementById('month').value);
+			console.log(document.getElementById('year').value);
+		}
 	}
+
+	// function addPaymentController($scope, $http) {
+	// 	$scope.addPaymentMethod = function() {
+	// 		console.log(document.getElementById('cardname').value);
+	// 	}
+	// }
+	
 
 
 function getDetails(el,spotid){
