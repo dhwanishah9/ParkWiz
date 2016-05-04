@@ -16,8 +16,12 @@ exports.savesignup = function(req, res){
 			throw new Error('Error hashing the pwd');
 		else{
 			hashedPwd = hash;
+			var mp = Math.floor(Math.random() * (10 - 0) + 0);//FLOOR((CURTIME()/10000)*RAND());
+			var pt = Math.floor(Math.random() * (20 - 0) + 0);
+			var le = Math.floor(Math.random() * (30 - 0) + 0);
+			var lt = Math.floor(Math.random() * (40 - 0) + 0);
 			//Creating the insert query to save signup data to DB
-			var insert = "insert into user (firstname,lastname,email,password,address,phoneno) values ('"
+			var insert = "insert into user (firstname,lastname,email,password,address,phoneno,monthlypending,pendingtransfer,lifetimeearnings,lifetimetransactions) values ('"
 				    + req.param("firstname")
 					+ "','"
 					+ req.param("lastname")
@@ -29,6 +33,15 @@ exports.savesignup = function(req, res){
 					+req.param("address")
 					+"','"
 					+req.param("phoneno")
+					+"','"
+					+ mp
+					+"','"
+					+ pt
+					+"','"
+					+ le
+					+"','"
+					+ lt
+
 					+ "')";
 			console.log("Query is:" + insert);
 			mysql.insertData(function(err,results) {
