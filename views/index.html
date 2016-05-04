@@ -262,7 +262,7 @@
 										<li><a href="#"><i class="fa fa-gear fa-fw"></i>
 												Settings</a></li>
 										<li class="divider"></li>
-										<li><a href="login.html"><i
+										<li><a ng-click="logout()"><i
 												class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 									</ul> <!-- /.dropdown-user --></li>
 								<!-- /.dropdown -->
@@ -347,7 +347,7 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 
 			$("#navMenus").hide();
 		};
-
+		
 		$scope.templates = [ {
 			name : 'Search Page',
 			url : '/search',
@@ -408,6 +408,17 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 		});
 
 		//initialize();
+		
+		$scope.logout=function(){
+			$http({
+	            method: 'DELETE',
+	            url: '/api/session'
+	         }).success(function(response){
+	        	 window.location='/signin';
+		    }).error(function(error){
+		    	window.location='/signin';
+	        });
+		};
 	}
 angular.module('myApp').controller('searchmodule', searchmodule);	
 function searchmodule($scope, $http) {
