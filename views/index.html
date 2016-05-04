@@ -363,7 +363,11 @@
 		},{
 			name : 'AddListing',
 			url : '/addlisting'
-		} ];
+		},
+		{
+			name : 'AddListingss',
+			url : '/addListingss'
+		}];
 
 		$scope.templates.forEach(function(template) {
 			if (template['name'] == templateName) {
@@ -379,6 +383,50 @@
 
 		//initialize();
 	}
+	function addListingController($scope, $http) {
+			$scope.addlisting1 = function(){
+				var location = document.getElementById('txtLocation').value;
+				var radio1 = document.getElementById('radio-choice-1').checked;
+				var radio2 = document.getElementById('radio-choice-2').checked;
+				var description = document.getElementById('description').value;
+				var numberOfSpaces = document.getElementById('numberOfSpaces').value;
+				var rental1 = document.getElementById('rental-radio-choice-1').checked;
+				var rental2 = document.getElementById('rental-radio-choice-2').checked;
+				var rental3 = document.getElementById('rental-radio-choice-3').checked;
+				var checkbox1 = document.getElementById('checkbox-radio-choice-1').checked;
+				var checkbox2 = document.getElementById('checkbox-radio-choice-2').checked;
+				var checkbox3 = document.getElementById('checkbox-radio-choice-3').checked;
+				var checkbox4 = document.getElementById('checkbox-radio-choice-4').checked;
+				var checkbox5 = document.getElementById('checkbox-radio-choice-5').checked;
+				var checkbox6 = document.getElementById('checkbox-radio-choice-6').checked;
+				var checkbox7 = document.getElementById('checkbox-radio-choice-7').checked;
+				var checkbox8 = document.getElementById('checkbox-radio-choice-8').checked;
+				var checkbox9 = document.getElementById('checkbox-radio-choice-9').checked;
+				var checkbox10 = document.getElementById('checkbox-radio-choice-10').checked;
+				var checkbox11 = document.getElementById('checkbox-radio-choice-11').checked;
+				var checkbox12 = document.getElementById('checkbox-radio-choice-12').checked;
+				var instructions = document.getElementById('instructions').value;
+				var image1 = document.getElementById('image1').value;
+				var image2 = document.getElementById('image2').value;
+				var image3 = document.getElementById('image3').value;
+
+					$http({
+			            method: 'POST',
+			            url: '/addlistings',
+			            data: { "location": String(document.getElementById('txtLocation').value), "radio1":document.getElementById('radio-choice-1').checked ,"radio2":document.getElementById('radio-choice-2').checked,"description" : document.getElementById('description').value, "numberOfSpaces":document.getElementById('numberOfSpaces').value, "rental1" : document.getElementById('rental-radio-choice-1').checked, "rental2":document.getElementById('rental-radio-choice-2').checked, "rental3" :document.getElementById('rental-radio-choice-3').checked, "checkbox1":document.getElementById('checkbox-radio-choice-1').checked, "checkbox2" :document.getElementById('checkbox-radio-choice-2').checked, "checkbox3":document.getElementById('checkbox-radio-choice-3').checked, "checkbox4":document.getElementById('checkbox-radio-choice-4').checked, "checkbox5":document.getElementById('checkbox-radio-choice-5').checked,"checkbox6":document.getElementById('checkbox-radio-choice-6').checked,"checkbox7":document.getElementById('checkbox-radio-choice-7').checked,"checkbox8":document.getElementById('checkbox-radio-choice-8').checked,"checkbox9":document.getElementById('checkbox-radio-choice-9').checked,"checkbox10":document.getElementById('checkbox-radio-choice-10').checked,"checkbox11":document.getElementById('checkbox-radio-choice-11').checked,"checkbox12":document.getElementById('checkbox-radio-choice-12').checked, "instructions":document.getElementById('instructions').value, "image1":document.getElementById('image1').value,"image2":document.getElementById('image2').value,"image3":document.getElementById('image3').value }
+			         }).success(function(response){
+			        	 var resp= JSON.parse(JSON.stringify(response));
+				         // document.getElementById("reviewresult").innerHTML=resp;
+				         // $('#reviewbody').hide();
+				         console.log(resp);
+				         //reviewadded=true;
+				    }).error(function(error){
+				    	document.getElementById("reviewresult").innerHTML="Adding review failed";
+			        });
+
+
+			};
+	}
 	function searchmodule($scope, $http) {
 		initMap();
 	}
@@ -386,6 +434,13 @@
 	function profilemodule($scope, $http) {
 		
 	}
+	function addPaymentController($scope, $http) {
+		$scope.addPaymentMethod = function() {
+			console.log("http-equivdfsgeshrt");
+		};
+	}
+
+
 </script>
 
 <script>

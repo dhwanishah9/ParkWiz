@@ -12,6 +12,7 @@ var express = require('express')
   , signin=require('./routes/signin')
   , signup=require('./routes/signup')
   , review=require('./routes/review')
+  , newlisting=require('./routes/addlistings')
   , availability=require('./routes/availabilitychart')
   , gauge=require('./routes/usergauge')
   , path = require('path');
@@ -71,6 +72,7 @@ app.get('/review', review.review);
 app.get('/getallreviews', review.getReviews);
 app.get('/getreviewschart', review.getReviewsChart);
 app.post('/savereview', review.saveReview);
+app.post('/addlistings', newlisting.addlistings);
 app.get('/availability',availability.availability);
 app.get('/loadavailabilitychart',availability.getAvailabilityChart);
 app.get('/gaugechart',gauge.gaugechart);
