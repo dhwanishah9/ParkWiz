@@ -38,4 +38,18 @@ exports.checkPaymentInfo = function(req,res){
 		}
 	}, getPaymentInfo);
 };
+
+exports.getSpotAvailability = function(req,res){
+	var getSpotAvailability = "select * from reservation where startdate=' "+req.query.searchdate+" 'and spotid="+req.query.spotid;
+	console.log("Query is:" + getSpotAvailability);
+	mysql.fetchData(function(err, result) {
+		if (err) {
+			console.log("Error while fetching parking details");
+			throw err;
+		} else {
+			console.log("result: "+result);
+			res.send(result);
+		}
+	}, getSpotAvailability);
+};
 	
