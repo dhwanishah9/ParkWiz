@@ -1,7 +1,7 @@
 <h1>
 	<i class="fa fa-bar-chart"></i> Availability
 </h1>
-<div id="filter" class="baseline">
+<div id="filter" class="baseline" ng-controller="availabilitymodule" ng-init="init()">
 	<div id="heading">
 		<a class="filterheading"> <i class="fa fa-filter fa-fw head"></i>
 			Search Filter
@@ -11,16 +11,14 @@
 		<div id="filterform">
 			<div class="row">
 				<div class="col-12">
-					<div class="col-sm-1">
-						<label style="padding-top: 5px;">SpotAddress</label>
+					<div class="col-sm-2">
+						<label style="padding-top: 5px;">Search Date</label>
 					</div>
-					<div class="col-sm-10">
-						<input style="background-color: #fff !important"
-							class="form-control" placeholder="Enter your Address" type="text"
-							id="txtAvailabilityAddress">
+					<div class="col-sm-6">
+						<input style="background-color: #fff !important" class="form-control" type="date" id="searchAvailabilityDate" value="2016-05-05">
 					</div>
-					<div class="col-sm-1" style="float: right;">
-						<button type="button" class="btn btn-primary">Search</button>
+					<div class="col-sm-1" style="float: left;">
+						<button type="button" class="btn btn-primary" ng-click="searchAvailableSlots()">Search</button>
 					</div>
 				</div>
 			</div>
@@ -28,10 +26,11 @@
 		<br />
 		<div id="mainContent">
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
-					align="center">12:00 AM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot1 in timesplits1"
+					style="min-height: 30px; background-color: {{slot1.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot1.time}} AM</div>
+					
+				<!-- <div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">1:00
 					AM</div>
 				<div class="col-sm-3"
@@ -39,13 +38,13 @@
 					align="center">2:00 AM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">3:00
-					AM</div>
+					AM</div> -->
 			</div>
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; border: 1px solid #ccc;" align="center">4:00
-					AM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot2 in timesplits2"
+					style="min-height: 30px; background-color: {{slot2.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot2.time}} AM</div>
+				<!-- <div class="col-sm-3"
 					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
 					align="center">5:00 AM</div>
 				<div class="col-sm-3"
@@ -53,13 +52,13 @@
 					AM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
-					align="center">7:00 AM</div>
+					align="center">7:00 AM</div> -->
 			</div>
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; border: 1px solid #ccc;" align="center">8:00
-					AM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot3 in timesplits3"
+					style="min-height: 30px; background-color: {{slot3.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot3.time}} AM</div>
+				<!-- <div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">9:00
 					AM</div>
 				<div class="col-sm-3"
@@ -67,13 +66,13 @@
 					align="center">10:00 AM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">11:00
-					AM</div>
+					AM</div> -->
 			</div>
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; border: 1px solid #ccc;" align="center">12:00
-					PM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot4 in timesplits4"
+					style="min-height: 30px; background-color: {{slot4.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot4.time}} AM</div>
+				<!-- <div class="col-sm-3"
 					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
 					align="center">13:00 PM</div>
 				<div class="col-sm-3"
@@ -81,13 +80,13 @@
 					PM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">15:00
-					PM</div>
+					PM</div> -->
 			</div>
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; border: 1px solid #ccc;" align="center">16:00
-					PM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot5 in timesplits5"
+					style="min-height: 30px; background-color: {{slot5.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot5.time}} AM</div>
+				<!-- <div class="col-sm-3"
 					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
 					align="center">17:00 PM</div>
 				<div class="col-sm-3"
@@ -95,13 +94,13 @@
 					PM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">19:00
-					PM</div>
+					PM</div> -->
 			</div>
 			<div class="row">
-				<div class="col-sm-3"
-					style="min-height: 30px; border: 1px solid #ccc;" align="center">20:00
-					PM</div>
-				<div class="col-sm-3"
+				<div class="col-sm-3 bgclass" ng-repeat="slot6 in timesplits6"
+					style="min-height: 30px; background-color: {{slot6.bgcolor}}; border: 1px solid #ccc;"
+					align="center">{{slot6.time}} AM</div>
+			<!-- 	<div class="col-sm-3"
 					style="min-height: 30px; background-color: green; border: 1px solid #ccc;"
 					align="center">21:00 PM</div>
 				<div class="col-sm-3"
@@ -109,7 +108,7 @@
 					PM</div>
 				<div class="col-sm-3"
 					style="min-height: 30px; border: 1px solid #ccc;" align="center">23:00
-					PM</div>
+					PM</div> -->
 			</div>
 		</div>
 		<br />

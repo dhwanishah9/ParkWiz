@@ -624,12 +624,10 @@ angular.module('myApp').controller('bookingModule',bookingModule);
             url: '/privateParking',
             data: { "latitude": latitude, "longitude": longitude }
          }).success(function(response){
-			//alert("success");
        	 	latlongvalues.push(JSON.stringify(response));
        		var privateparkingjson = {'locations': latlongvalues[0]};
        		setParkingList(privateparkingjson)
        		plotPins(privateparkingjson);
-       		//alert("FINISH");
          }).error(function(error){
         	 alert("error");
         });
@@ -1357,6 +1355,310 @@ angular.module('myApp').controller('imagemodule', imagemodule);
 	        	 alert(error);
 	        });
 		};
+	}
+</script>
+
+<script>
+	angular.module('myApp')
+			.controller('availabilitymodule', availabilitymodule);
+	function availabilitymodule($scope, $http) {
+		spotid = 2;
+		var timeslot1 = [ {
+			'time' : '12:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '1:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '2:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '3:00',
+			'bgcolor' : ''
+		} ];
+		var timeslot2 = [ {
+			'time' : '4:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '5:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '6:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '7:00',
+			'bgcolor' : ''
+		} ];
+		var timeslot3 = [ {
+			'time' : '8:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '9:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '10:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '11:00',
+			'bgcolor' : ''
+		} ];
+		var timeslot4 = [ {
+			'time' : '12:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '13:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '14:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '15:00',
+			'bgcolor' : ''
+		} ];
+		var timeslot5 = [ {
+			'time' : '16:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '17:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '18:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '19:00',
+			'bgcolor' : ''
+		} ];
+		var timeslot6 = [ {
+			'time' : '20:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '21:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '22:00',
+			'bgcolor' : ''
+		}, {
+			'time' : '23:00',
+			'bgcolor' : ''
+		} ];
+		
+		$scope.searchdate = [];
+		$scope.init = function() {
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth() + 1; //January is 0!
+			var yyyy = today.getFullYear();
+			if (dd < 10) {
+				dd = '0' + dd
+			}
+			if (mm < 10) {
+				mm = '0' + mm
+			}
+			today = dd + '-' + mm + '-' + yyyy;
+			searchdate = yyyy + '-' + mm + '-' + dd;
+			;
+			//var searchdate=document.getElementById('searchAvailabilityDate').value;
+			$http(
+					{
+						method : 'GET',
+						url : '/getSpotAvailability?spotid=' + spotid
+								+ '&searchdate=' + searchdate
+					}).success(
+					function(response) {
+						var timeslots1 = timeslot1.slice(0);
+						var timeslots2 = timeslot2.slice(0);
+						var timeslots3 = timeslot3.slice(0);
+						var timeslots4 = timeslot4.slice(0);
+						var timeslots5 = timeslot5.slice(0);
+						var timeslots6 = timeslot6.slice(0);
+						
+						var res = JSON.parse(JSON.stringify(response));
+						var splits = [];
+						if (res) {
+							for (var j = 0; j < res.length; j++) {
+								var time = splitTimeByMinutes(res[j].starttime,res[j].endtime, 60)[0];
+								var number = time.toString().split(':')[0];
+								if(number>=0 && number <=3){
+									for (var i=0; i<timeslots1.length; i++) {
+										  if ((timeslots1[i].time).toString().split(':')[0] == number) {
+											  timeslots1[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=4 && number <=7){
+									for (var i=0; i<timeslots2.length; i++) {
+										if ((timeslots2[i].time).toString().split(':')[0] == number) {
+											  timeslots2[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=8 && number <=11){
+									for (var i=0; i<timeslots3.length; i++) {
+										if ((timeslots3[i].time).toString().split(':')[0] == number) {
+											  timeslots3[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=12 && number <=15){
+									for (var i=0; i<timeslots4.length; i++) {
+										if ((timeslots4[i].time).toString().split(':')[0] == number) {
+											  timeslots4[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=16 && number <=19){
+									for (var i=0; i<timeslots5.length; i++) {
+										if ((timeslots5[i].time).toString().split(':')[0] == number) {
+											  timeslots5[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=20 && number <=23){
+									for (var i=0; i<timeslots6.length; i++) {
+										if ((timeslots6[i].time).toString().split(':')[0] == number) {
+											  timeslots6[i].bgcolor = "green";
+										  }
+									}
+								}
+							}
+						}
+						
+						$scope.timesplits1 = [];
+						$scope.timesplits1 = JSON.parse(JSON.stringify(timeslots1));
+						
+						$scope.timesplits2 = [];
+						$scope.timesplits2 = JSON.parse(JSON.stringify(timeslots2));
+						
+						$scope.timesplits3 = [];
+						$scope.timesplits3 = JSON.parse(JSON.stringify(timeslots3));
+						
+						$scope.timesplits4 = [];
+						$scope.timesplits4 = JSON.parse(JSON.stringify(timeslots4));
+						
+						$scope.timesplits5 = [];
+						$scope.timesplits5 = JSON.parse(JSON.stringify(timeslots5));
+						
+						$scope.timesplits6 = [];
+						$scope.timesplits6 = JSON.parse(JSON.stringify(timeslots6));
+						
+					}).error(function(error) {
+				alert(error);
+			});
+		};
+		
+		$scope.searchAvailableSlots = function() {
+			
+			var searchdate=document.getElementById('searchAvailabilityDate').value;
+			$http(
+					{
+						method : 'GET',
+						url : '/getSpotAvailability?spotid=' + spotid
+								+ '&searchdate=' + searchdate
+					}).success(
+					function(response) {
+						$('.bgclass').css('background-color','#fff');
+						
+						var timeslots1 = timeslot1.slice(0);
+						var timeslots2 = timeslot2.slice(0);
+						var timeslots3 = timeslot3.slice(0);
+						var timeslots4 = timeslot4.slice(0);
+						var timeslots5 = timeslot5.slice(0);
+						var timeslots6 = timeslot6.slice(0);
+						
+						var res = JSON.parse(JSON.stringify(response));
+						var splits = [];
+						if (res) {
+							for (var j = 0; j < res.length; j++) {
+								var time = splitTimeByMinutes(res[j].starttime,res[j].endtime, 60)[0];
+								var number = time.toString().split(':')[0];
+								if(number >=0 && number <=3){
+									for (var i=0; i<timeslots1.length; i++) {
+										  if ((timeslots1[i].time).toString().split(':')[0] == number) {
+											  timeslots1[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=4 && number <=7){
+									for (var i=0; i<timeslots2.length; i++) {
+										if ((timeslots2[i].time).toString().split(':')[0] == number) {
+											  timeslots2[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=8 && number <=11){
+									for (var i=0; i<timeslots3.length; i++) {
+										if ((timeslots3[i].time).toString().split(':')[0] == number) {
+											  timeslots3[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=12 && number <=15){
+									for (var i=0; i<timeslots4.length; i++) {
+										if ((timeslots4[i].time).toString().split(':')[0] == number) {
+											  timeslots4[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=16 && number <=19){
+									for (var i=0; i<timeslots5.length; i++) {
+										if ((timeslots5[i].time).toString().split(':')[0] == number) {
+											  timeslots5[i].bgcolor = "green";
+										  }
+									}
+								}else if(number >=20 && number <=23){
+									for (var i=0; i<timeslots6.length; i++) {
+										if ((timeslots6[i].time).toString().split(':')[0] == number) {
+											  timeslots6[i].bgcolor = "green";
+										  }
+									}
+								}
+							}
+						}
+						
+						$scope.timesplits1 = JSON.parse(JSON.stringify(timeslots1));
+						
+						$scope.timesplits2 = [];
+						$scope.timesplits2 = JSON.parse(JSON.stringify(timeslots2));
+						
+						$scope.timesplits3 = [];
+						$scope.timesplits3 = JSON.parse(JSON.stringify(timeslots3));
+						
+						$scope.timesplits4 = [];
+						$scope.timesplits4 = JSON.parse(JSON.stringify(timeslots4));
+						
+						$scope.timesplits5 = [];
+						$scope.timesplits5 = JSON.parse(JSON.stringify(timeslots5));
+						
+						$scope.timesplits6 = [];
+						$scope.timesplits6 = JSON.parse(JSON.stringify(timeslots6));
+						
+					}).error(function(error) {
+				alert(error);
+			});
+		};
+	}
+</script>
+<script>
+	function splitTimeByMinutes(startTime, endTime, increment){
+		    startTime = startTime.toString().split(':');
+		    endTime = endTime.toString().split(':');
+		    increment = parseInt(increment, 10);
+
+		    var pad = function (n) { return (n < 10) ? '0' + n.toString() : n; },
+		        startHr = parseInt(startTime[0], 10),
+		        startMin = parseInt(startTime[1], 10),
+		        endHr = parseInt(endTime[0], 10),
+		        endMin = parseInt(endTime[1], 10),
+		        currentHr = startHr,
+		        currentMin = startMin,
+		        previous = currentHr + ':' + pad(currentMin),
+		        current = '',
+		        r = [];
+
+		    do {
+		        currentMin += increment;
+		        if ((currentMin % 60) === 0 || currentMin > 60) {
+		            currentMin = (currentMin === 60) ? 0 : currentMin - 60;
+		            currentHr += 1;
+		        }
+		        current = currentHr + ':' + pad(currentMin);
+		        //r.push(previous + ' - ' + current);
+		        r.push(previous);
+		        previous = current;
+		  } while (currentHr !== endHr);
+			//alert(r);
+		    return r;
 	}
 </script>
 
