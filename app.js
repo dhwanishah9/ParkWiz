@@ -18,6 +18,7 @@ var express = require('express')
   , reservation = require('./routes/reservation')
   , image = require('./routes/image')
   , billing=require('./routes/billing')
+  , dashboard=require('./routes/dashboard')
   , path = require('path');
 
 var app = express();
@@ -41,6 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
+
 
 app.get('/', routes.index);
 app.get('/abc', routes.abc);
@@ -185,6 +188,37 @@ app.post('/api/loggedin_userinfo',function(req,res){
 app.get('/getAllImages',function(req,res){
     console.log("Inside app.js /getAllImages "+req.query.spotid);
     image.getAllImages(req,res);
+});
+
+
+//website traffic
+app.get('/api/getwebsitetraffic',function(req,res){
+    dashboard.websitetraffic(req, res);
+});
+
+//no of users
+app.get('/api/getnumberofusers',function(req,res){
+    dashboard.noofusers(req, res);
+});
+
+//total sales
+app.get('/api/gettotalsales',function(req,res){
+    dashboard.toalsales(req, res);
+});
+
+//get low review values
+app.get('/api/getlowreviewvalues',function(req,res){
+    dashboard.getlowreviewvalues(req, res);
+});
+
+//get high review values
+app.get('/api/gethighreviewvalues',function(req,res){
+    dashboard.gethighreviewvalues(req, res);
+});
+
+//get priority spots
+app.get('/api/getpriorityspots',function(req,res){
+    dashboard.getpriorityspots(req, res);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

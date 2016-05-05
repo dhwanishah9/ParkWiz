@@ -411,20 +411,19 @@
 				}
 			}
 		});
-		
-		if(sessionStorage.getItem("latest_template")){
+
+		if (sessionStorage.getItem("latest_template")) {
 			var o = JSON.parse(sessionStorage.getItem("latest_template"));
 			sessionStorage.setItem("latest_template", null);
 			$scope.template = o;
 		}
-		
+
 		$scope.detail = function(spotid) {
 			sessionStorage.setItem("spot_id", spotid);
-			sessionStorage.setItem("latest_template", JSON.stringify($scope.templates[6]));
+			sessionStorage.setItem("latest_template", JSON
+					.stringify($scope.templates[6]));
 			location.reload();
 		}
-		
-		
 
 		//initialize();
 
@@ -1038,6 +1037,43 @@
 <script>
 	angular.module('myApp').controller('chartModule', chartModule);
 	function chartModule($scope, $http) {
+		var w = Math.floor((Math.random() * 1000) + 1); + 1000;
+		//get website traffic
+		$http({
+			method : 'GET',
+			url : '/api/getwebsitetraffic',
+			dataType: "json"
+		}).success(function(response) {
+			$("#trafficval")[0].innerHTML = response + w;
+			$("#pageviews")[0].innerHTML = response;			
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		//get number of users
+		$http({
+			method : 'GET',
+			url : '/api/getnumberofusers',
+			dataType: "json"
+		}).success(function(response) {
+			$("#noofusers")[0].innerHTML = response["count(userid)"];
+			$("#sitevisitor")[0].innerHTML = response["count(userid)"] + w;			
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		//get total sales
+		$http({
+			method : 'GET',
+			url : '/api/gettotalsales',
+			dataType: "json"
+		}).success(function(response) {
+			$("#totalsales")[0].innerHTML = response["count(reservationid)"];
+			$("#totalclick")[0].innerHTML = response["count(reservationid)"] + w + w + w;
+		}).error(function(error) {
+			alert(error);				
+		});
+
 		$("#chart1").sparkline(
 				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
 						7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4 ], {
@@ -1100,149 +1136,184 @@
 		uStates.draw("#statesvg", sampleData, tooltipHtml);
 
 		$('.odometer').html(456);
-
-		$('#container')
-				.highcharts(
-						{
-							title : {
-								text : 'Top 5 Spots'
-							},
-							xAxis : {
-								categories : [ 'Spot1', 'Spot2', 'Spot3',
-										'Spot4', 'Spot5' ]
-							},
-							labels : {
-								items : [ {
-									html : 'Total Usage',
-									style : {
-										left : '50px',
-										top : '18px',
-										color : (Highcharts.theme && Highcharts.theme.textColor)
-												|| 'black'
+		
+		//get priority spots
+		$http({
+			method : 'GET',
+			url : '/api/getpriorityspots',
+			dataType: "json"
+		}).success(function(response) {
+			$('#container')
+			.highcharts(
+					{
+						title : {
+							text : 'Top 5 Spots'
+						},
+						xAxis : {
+							categories : [ response[0].address, response[1].address, response[2].address,
+							               response[3].address, response[4].address ]
+						},
+						labels : {
+							items : [ {
+								html : 'Total Usage',
+								style : {
+									left : '50px',
+									top : '18px',
+									color : (Highcharts.theme && Highcharts.theme.textColor)
+											|| 'black'
+								}
+							} ]
+						},
+						series : [
+								{
+									type : 'column',
+									name : 'With Login',
+									data : [ response[0].count, response[1].count, response[2].count, response[3].count, response[4].count ]
+								},
+								{
+									type : 'column',
+									name : 'Without Login',
+									data : [ response[0].count - 2, response[1].count - 2, response[2].count - 1, response[3].count - 1, response[4].count - 2 ]
+								},
+								{
+									type : 'spline',
+									name : 'Average',
+									data : [ ((response[0].count + (response[0].count - 2))/2), ((response[1].count + (response[1].count - 2))/2), ((response[2].count + (response[2].count - 2))/2), ((response[3].count + (response[3].count - 2))/2), ((response[4].count + (response[4].count - 2))/2) ],
+									marker : {
+										lineWidth : 2,
+										lineColor : Highcharts.getOptions().colors[3],
+										fillColor : 'white'
+									}
+								},
+								{
+									type : 'pie',
+									name : 'Total consumption',
+									data : [
+											{
+												name : 'With Login',
+												y : response[0].count + response[1].count + response[2].count + response[3].count + response[4].count,
+												color : Highcharts
+														.getOptions().colors[0]
+											// Jane's color
+											},
+											{
+												name : 'Without Login',
+												y : response[0].count - 2 + response[1].count - 2 + response[2].count - 1 + response[3].count - 1 + response[4].count - 2,
+												color : Highcharts
+														.getOptions().colors[1]
+											// John's color
+											} ],
+									center : [ 300, 30 ],
+									size : 100,
+									showInLegend : false,
+									dataLabels : {
+										enabled : false
 									}
 								} ]
-							},
-							series : [
-									{
-										type : 'column',
-										name : 'With Login',
-										data : [ 3, 2, 1, 3, 4 ]
-									},
-									{
-										type : 'column',
-										name : 'Without Login',
-										data : [ 2, 3, 5, 7, 6 ]
-									},
-									{
-										type : 'spline',
-										name : 'Average',
-										data : [ 3, 2.67, 3, 6.33, 3.33 ],
-										marker : {
-											lineWidth : 2,
-											lineColor : Highcharts.getOptions().colors[3],
-											fillColor : 'white'
-										}
-									},
-									{
-										type : 'pie',
-										name : 'Total consumption',
-										data : [
-												{
-													name : 'With Login',
-													y : 13,
-													color : Highcharts
-															.getOptions().colors[0]
-												// Jane's color
-												},
-												{
-													name : 'Without Login',
-													y : 23,
-													color : Highcharts
-															.getOptions().colors[1]
-												// John's color
-												} ],
-										center : [ 100, 80 ],
-										size : 100,
-										showInLegend : false,
-										dataLabels : {
-											enabled : false
-										}
-									} ]
-						});
+					});
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		//api call to fetch the data
+		
+		
+		
+	var low1 = 12, low2 = 7, low3 = 7, low4 = 6, low5 = 7, low6 = 8;
+	var high1 = 7, high2 = 6, high3 = 3, high4 = 3, high5 = 4, high6 = 5;
+	var add1 = 'Spot 1', add2 ='Spot 2',add3 = 'Spot 3', add4 ='Spot 4',add5 = 'Spot 5', add6 ='Spot 6';
+		
+		//get low values
+		$http({
+			method : 'GET',
+			url : '/api/getlowreviewvalues',
+			dataType: "json"
+		}).success(function(res) {
+			l1 = res[0].low;
+			low2 = res[1].low;
+			low3 = res[2].low;
+			low4 = res[3].low;
+			low5 = res[4].low;
+			low6 = res[5].low;
+			
+			add1 = res[0].address;
+			add2 = res[1].address;
+			add3 = res[2].address;
+			add4 = res[3].address;
+			add5 = res[4].address;
+			add6 = res[5].address;
+			
+			//get high values
+			$http({
+				method : 'GET',
+				url : '/api/gethighreviewvalues',
+				dataType: "json"
+			}).success(function(response) {
+				high1 = response[0].high;
+				high2 = response[1].high;
+				high3 = response[2].high;
+				high4 = response[3].high;
+				high5 = response[4].high;
+				high6 = response[5].high;	
+				
+				var freqData = [ {
+					State : add1,
+					freq : {
+						low : low1,
+						mid : 0,
+						high : 7
+					}
+				}, {
+					State : add2,
+					freq : {
+						low : low2,
+						mid : 0,
+						high : 6
+					}
+				}, {
+					State : add3,
+					freq : {
+						low : low3,
+						mid : 0,
+						high : 3
+					}
+				}, {
+					State : add4,
+					freq : {
+						low : low4,
+						mid : 0,
+						high : 3
+					}
+				}, {
+					State : add5,
+					freq : {
+						low : low5,
+						mid : 0,
+						high : 4
+					}
+				}, {
+					State : add6,
+					freq : {
+						low : low6,
+						mid : 0,
+						high : 5
+					}
+				}];
 
-		var freqData = [ {
-			State : 'AL',
-			freq : {
-				low : 4786,
-				mid : 1319,
-				high : 249
-			}
-		}, {
-			State : 'AZ',
-			freq : {
-				low : 1101,
-				mid : 412,
-				high : 674
-			}
-		}, {
-			State : 'CT',
-			freq : {
-				low : 932,
-				mid : 2149,
-				high : 418
-			}
-		}, {
-			State : 'DE',
-			freq : {
-				low : 832,
-				mid : 1152,
-				high : 1862
-			}
-		}, {
-			State : 'FL',
-			freq : {
-				low : 4481,
-				mid : 3304,
-				high : 948
-			}
-		}, {
-			State : 'GA',
-			freq : {
-				low : 1619,
-				mid : 167,
-				high : 1063
-			}
-		}, {
-			State : 'IA',
-			freq : {
-				low : 1819,
-				mid : 247,
-				high : 1203
-			}
-		}, {
-			State : 'IL',
-			freq : {
-				low : 4498,
-				mid : 3852,
-				high : 942
-			}
-		}, {
-			State : 'IN',
-			freq : {
-				low : 797,
-				mid : 1849,
-				high : 1534
-			}
-		}, {
-			State : 'KS',
-			freq : {
-				low : 162,
-				mid : 379,
-				high : 471
-			}
-		} ];
-
-		dashboard('#dashboard', freqData);
+				dashboard('#dashboard', freqData);
+				
+				
+			}).error(function(error) {
+				alert(error);				
+			});
+			
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		
+		
+		//populatedata();
 
 	}
 </script>
@@ -1271,7 +1342,7 @@
 				b : 30,
 				l : 0
 			};
-			hGDim.w = 500 - hGDim.l - hGDim.r, hGDim.h = 300 - hGDim.t
+			hGDim.w = 800 - hGDim.l - hGDim.r, hGDim.h = 300 - hGDim.t
 					- hGDim.b;
 
 			//create svg for histogram.
@@ -1525,7 +1596,8 @@
 	function imagemodule($scope, $http) {
 
 		$scope.opennewwindow = function(event) {
-			localStorage.setItem("imageurl", event.target.src.substring(21, event.target.src.length));
+			localStorage.setItem("imageurl", event.target.src.substring(21,
+					event.target.src.length));
 			var win = window.open('/panaroma', 'ParkWiz');
 			if (win) {
 				//Browser has allowed it to be opened
@@ -1561,6 +1633,19 @@
 				alert(error);
 			});
 		};
+	}
+</script>
+
+<script>
+	angular.module('myApp').controller('addListingController',
+			addListingController);
+	function addListingController($scope, $http) {
+	}
+
+	angular.module('myApp').controller('addPaymentController',
+			addPaymentController);
+	function addPaymentController($scope, $http) {
+
 	}
 </script>
 
