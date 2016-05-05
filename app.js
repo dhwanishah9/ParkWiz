@@ -19,6 +19,7 @@ var express = require('express')
   , image = require('./routes/image')
   , billing=require('./routes/billing')
   , dashboard=require('./routes/dashboard')
+  , listing=require('./routes/listing')
   , path = require('path');
 
 var app = express();
@@ -223,6 +224,11 @@ app.get('/api/gethighreviewvalues',function(req,res){
 //get priority spots
 app.get('/api/getpriorityspots',function(req,res){
     dashboard.getpriorityspots(req, res);
+});
+
+//get user listings
+app.get('/api/getuserlisting/:limit/:offset',function(req,res){
+    listing.getuserlisting(req, res, req.session.userid, req.params.limit, req.params.offset);
 });
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -49,6 +49,7 @@
 
 <script src="/js/MyAccount.js"></script>
 <script src="/js/booking.js"></script>
+<script src="/js/common.js"></script>
 
 <!--D3 Library-->
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -105,7 +106,8 @@
 													<i class="fa fa fa-bookmark fa-fw menuSize"></i>
 												</p>
 												<p align="center">Reservation</p></a></li>
-										<li ng-click="account();"><a class="aNav" href="#"><p align="center">
+										<li ng-click="account();"><a class="aNav" href="#"><p
+													align="center">
 													<i class="fa fa-child fa-fw menuSize"></i>
 												</p>
 												<p align="center">User Details</p></a></li>
@@ -305,6 +307,7 @@
 
 <script>
 	var autocomplete;
+	var curPage = 1;
 	//var searchdata;
 	var privateParkingList;
 
@@ -1037,42 +1040,46 @@
 <script>
 	angular.module('myApp').controller('chartModule', chartModule);
 	function chartModule($scope, $http) {
-		var w = Math.floor((Math.random() * 1000) + 1); + 1000;
+		var w = Math.floor((Math.random() * 1000) + 1);
+		+1000;
 		//get website traffic
 		$http({
 			method : 'GET',
 			url : '/api/getwebsitetraffic',
-			dataType: "json"
+			dataType : "json"
 		}).success(function(response) {
 			$("#trafficval")[0].innerHTML = response + w;
-			$("#pageviews")[0].innerHTML = response;			
+			$("#pageviews")[0].innerHTML = response;
 		}).error(function(error) {
-			alert(error);				
+			alert(error);
 		});
-		
+
 		//get number of users
 		$http({
 			method : 'GET',
 			url : '/api/getnumberofusers',
-			dataType: "json"
+			dataType : "json"
 		}).success(function(response) {
 			$("#noofusers")[0].innerHTML = response["count(userid)"];
-			$("#sitevisitor")[0].innerHTML = response["count(userid)"] + w;			
+			$("#sitevisitor")[0].innerHTML = response["count(userid)"] + w;
 		}).error(function(error) {
-			alert(error);				
+			alert(error);
 		});
-		
+
 		//get total sales
 		$http({
 			method : 'GET',
 			url : '/api/gettotalsales',
-			dataType: "json"
-		}).success(function(response) {
-			$("#totalsales")[0].innerHTML = response["count(reservationid)"];
-			$("#totalclick")[0].innerHTML = response["count(reservationid)"] + w + w + w;
-		}).error(function(error) {
-			alert(error);				
-		});
+			dataType : "json"
+		})
+				.success(
+						function(response) {
+							$("#totalsales")[0].innerHTML = response["count(reservationid)"];
+							$("#totalclick")[0].innerHTML = response["count(reservationid)"]
+									+ w + w + w;
+						}).error(function(error) {
+					alert(error);
+				});
 
 		$("#chart1").sparkline(
 				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
@@ -1136,98 +1143,131 @@
 		uStates.draw("#statesvg", sampleData, tooltipHtml);
 
 		$('.odometer').html(456);
-		
+
 		//get priority spots
 		$http({
 			method : 'GET',
 			url : '/api/getpriorityspots',
-			dataType: "json"
-		}).success(function(response) {
-			$('#container')
-			.highcharts(
-					{
-						title : {
-							text : 'Top 5 Spots'
-						},
-						xAxis : {
-							categories : [ response[0].address, response[1].address, response[2].address,
-							               response[3].address, response[4].address ]
-						},
-						labels : {
-							items : [ {
-								html : 'Total Usage',
-								style : {
-									left : '50px',
-									top : '18px',
-									color : (Highcharts.theme && Highcharts.theme.textColor)
-											|| 'black'
-								}
-							} ]
-						},
-						series : [
-								{
-									type : 'column',
-									name : 'With Login',
-									data : [ response[0].count, response[1].count, response[2].count, response[3].count, response[4].count ]
-								},
-								{
-									type : 'column',
-									name : 'Without Login',
-									data : [ response[0].count - 2, response[1].count - 2, response[2].count - 1, response[3].count - 1, response[4].count - 2 ]
-								},
-								{
-									type : 'spline',
-									name : 'Average',
-									data : [ ((response[0].count + (response[0].count - 2))/2), ((response[1].count + (response[1].count - 2))/2), ((response[2].count + (response[2].count - 2))/2), ((response[3].count + (response[3].count - 2))/2), ((response[4].count + (response[4].count - 2))/2) ],
-									marker : {
-										lineWidth : 2,
-										lineColor : Highcharts.getOptions().colors[3],
-										fillColor : 'white'
-									}
-								},
-								{
-									type : 'pie',
-									name : 'Total consumption',
-									data : [
+			dataType : "json"
+		})
+				.success(
+						function(response) {
+							$('#container')
+									.highcharts(
 											{
-												name : 'With Login',
-												y : response[0].count + response[1].count + response[2].count + response[3].count + response[4].count,
-												color : Highcharts
-														.getOptions().colors[0]
-											// Jane's color
-											},
-											{
-												name : 'Without Login',
-												y : response[0].count - 2 + response[1].count - 2 + response[2].count - 1 + response[3].count - 1 + response[4].count - 2,
-												color : Highcharts
-														.getOptions().colors[1]
-											// John's color
-											} ],
-									center : [ 300, 30 ],
-									size : 100,
-									showInLegend : false,
-									dataLabels : {
-										enabled : false
-									}
-								} ]
-					});
-		}).error(function(error) {
-			alert(error);				
-		});
-		
+												title : {
+													text : 'Top 5 Spots'
+												},
+												xAxis : {
+													categories : [
+															response[0].address,
+															response[1].address,
+															response[2].address,
+															response[3].address,
+															response[4].address ]
+												},
+												labels : {
+													items : [ {
+														html : 'Total Usage',
+														style : {
+															left : '50px',
+															top : '18px',
+															color : (Highcharts.theme && Highcharts.theme.textColor)
+																	|| 'black'
+														}
+													} ]
+												},
+												series : [
+														{
+															type : 'column',
+															name : 'With Login',
+															data : [
+																	response[0].count,
+																	response[1].count,
+																	response[2].count,
+																	response[3].count,
+																	response[4].count ]
+														},
+														{
+															type : 'column',
+															name : 'Without Login',
+															data : [
+																	response[0].count - 2,
+																	response[1].count - 2,
+																	response[2].count - 1,
+																	response[3].count - 1,
+																	response[4].count - 2 ]
+														},
+														{
+															type : 'spline',
+															name : 'Average',
+															data : [
+																	((response[0].count + (response[0].count - 2)) / 2),
+																	((response[1].count + (response[1].count - 2)) / 2),
+																	((response[2].count + (response[2].count - 2)) / 2),
+																	((response[3].count + (response[3].count - 2)) / 2),
+																	((response[4].count + (response[4].count - 2)) / 2) ],
+															marker : {
+																lineWidth : 2,
+																lineColor : Highcharts
+																		.getOptions().colors[3],
+																fillColor : 'white'
+															}
+														},
+														{
+															type : 'pie',
+															name : 'Total consumption',
+															data : [
+																	{
+																		name : 'With Login',
+																		y : response[0].count
+																				+ response[1].count
+																				+ response[2].count
+																				+ response[3].count
+																				+ response[4].count,
+																		color : Highcharts
+																				.getOptions().colors[0]
+																	// Jane's color
+																	},
+																	{
+																		name : 'Without Login',
+																		y : response[0].count
+																				- 2
+																				+ response[1].count
+																				- 2
+																				+ response[2].count
+																				- 1
+																				+ response[3].count
+																				- 1
+																				+ response[4].count
+																				- 2,
+																		color : Highcharts
+																				.getOptions().colors[1]
+																	// John's color
+																	} ],
+															center : [ 300, 30 ],
+															size : 100,
+															showInLegend : false,
+															dataLabels : {
+																enabled : false
+															}
+														} ]
+											});
+						}).error(function(error) {
+					alert(error);
+				});
+
 		//api call to fetch the data
-		
-		
-		
-	var low1 = 12, low2 = 7, low3 = 7, low4 = 6, low5 = 7, low6 = 8;
-	var high1 = 7, high2 = 6, high3 = 3, high4 = 3, high5 = 4, high6 = 5;
-	var add1 = 'Spot 1', add2 ='Spot 2',add3 = 'Spot 3', add4 ='Spot 4',add5 = 'Spot 5', add6 ='Spot 6';
-		
+
+		var low1 = 12, low2 = 7, low3 = 7, low4 = 6, low5 = 7, low6 = 8;
+		var high1 = 7, high2 = 6, high3 = 3, high4 = 3, high5 = 4, high6 = 5;
+		var add1 = 'Spot 1', add2 = 'Spot 2', add3 = 'Spot 3', add4 = 'Spot 4', add5 = 'Spot 5', add6 = 'Spot 6';
+
 		//get low values
 		$http({
 			method : 'GET',
 			url : '/api/getlowreviewvalues',
-			dataType: "json"
+			dataType : "json"
 		}).success(function(res) {
 			l1 = res[0].low;
 			low2 = res[1].low;
@@ -1235,27 +1275,27 @@
 			low4 = res[3].low;
 			low5 = res[4].low;
 			low6 = res[5].low;
-			
+
 			add1 = res[0].address;
 			add2 = res[1].address;
 			add3 = res[2].address;
 			add4 = res[3].address;
 			add5 = res[4].address;
 			add6 = res[5].address;
-			
+
 			//get high values
 			$http({
 				method : 'GET',
 				url : '/api/gethighreviewvalues',
-				dataType: "json"
+				dataType : "json"
 			}).success(function(response) {
 				high1 = response[0].high;
 				high2 = response[1].high;
 				high3 = response[2].high;
 				high4 = response[3].high;
 				high5 = response[4].high;
-				high6 = response[5].high;	
-				
+				high6 = response[5].high;
+
 				var freqData = [ {
 					State : add1,
 					freq : {
@@ -1298,21 +1338,18 @@
 						mid : 0,
 						high : 5
 					}
-				}];
+				} ];
 
 				dashboard('#dashboard', freqData);
-				
-				
+
 			}).error(function(error) {
-				alert(error);				
+				alert(error);
 			});
-			
+
 		}).error(function(error) {
-			alert(error);				
+			alert(error);
 		});
-		
-		
-		
+
 		//populatedata();
 
 	}
@@ -1646,6 +1683,64 @@
 			addPaymentController);
 	function addPaymentController($scope, $http) {
 
+	}
+</script>
+
+<script>
+	angular.module('myApp').controller('bookinghistoryModule',
+			bookinghistoryModule);
+	function bookinghistoryModule($scope, $http) {
+
+		$scope.recordCount = {
+			data : [ {
+				value : '10',
+				name : '10'
+			}, {
+				value : '20',
+				name : '20'
+			}, {
+				value : '50',
+				name : '50'
+			}, {
+				value : '100',
+				name : '100'
+			} ]
+		};
+		
+		$scope.noofrecords = '10';
+
+		// calling get user listing
+		$http({
+			method : 'GET',
+			url : '/api/getuserlisting/10/0',
+			dataType : "json"
+		}).success(function(response) {
+			$scope.bookingInfos = response;
+			insertPaging(response[0].Totalrows, 1, $scope.noofrecords);
+		}).error(function(error) {
+			alert(error);
+		});
+		
+		$scope.getdataforgrid = function(){
+        	var records = $scope.noofrecords;
+        	var offset = 0;
+        	if($(event)[0].currentTarget.title == undefined || $(event)[0].currentTarget.title == ""){
+        		offset = (parseInt(curPage) - 1) * parseInt(records);
+        	}
+        	else{
+				offset = (parseInt($(event)[0].currentTarget.title) - 1) * parseInt(records);
+			}
+        	var url = "/api/getuserlisting/"+records+"/" + offset;
+                $http({
+                    method: 'GET',
+                    url: url
+                }).success(function(response){
+                	$scope.bookingInfos = response;
+        			insertPaging(response[0].Totalrows, 1, $scope.noofrecords);
+                }).error(function(err){
+                    alert(err.value.message);
+           });
+        };
 	}
 </script>
 
