@@ -87,6 +87,12 @@ app.get('/loadavailabilitychart',availability.getAvailabilityChart);
 app.get('/gaugechart',gauge.gaugechart);
 app.get('/loadgaugechart',gauge.getGaugeChart);
 
+
+app.get('/google5dd28b475d00bead.html', function(req, res){
+	res.render('google5dd28b475d00bead');
+});
+
+
 app.get('/api/session',function(req,res){
 	
 	if(req.session.data){
