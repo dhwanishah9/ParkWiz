@@ -96,7 +96,7 @@ app.get('/google5dd28b475d00bead.html', function(req, res){
 });
 
 app.get('/sitemap.xml', function(req, res){
-	res.render('google5dd28b475d00bead');
+	res.render('sitemap');
 });
 
 
