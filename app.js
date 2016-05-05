@@ -235,6 +235,12 @@ app.get('/api/getuserlisting/:limit/:offset',function(req,res){
     listing.getuserlisting(req, res, req.session.userid, req.params.limit, req.params.offset);
 });
 
+//for availability in details
+app.get('/getSpotAvailability',function(req,res){
+    console.log("Inside app.js /getSpotAvailability "+req.query.searchdate);
+    reservation.getSpotAvailability(req,res);
+});
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
