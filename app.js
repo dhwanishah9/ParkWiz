@@ -95,6 +95,10 @@ app.get('/google5dd28b475d00bead.html', function(req, res){
 	res.render('google5dd28b475d00bead');
 });
 
+app.get('/sitemap.xml', function(req, res){
+	res.render('google5dd28b475d00bead');
+});
+
 
 app.get('/api/session',function(req,res){
 	
