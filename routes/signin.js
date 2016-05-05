@@ -1,7 +1,9 @@
 var password = require('password-hash-and-salt');
 var mysql = require('./mysql');
+var traffic = require('./traffic');
 
 exports.signin = function(req, res){
+	  traffic.trafficupdate();
 	  res.render('signin', { title: 'ParkWiz' });
 };
 

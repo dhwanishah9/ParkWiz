@@ -68,79 +68,84 @@ now override the 3.3 new styles for modern browsers & apply opacity
 <h1>
 	<i class="fa fa-bar-chart"></i> Images
 </h1>
-<div id="normalimages" ng-controller="imagemodule" ng-init="init()">
-	<div id="heading" style="background-color: #565656">
-		<a class="filterheading" style="text-decoration: none;"> <i
-			class="fa fa-filter fa-fw head"></i> Normal Images
-		</a>
-	</div>
-	<br />
-
-	<div id="carouselHacked" class="carousel slide carousel-fade"
-		data-ride="carousel">
-
-		<!-- Wrapper for slides -->
-		<div class="carousel-inner" role="listbox">
-			<div class="item active">
-				<img style="width: 100%; height: 100%" alt=""
-					ng-src="{{activeimage.imageurl}}">
-				<div class="carousel-caption">caption 1</div>
-			</div>
-			<div class="item" ng-repeat="image in spotimages">
-				<img style="width: 100%; height: 100%" alt=""
-					ng-src="{{image.imageurl}}">
-				<div class="carousel-caption">caption 1</div>
-			</div>
+<div ng-controller="imagemodule" ng-init="init()">
+	<div id="normalimages">
+		<div id="heading" style="background-color: #565656; padding: 8px; ">
+			<a class="filterheading" style="text-decoration: none;"> <i
+				class="fa fa-filter fa-fw head"></i> Normal Images
+			</a>
 		</div>
+		<br />
 
-		<!-- Controls -->
-		<a class="left carousel-control" href="#carouselHacked" role="button"
-			data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"
-			aria-hidden="true"></span> <span class="sr-only">Previous</span>
-		</a> <a class="right carousel-control" href="#carouselHacked"
-			role="button" data-slide="next"> <span
-			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>
-</div>
+		<div id="carouselHacked" class="carousel slide carousel-fade"
+			data-ride="carousel">
 
-<br />
-<div id="panaromaimages">
-	<div id="heading" style="background-color: #565656">
-		<a class="filterheading" style="text-decoration: none;"> <i
-			class="fa fa-filter fa-fw head"></i> 3D Images
-		</a>
-	</div>
-	<br />
-	<div id="carouselHacked" class="carousel slide carousel-fade"
-		data-ride="carousel">
-
-		<!-- Wrapper for slides -->
-		<div class="carousel-inner" role="listbox">
-			<div class="item active">
-				<a href="javascript:void(0);"><img
-					style="width: 100%; height: 100%" alt=""
-					ng-src="{{activeimage.imageurl}}"></a>
-				<div class="carousel-caption">captionsssssss</div>
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<img style="width: 100%; height: 100%" alt=""
+						ng-src="{{activeimage.imageurl}}">
+					<div class="carousel-caption">{{activeimage.caption}}</div>
+				</div>
+				<div class="item" ng-repeat="image in spotimages">
+					<img style="width: 100%; height: 100%" alt=""
+						ng-src="{{image.imageurl}}">
+					<div class="carousel-caption">{{image.caption}}</div>
+				</div>
 			</div>
-			<div class="item" ng-repeat="img in panaromaimages">
-				<a onclick="opennewwindow('$img.imageurl');"
-					href="javascript:void(0);"><img
-					style="width: 100%; height: 100%" alt=""
-					ng-src="{{ img.imageurl }}"></a>
-				<div class="carousel-caption">{{ img.caption }}</div>
-			</div>
+
+			<!-- Controls -->
+			<a class="left carousel-control" href="#carouselHacked" role="button"
+				data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#carouselHacked"
+				role="button" data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
 		</div>
+	</div>
 
-		<!-- Controls -->
-		<a class="left carousel-control" href="#carouselHacked" role="button"
-			data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"
-			aria-hidden="true"></span> <span class="sr-only">Previous</span>
-		</a> <a class="right carousel-control" href="#carouselHacked"
-			role="button" data-slide="next"> <span
-			class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
+	<br />
+	<div id="panaromaimages">
+		<div id="heading" style="background-color: #565656; padding: 8px;">
+			<a class="filterheading" style="text-decoration: none;"> <i
+				class="fa fa-filter fa-fw head"></i> 3D Images
+			</a>
+		</div>
+		<br />
+		<div id="carouselHacked1" class="carousel slide carousel-fade"
+			data-ride="carousel">
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<a ng-click="opennewwindow($event);"
+						href="javascript:void(0);"><img
+						style="width: 100%; height: 100%" alt=""
+						ng-src="{{panaromaactiveimage.imageurl}}"></a>
+					<div class="carousel-caption">{{panaromaactiveimage.caption}}</div>
+				</div>
+				<div class="item" ng-repeat="img in panaromaimages">
+					<a ng-click="opennewwindow($event);"
+						href="javascript:void(0);"><img
+						style="width: 100%; height: 100%" alt=""
+						ng-src="{{ img.imageurl }}"></a>
+					<div class="carousel-caption">{{ img.caption }}</div>
+				</div>
+			</div>
+
+			<!-- Controls -->
+			<a class="left carousel-control" href="#carouselHacked1"
+				role="button" data-slide="prev"> <span
+				class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> <a class="right carousel-control" href="#carouselHacked1"
+				role="button" data-slide="next"> <span
+				class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
 	</div>
 </div>

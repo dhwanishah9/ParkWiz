@@ -12,10 +12,13 @@ var express = require('express')
   , signin=require('./routes/signin')
   , signup=require('./routes/signup')
   , review=require('./routes/review')
+  , newlisting=require('./routes/addlistings')
   , availability=require('./routes/availabilitychart')
   , gauge=require('./routes/usergauge')
   , reservation = require('./routes/reservation')
   , image = require('./routes/image')
+  , billing=require('./routes/billing')
+  , dashboard=require('./routes/dashboard')
   , path = require('path');
 
 var app = express();
@@ -39,6 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
+
+
 
 app.get('/', routes.index);
 app.get('/abc', routes.abc);
@@ -71,16 +76,29 @@ app.get('/register', signup.register);
 app.get('/myaccount', routes.myaccount);
 app.get('/bookinghistory', routes.bookinghistory);
 app.get('/billing', routes.billing);
+app.post('/addPayment', billing.addPayment);
 
 app.post('/resetpassword',signin.changepassword)
 app.get('/review', review.review);
 app.get('/getallreviews', review.getReviews);
 app.get('/getreviewschart', review.getReviewsChart);
 app.post('/savereview', review.saveReview);
+app.post('/addlistings', newlisting.addlistings);
+app.get('/availability',availability.availability);
 app.get('/availabilitychart',availability.availability);
 app.get('/loadavailabilitychart',availability.getAvailabilityChart);
 app.get('/gaugechart',gauge.gaugechart);
 app.get('/loadgaugechart',gauge.getGaugeChart);
+
+
+app.get('/google5dd28b475d00bead.html', function(req, res){
+	res.render('google5dd28b475d00bead');
+});
+
+app.get('/sitemap.xml', function(req, res){
+	res.render('sitemap');
+});
+
 
 app.get('/api/session',function(req,res){
 	
@@ -118,7 +136,7 @@ app.del('/api/session',function(req,res){
 });
 
 app.get('/api/loggedin_userinfo',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	user.getuserinfo(userid, res);
 	/*if(req.session.userid) {
 		var userid = req.session.userid;
@@ -132,7 +150,7 @@ app.get('/api/loggedin_userinfo',function(req,res){
 });
 
 app.get('/api/bookingoverview',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.gettopbookings(userid, res);
 });
 
@@ -152,18 +170,23 @@ app.get('/createReservation',function(req,res){
 });
 
 app.get('/api/getspaces',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getspaces(userid, res);
 });
 
 app.get('/api/mylisting',function(req,res){
-	userid = 1;
+	userid = req.session.userid;
 	booking.getallbookings(userid, res);
+});
+
+app.get('/api/getcounts',function(req,res){
+	userid = req.session.userid;
+	booking.getcounts(userid, res);
 });
 
 app.post('/api/loggedin_userinfo',function(req,res){
 	debugger;
-	user.updateuserinfo(req.body,res);
+	user.updateuserinfo(req.body, req.session.userid,res);
 });
 
 app.get('/getAllImages',function(req,res){
@@ -174,6 +197,36 @@ app.get('/getAllImages',function(req,res){
 app.get('/getSpotAvailability',function(req,res){
     console.log("Inside app.js /getSpotAvailability "+req.query.searchdate);
     reservation.getSpotAvailability(req,res);
+
+//website traffic
+app.get('/api/getwebsitetraffic',function(req,res){
+    dashboard.websitetraffic(req, res);
+});
+
+//no of users
+app.get('/api/getnumberofusers',function(req,res){
+    dashboard.noofusers(req, res);
+});
+
+//total sales
+app.get('/api/gettotalsales',function(req,res){
+    dashboard.toalsales(req, res);
+});
+
+//get low review values
+app.get('/api/getlowreviewvalues',function(req,res){
+    dashboard.getlowreviewvalues(req, res);
+});
+
+//get high review values
+app.get('/api/gethighreviewvalues',function(req,res){
+    dashboard.gethighreviewvalues(req, res);
+});
+
+//get priority spots
+app.get('/api/getpriorityspots',function(req,res){
+    dashboard.getpriorityspots(req, res);
+
 });
 
 http.createServer(app).listen(app.get('port'), function(){

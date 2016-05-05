@@ -3,7 +3,7 @@
 </h1>
 <div class="account-progress">
 	<h4>
-		Your profile is <span><span class="perc">65</span>% complete</span>
+		Your profile is <span><span class="perc">{{percentage}}</span>% complete</span>
 	</h4>
 	<div class="progress-overflow">
 		<ul>
@@ -43,13 +43,13 @@
 					</a>
 				</div>
 			</li>-->
-			<li class="payment double 1">
+			<li class="photo complete">
 				<div class="criteria-block">
 					<a href="javascript:void(0);">
 						<div class="o">
 							<div class="i">
 								<span class="check"> <i class="fa fa-check"></i>
-								</span> Payment information added
+								</span>Payment information added
 							</div>
 						</div>
 					</a>
@@ -78,7 +78,7 @@
 					data-toggle="tooltip" data-placement="bottom" title=""
 					data-original-title="Pending: Your earnings from bookings that are ongoing or yet to start."></i>
 			</p>
-			<span>£ 0.00</span>
+			<span>$ {{ bookingoverview[0].monthlypending }}</span>
 		</div>
 		<div class="earning">
 			<p>
@@ -86,7 +86,7 @@
 					data-placement="bottom" title=""
 					data-original-title="Pending Transfer: Your next payment amount - earnings from all bookings that have ended successfully but not yet been paid to you."></i>
 			</p>
-			<span>£ 0.00</span>
+			<span>$ {{ bookingoverview[0].pendingtransfer }}</span>
 		</div>
 		<div class="earning">
 			<p>
@@ -94,7 +94,7 @@
 					data-placement="bottom" title=""
 					data-original-title="Lifetime Earnings: The total amount that has been paid to you."></i>
 			</p>
-			<span>£ 0.00</span>
+			<span>$ {{ bookingoverview[0].lifetimeearnings }}</span>
 		</div>
 	</div>
 	<div class="transactions">
@@ -104,7 +104,7 @@
 					data-toggle="tooltip" data-placement="bottom" title=""
 					data-original-title="Lifetime Transactions: The total number of bookings you&#39;ve received."></i>
 			</p>
-			<span>4</span>
+			<span>{{ bookingoverview[0].lifetimetransactions }}</span>
 		</div>
 	</div>
 </div>

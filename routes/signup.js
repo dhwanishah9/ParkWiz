@@ -1,12 +1,15 @@
 var password = require('password-hash-and-salt');
 var mysql = require('./mysql');
+var traffic = require('./traffic');
 
 exports.signup = function(req, res){
-	  res.render('signup', { title: 'ParkWiz' });
+	traffic.trafficupdate();
+	res.render('signup', { title: 'ParkWiz' });
 };
 	
 exports.register = function(req, res){
-		  res.render('signup', { title: 'ParkWiz' });
+	traffic.trafficupdate();
+	res.render('signup', { title: 'ParkWiz' });
 };
 	
 exports.savesignup = function(req, res){
@@ -16,8 +19,12 @@ exports.savesignup = function(req, res){
 			throw new Error('Error hashing the pwd');
 		else{
 			hashedPwd = hash;
+			var mp = Math.floor(Math.random() * (10 - 0) + 0);//FLOOR((CURTIME()/10000)*RAND());
+			var pt = Math.floor(Math.random() * (20 - 0) + 0);
+			var le = Math.floor(Math.random() * (30 - 0) + 0);
+			var lt = Math.floor(Math.random() * (40 - 0) + 0);
 			//Creating the insert query to save signup data to DB
-			var insert = "insert into user (firstname,lastname,email,password,address,phoneno) values ('"
+			var insert = "insert into user (firstname,lastname,email,password,address,phoneno,monthlypending,pendingtransfer,lifetimeearnings,lifetimetransactions) values ('"
 				    + req.param("firstname")
 					+ "','"
 					+ req.param("lastname")
@@ -29,6 +36,15 @@ exports.savesignup = function(req, res){
 					+req.param("address")
 					+"','"
 					+req.param("phoneno")
+					+"','"
+					+ mp
+					+"','"
+					+ pt
+					+"','"
+					+ le
+					+"','"
+					+ lt
+
 					+ "')";
 			console.log("Query is:" + insert);
 			mysql.insertData(function(err,results) {
@@ -37,20 +53,7 @@ exports.savesignup = function(req, res){
 					res.send({"signup":"Not able to signup!!!Try again!!"});
 				}
 				else{
-					var updatedCountVal=1;
-					var updateCount = "update user set counter='"+updatedCountVal+"' where email='"+req.param("email")+"'";
-					console.log("Query is:" + updateCount);
-					mysql.insertData(function(err,results) {
-						if (err) {
-							console.log("Error while updating counter");
-							res.send({"signup":"Signup Failed"});
-						}
-						else{
-							req.session.userid=results.insertId;
-							res.send({"signup":"Success"});
-						}
-					}, updateCount);
-					
+					res.send({"signup":"Success"});
 				}
 			}, insert);
 		}

@@ -84,7 +84,7 @@
                      }
          
                      function formResult(data) {
-                         $('.paypalResult').show().html('<br><div class="alert alert-success">Success: if you aren't redirected, hit the PayPal button.</div><meta http-equiv="refresh" content="2; url=https://paypal.ca">');
+                         $('.paypalResult').show().html('<br><div class="alert alert-success">Success: if you arent redirected, hit the PayPal button.</div><meta http-equiv="refresh" content="2; url=https://paypal.ca">');
                          $('#paypalForm input').val('');
                      }
          
@@ -192,36 +192,36 @@
 										<div class='alert-danger alert'>Please correct the
 											errors and try again.</div>
 									</div>
-									<label class='control-label'>Name on Card</label> <input
+									<label class='control-label'>Name on Card</label> <input id="cardname" 
 										class='form-control' size='4' type='text'>
 								</div>
 							</div>
 							<div class='form-row'>
 								<div class='form-group card required'>
-									<label class='control-label'>Card Number</label> <input
+									<label class='control-label'>Card Number</label> <input id="cardnum" 
 										autocomplete='off' class='form-control card-number' size='20'
 										type='text'>
 								</div>
 							</div>
 							<div class='form-row'>
 								<div class='form-group card required'>
-									<label class='control-label'>Billing Address</label> <input
+									<label class='control-label'>Billing Address</label> <input id="address" 
 										autocomplete='off' class='form-control' size='20' type='text'>
 								</div>
 							</div>
 							<div class='form-row'>
 								<div class='form-group cvc required'>
-									<label class='control-label'>CVC</label> <input
+									<label class='control-label'>CVV</label> <input id="cvv" 
 										autocomplete='off' class='form-control card-cvc'
 										placeholder='ex. 311' size='4' type='text'>
 								</div>
 								<div class='form-group expiration required'>
-									<label class='control-label'>Expiration</label> <input
+									<label class='control-label'>Expiration</label> <input id="month" 
 										class='form-control card-expiry-month' placeholder='MM'
 										size='2' type='text'>
 								</div>
 								<div class='form-group expiration required'>
-									<label class='control-label'>Year</label> <input
+									<label class='control-label'>Year</label> <input id="year" 
 										class='form-control card-expiry-year' placeholder='YYYY'
 										size='4' type='text'>
 								</div>
@@ -247,10 +247,10 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6">
+	<div class="col-sm-6" ng-controller="addPaymentController">
 		<label class='control-label'></label>
 		<!-- spacing -->
-		<div class="alert alert-info"">Please choose your method of
+		<div class="alert alert-info">Please choose your method of
 			payment and hit Save to save your payment details. You will then be
 			sent down to pay using your selected payment option.</div>
 		<br>
@@ -261,7 +261,7 @@
 				href="#paypal">PayPal</a>
 		</div>
 		<br> <br>
-		<button class='form-control btn btn-primary' type='submit'>
+		<button class='form-control btn btn-primary' type='submit' ng-click="addPaymentMethod()">
 			Save →</button>
 		<br>
 		<!-- <div class="jumbotron jumbotron-flat">

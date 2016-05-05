@@ -10,7 +10,7 @@ exports.list = function(req, res){
 
 
 exports.getuserinfo = function(userid, res) {
-	
+	debugger;
 	var getUser = "select u.firstname, u.lastname, u.email,u.address, u.phoneno, u.counter from user u where u.userid='"
 		+ userid + "'";
 	console.log("Query is:" + getUser);
@@ -30,15 +30,17 @@ exports.getuserinfo = function(userid, res) {
 	
 };
 
-exports.updateuserinfo = function(user, res) {
+exports.updateuserinfo = function(user,userid, res) {
 	
 	
 			//hashedPwd = hash;
 			//Creating the insert query to save signup data to DB
+			
 			var update = "update user set firstname = '" + user.firstname+"' , lastname = '" + user.lastname + "' , email = '"+ user.email
 					+ "'  , address='"+user.address+"',phoneno='"+user.phoneno
 					//+ "' where userid =" + 1 ;
-					+ "' where userid =" + user.userid ;
+					//+ "' where userid =" + user.userid ;
+					+ "' where userid =" + userid ;
 			console.log("Query is:" + update);
 			mysql.insertData(function(err,results) {
 

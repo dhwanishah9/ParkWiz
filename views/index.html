@@ -27,17 +27,19 @@
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script> -->
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
-    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+<script
+	src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-	<script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
 <!-- jQuery -->
 <!-- <script src="/js/jquery.min.js"></script> -->
 
 
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
@@ -103,20 +105,23 @@
 													<i class="fa fa fa-bookmark fa-fw menuSize"></i>
 												</p>
 												<p align="center">Reservation</p></a></li>
-										<li><a class="aNav" href="#"><p align="center">
+										<li ng-click="account();"><a class="aNav" href="#"><p align="center">
 													<i class="fa fa-child fa-fw menuSize"></i>
 												</p>
 												<p align="center">User Details</p></a></li>
+
 										<li ng-click="billing();"><a class="aNav" href="#"><p
 													align="center">
 													<i class="fa fa-money fa-fw menuSize"></i>
 												</p>
 												<p align="center">Billing</p></a></li>
-										<li ng-click="details();"><a class="aNav" href="#"><p align="center">
+										<li ng-click="details();"><a class="aNav" href="#"><p
+													align="center">
 													<i class="fa fa-book fa-fw menuSize"></i>
 												</p>
 												<p align="center">Reviews</p></a></li>
-									<li ng-click="dashboard();"><a class="aNav" href="#"><p align="center">
+										<li ng-click="dashboard();"><a class="aNav" href="#"><p
+													align="center">
 													<i class="fa fa-bar-chart-o fa-fw menuSize"></i>
 												</p>
 												<p align="center">Dashboard</p></a></li>
@@ -262,7 +267,7 @@
 										<li><a href="#"><i class="fa fa-gear fa-fw"></i>
 												Settings</a></li>
 										<li class="divider"></li>
-										<li><a href="login.html"><i
+										<li><a ng-click="logout()"><i
 												class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 									</ul> <!-- /.dropdown-user --></li>
 								<!-- /.dropdown -->
@@ -299,12 +304,12 @@
 </body>
 
 <script>
-var autocomplete;
-//var searchdata;
-var privateParkingList;
+	var autocomplete;
+	//var searchdata;
+	var privateParkingList;
 
-angular.module('myApp', ['ngAnimate','ui.bootstrap']);
-angular.module('myApp').controller('layoutmodule', layoutmodule);
+	angular.module('myApp', [ 'ngAnimate', 'ui.bootstrap' ]);
+	angular.module('myApp').controller('layoutmodule', layoutmodule);
 	function layoutmodule($scope, $http) {
 		var templateName = "Search Page"; // Search is the default url.
 		if (typeof (Storage) !== "undefined") {
@@ -330,7 +335,7 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 			$scope.template = $scope.templates[1];
 			$("#navMenus").hide();
 		};
-		
+
 		$scope.dashboard = function() {
 			$scope.template = $scope.templates[7];
 			$("#navMenus").hide();
@@ -407,93 +412,99 @@ angular.module('myApp').controller('layoutmodule', layoutmodule);
 			}
 		});
 
+		if (sessionStorage.getItem("latest_template")) {
+			var o = JSON.parse(sessionStorage.getItem("latest_template"));
+			sessionStorage.setItem("latest_template", null);
+			$scope.template = o;
+		}
+
+		$scope.detail = function(spotid) {
+			sessionStorage.setItem("spot_id", spotid);
+			sessionStorage.setItem("latest_template", JSON
+					.stringify($scope.templates[6]));
+			location.reload();
+		}
+
 		//initialize();
+
+		$scope.logout = function() {
+			$http({
+				method : 'DELETE',
+				url : '/api/session'
+			}).success(function(response) {
+				window.location = '/signin';
+			}).error(function(error) {
+				window.location = '/signin';
+			});
+		};
 	}
-	angular.module('myApp').controller('searchmodule', searchmodule);	
+	angular.module('myApp').controller('searchmodule', searchmodule);
 	function searchmodule($scope, $http) {
-	$scope.templates = [ {
-		name : 'Details Page',
-		url : '/details'
-		//initializeFunction : undefined
-	}];
-	
-	$scope.templates.forEach(function(template) {
-		if (template['name'] == 'Details Page') {
-			$scope.template = template;
-		}
-		if (template['name'] == 'Details Page') {
-			$scope.template = template;
-			if (template.initializeFunction) {
-				template.initializeFunction($scope, $http);
-			}
-		}
-	});
-	
-	$scope.details = function(spotid) {
-		
-		$scope.template = $scope.templates[0];
-		alert("sdfds"+$scope.template.url);
-		window.location = $scope.template.url;
-		//$("#navMenus").hide();
-	}
-	
+
 		initMap();
-		$scope.searchParking = function(){
-			  
+		$scope.searchParking = function() {
+
 			searchParkings();
-			
-			setTimeout(function(){
-				var data = getParkingList();
-				//$scope.privateparkingresult = getParkingList();
-				var privateparkingresult = JSON.parse(data);
-				//alert(data[0].state);
-				//console.log(JSON.stringify(data));
-				
-				var htmlval = "";
-				
-				for(var i=0; i<privateparkingresult.length; i++){
-					htmlval += '<tr>';
-					htmlval += '<td style="width: 20%"><div align="center" class="image">';
-					htmlval += '<img style="width: 30%; height: 30%;"';
-					htmlval += 'src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"';
-					htmlval += 'alt="Parking on 84 N 7th Street, "></div></td>';
-					htmlval += '<td style="width: 60%"><div align="center">'+privateparkingresult[i].addressline1+'</div></td>';
-					htmlval += '<td><div align="center"><a onclick="getDetails(this,'+privateparkingresult[i].spotid+');" class="bookingnav" >Details</a>';
-					htmlval += '</div></td><td><div align="center">';
-					htmlval += '<button type="button" class="btn btn-success" onclick="reserveParking('+privateparkingresult[i].spotid+')">Reserve</button>';
-					htmlval += '</div></td></tr>';
-				}
-				
-				$("#tbodyTabularview").append(htmlval);
-				//alert("data "+data);
-			},1000);
-			
-		};	
-	
+
+			setTimeout(
+					function() {
+						var data = getParkingList();
+						//$scope.privateparkingresult = getParkingList();
+						var privateparkingresult = JSON.parse(data);
+						//alert(data[0].state);
+						//console.log(JSON.stringify(data));
+
+						var htmlval = "";
+
+						for (var i = 0; i < privateparkingresult.length; i++) {
+							htmlval += '<tr>';
+							htmlval += '<td style="width: 20%"><div align="center" class="image">';
+							htmlval += '<img style="width: 30%; height: 30%;"';
+							htmlval += 'src="https://static.yourparkingspace.co.uk/8963d0b7ecca07ef6fd89760ee6378e3.jpeg"';
+							htmlval += 'alt="Parking on 84 N 7th Street, "></div></td>';
+							htmlval += '<td style="width: 60%"><div align="center">'
+									+ privateparkingresult[i].addressline1
+									+ '</div></td>';
+							htmlval += '<td><div align="center"><a onclick="getDetails(this,'
+									+ privateparkingresult[i].spotid
+									+ ');" class="bookingnav" >Details</a>';
+							htmlval += '</div></td><td><div align="center">';
+							htmlval += '<button type="button" class="btn btn-success" onclick="reserveParking('
+									+ privateparkingresult[i].spotid
+									+ ')">Reserve</button>';
+							htmlval += '</div></td></tr>';
+						}
+
+						$("#tbodyTabularview").append(htmlval);
+						//alert("data "+data);
+					}, 1000);
+
+		};
+
 	}
-	
-function reserveParking(spotid){
-	alert("Here"+spotid);
-	var userid=1;
-	//console.log("... "+$scope.startdate);
-	//searchdata = {"startdate": $scope.startdate};
-	reserveParkingSpot(userid,spotid);
-}
 
-function getDetails(el,spotid){
-	var $scope = angular.element(el).scope();
-	  //$scope.thing = newVal;
-	  $scope.details(spotid);
-}
+	function reserveParking(spotid) {
+		alert("Here" + spotid);
+		var userid = 1;
+		//console.log("... "+$scope.startdate);
+		//searchdata = {"startdate": $scope.startdate};
+		reserveParkingSpot(userid, spotid);
+	}
 
-angular.module('myApp').controller('profilemodule', profilemodule);
-function profilemodule($scope, $http) {
-	$(".progress-bar").animate({
-		width : "70%"
-	}, 2500);
-}
+	function getDetails(el, spotid) {
+		var $s = angular.element(el).scope();
+		//$scope.thing = newVal;
+		$s.$parent.detail(spotid);
+	}
 
-angular.module('myApp').controller('bookingModule',bookingModule);
+	angular.module('myApp').controller('profilemodule', profilemodule);
+	function profilemodule($scope, $http) {
+		$(".progress-bar").animate({
+			width : "70%"
+		}, 2500);
+	}
+
+	angular.module('myApp').controller('bookingModule', bookingModule);
 </script>
 
 <script>
@@ -529,11 +540,11 @@ angular.module('myApp').controller('bookingModule',bookingModule);
 	var map;
 	var infowindow;
 	var locations;
-	function initMap() {	
+	function initMap() {
 		var width = document.getElementById('mapContent').offsetWidth;
 		var height = document.getElementById('mapContent').offsetHeight;
 		$("#map").width(width).height(height);
-		
+
 		var mapDiv = document.getElementById('map');
 		map = new google.maps.Map(mapDiv, {
 			center : {
@@ -543,81 +554,89 @@ angular.module('myApp').controller('bookingModule',bookingModule);
 			zoom : 15
 		});
 	}
- 	function callback(results, status) {
+	function callback(results, status) {
 		if (status === google.maps.places.PlacesServiceStatus.OK) {
 			for (var i = 0; i < results.length; i++) {
-	            createMarker(results[i]);
+				createMarker(results[i]);
 			}
 		}
 	}
 
 	function createMarker(place) {
-	    var placeLoc = place.geometry.location;
-	    var marker = new google.maps.Marker({
-	      map: map,
-	      animation: google.maps.Animation.DROP,
-	      position: place.geometry.location
-	    });
-	
-	    google.maps.event.addListener(marker, 'click', function() {
-	      infowindow.setContent(place.name);
-	      infowindow.open(map, this);
-	    });
-	  }
+		var placeLoc = place.geometry.location;
+		var marker = new google.maps.Marker({
+			map : map,
+			animation : google.maps.Animation.DROP,
+			position : place.geometry.location
+		});
 
-	function searchParkings(){
-	  //alert("Looking for place: " +document.getElementById('txtAddress').value);
-	  var geocoder = new google.maps.Geocoder();
-	  var address = document.getElementById('txtAddress').value;
-	  var latitude = 44.540, longitude = -78.546;
-	  
-	  //to convert the destination address into lat long values
-	  geocoder.geocode( { 'address': address}, function(results, status) {
-	    if (status == google.maps.GeocoderStatus.OK) {
-	      latitude = results[0].geometry.location.lat();
-	      longitude = results[0].geometry.location.lng();
-	      //alert(latitude);
-	      progressWithLatLong(latitude, longitude);
-	    } 
-	  });
-  }
-	
-	function progressWithLatLong(latitude, longitude){
-
-		  //alert(map.getCenter());
-		  map.setCenter(new google.maps.LatLng(latitude,longitude));
-		  
-		  var pyrmont = {lat: latitude, lng: longitude};
-		  
-		  infowindow = new google.maps.InfoWindow();
-	        var service = new google.maps.places.PlacesService(map);
-	        service.nearbySearch({
-	          location: pyrmont,
-	          radius: 1000,
-	          type: ['parking']
-	        }, callback);
-	        
-	        createDestinationMarker(latitude,longitude);
-	        getPrivateParking(latitude,longitude);
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.setContent(place.name);
+			infowindow.open(map, this);
+		});
 	}
-	
-	function createDestinationMarker(latitude,longitude){
+
+	function searchParkings() {
+		//alert("Looking for place: " +document.getElementById('txtAddress').value);
+		var geocoder = new google.maps.Geocoder();
+		var address = document.getElementById('txtAddress').value;
+		var latitude = 44.540, longitude = -78.546;
+
+		//to convert the destination address into lat long values
+		geocoder.geocode({
+			'address' : address
+		}, function(results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				latitude = results[0].geometry.location.lat();
+				longitude = results[0].geometry.location.lng();
+				//alert(latitude);
+				progressWithLatLong(latitude, longitude);
+			}
+		});
+	}
+
+	function progressWithLatLong(latitude, longitude) {
+
+		//alert(map.getCenter());
+		map.setCenter(new google.maps.LatLng(latitude, longitude));
+
+		var pyrmont = {
+			lat : latitude,
+			lng : longitude
+		};
+
+		infowindow = new google.maps.InfoWindow();
+		var service = new google.maps.places.PlacesService(map);
+		service.nearbySearch({
+			location : pyrmont,
+			radius : 1000,
+			type : [ 'parking' ]
+		}, callback);
+
+		createDestinationMarker(latitude, longitude);
+		getPrivateParking(latitude, longitude);
+	}
+
+	function createDestinationMarker(latitude, longitude) {
 		var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_yellow';
 		var markerIcon = MARKER_PATH + 'D' + '.png';
 		var marker = new google.maps.Marker({
-	        map: map,
-	        position: {lat: latitude, lng: longitude},
-	        title: document.getElementById('txtAddress').value,
-	        animation: google.maps.Animation.DROP,
-	        icon: markerIcon
-	        });
-	        marker.addListener('click', function(){
-	          infowindow.open(map,this);
-	          infowindow.setContent(this.title);
+			map : map,
+			position : {
+				lat : latitude,
+				lng : longitude
+			},
+			title : document.getElementById('txtAddress').value,
+			animation : google.maps.Animation.DROP,
+			icon : markerIcon
+		});
+		marker.addListener('click', function() {
+			infowindow.open(map, this);
+			infowindow.setContent(this.title);
 		});
 	}
-	
-	function getPrivateParking(latitude,longitude){
+
+	function getPrivateParking(latitude, longitude) {
 		var latlongvalues = [];
 		$.ajax({
             type: 'GET',
@@ -631,55 +650,80 @@ angular.module('myApp').controller('bookingModule',bookingModule);
          }).error(function(error){
         	 alert("error");
         });
+			type : 'GET',
+			url : '/privateParking',
+			data : {
+				"latitude" : latitude,
+				"longitude" : longitude
+			}
+		}).success(function(response) {
+			//alert("success");
+			latlongvalues.push(JSON.stringify(response));
+			var privateparkingjson = {
+				'locations' : latlongvalues[0]
+			};
+			setParkingList(privateparkingjson)
+			plotPins(privateparkingjson);
+			//alert("FINISH");
+		}).error(function(error) {
+			alert("error");
+		});
+>>>>>>> 3cd845f7dfe8f8245bd72a628bd4a82deb2d7351
 	}
-	
-	function getParkingList(){
+
+	function getParkingList() {
 		return privateParkingList;
 	}
-	
-	function setParkingList(privateparkingjson){
+
+	function setParkingList(privateparkingjson) {
 		privateParkingList = privateparkingjson.locations;
 		//alert("getting parking" +privateParkingList);
 		//alert("privateParkingList: "+privateParkingList);
 	}
-	
-function plotPins(privateparkingjson){
-	var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_green';
-	var privateparking = privateparkingjson;
-	var locations = JSON.parse(privateparking.locations);
-		
-	for(var i=0; i<locations.length; i++)
-	{
-		var address2 = locations[i].addressline2 == null ? '' : locations[i].addressline2;
-		var addr = locations[i].addressline1+' '+address2;
-		var lat = parseFloat(locations[i].latitude);
-		var lng = parseFloat(locations[i].longitude);
-		var markerLetter = String.fromCharCode('A'.charCodeAt(0) + i);
-		var markerIcon = MARKER_PATH + markerLetter + '.png';
-		var marker = new google.maps.Marker({
-	        map: map,
-	        position: {lat: lat, lng: lng},
-	        title: addr,
-	        animation: google.maps.Animation.DROP,
-	        icon: markerIcon
-	        });
-	        marker.addListener('click', function(){
-	        	var htmlText = document.createElement("html");
-	        	htmlText.innerHTML = 
-				"<head><link href='/stylesheets/bootstrap.min.css' rel='stylesheet'/><link rel='stylesheet' href='style.css'/></head><body style='background-color: #fff!important;'><h5>"
-				+this.title+
-				"</h5><button align='center' type='button' class='btn btn-success'>Reserve</button><body>";
-	          infowindow.open(map,this);
-	          infowindow.setContent(htmlText);
-		});
-	}
+
+	function plotPins(privateparkingjson) {
+		var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_green';
+		var privateparking = privateparkingjson;
+		var locations = JSON.parse(privateparking.locations);
+
+		for (var i = 0; i < locations.length; i++) {
+			var address2 = locations[i].addressline2 == null ? ''
+					: locations[i].addressline2;
+			var addr = locations[i].addressline1 + ' ' + address2;
+			var lat = parseFloat(locations[i].latitude);
+			var lng = parseFloat(locations[i].longitude);
+			var markerLetter = String.fromCharCode('A'.charCodeAt(0) + i);
+			var markerIcon = MARKER_PATH + markerLetter + '.png';
+			var marker = new google.maps.Marker({
+				map : map,
+				position : {
+					lat : lat,
+					lng : lng
+				},
+				title : addr,
+				animation : google.maps.Animation.DROP,
+				icon : markerIcon
+			});
+			marker
+					.addListener(
+							'click',
+							function() {
+								var htmlText = document.createElement("html");
+								htmlText.innerHTML = "<head><link href='/stylesheets/bootstrap.min.css' rel='stylesheet'/><link rel='stylesheet' href='style.css'/></head><body style='background-color: #fff!important;'><h5>"
+										+ this.title
+										+ "</h5><button align='center' type='button' class='btn btn-success'>Reserve</button><body>";
+								infowindow.open(map, this);
+								infowindow.setContent(htmlText);
+							});
+		}
 	}
 
-	function geolocate() {		
-		autocomplete = new google.maps.places.Autocomplete((document.getElementsByClassName('locationservice')[0]), {
+	function geolocate() {
+		autocomplete = new google.maps.places.Autocomplete((document
+				.getElementsByClassName('locationservice')[0]), {
 			types : [ 'geocode' ]
 		});
-		
+
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {
@@ -694,60 +738,67 @@ function plotPins(privateparkingjson){
 			});
 		}
 	}
-	
-	function reserveParkingSpot(userid,spotid){
-		validatePaymentInfo(userid,spotid);
+
+	function reserveParkingSpot(userid, spotid) {
+		validatePaymentInfo(userid, spotid);
 	}
-	
-	function validatePaymentInfo(userid,spotid){
+
+	function validatePaymentInfo(userid, spotid) {
 		$.ajax({
-            type: 'GET',
-            url: '/checkPaymentInfo',
-            data: { "userid": userid , "spotid": spotid}
-         }).success(function(response){
-        	 if(response){
-        		 createReservation();
-        	 }else{
-        		createReservation();
-        		//location.href="/payment";		 
-        	 }
+			type : 'GET',
+			url : '/checkPaymentInfo',
+			data : {
+				"userid" : userid,
+				"spotid" : spotid
+			}
+		}).success(function(response) {
+			if (response) {
+				createReservation();
+			} else {
+				createReservation();
+				//location.href="/payment";		 
+			}
 			alert("success");
-         }).error(function(error){
-        	 alert("error");
-        });
+		}).error(function(error) {
+			alert("error");
+		});
 	}
-	
-	function createReservation(){
+
+	function createReservation() {
 		console.log("inside create reservation");
 		$.ajax({
-            type: 'GET',
-            url: '/createReservation',
-            data: { "userid": userid , "spotid": spotid , "searchtime": document.getElementById('#txtorigindate')}
-         }).success(function(response){
-        	 alert("success");
-         }).error(function(error){
-        	 alert("error");
-        });
+			type : 'GET',
+			url : '/createReservation',
+			data : {
+				"userid" : userid,
+				"spotid" : spotid,
+				"searchtime" : document.getElementById('#txtorigindate')
+			}
+		}).success(function(response) {
+			alert("success");
+		}).error(function(error) {
+			alert("error");
+		});
 	}
 </script>
 
 <script>
-angular.module('myApp').controller('detailsModule',detailsModule);
+	angular.module('myApp').controller('detailsModule', detailsModule);
 	function detailsModule($scope, $http) {
 
 		$scope.detailtemplates = [ {
 			name : 'Availability',
 			url : '/availability'
-		},{
+		}, {
 			name : 'Availability Chart',
 			url : '/availabilitychart'
-		},{
+		}, {
 			name : 'Images',
 			url : '/images'
 		}, {
 			name : 'reviews',
 			url : '/reviews'
-		}];
+		} ];
 
 		$scope.details = $scope.detailtemplates[0];
 		$scope.availability = function() {
@@ -757,7 +808,7 @@ angular.module('myApp').controller('detailsModule',detailsModule);
 		$scope.availabilitychart = function() {
 			$scope.details = $scope.detailtemplates[1];
 		};
-		
+
 		$scope.images = function() {
 			$scope.details = $scope.detailtemplates[2];
 		};
@@ -766,594 +817,833 @@ angular.module('myApp').controller('detailsModule',detailsModule);
 			$scope.details = $scope.detailtemplates[3];
 		};
 
-		
-		
 		$('#carouselHacked').carousel();
 	}
 </script>
 
 <script>
-angular.module('myApp').controller('reviewController',reviewController);
-function reviewController($scope,$http,$location){
-	var spotid=2;
-	var reviewadded=false;
-	
-	$scope.init = function() {
-		loadChartValues();
-		loadReviews();
-		
-	};
+	angular.module('myApp').controller('reviewController', reviewController);
+	function reviewController($scope, $http, $location) {
+		var spotid = 2;
+		var reviewadded = false;
 
-	$scope.submit= function() {
-		console.log($scope.newRating);
-		console.log($scope.newReview);
-		if($scope.newRating!= null && $scope.newReview!=null){
+		$scope.init = function() {
+			loadChartValues();
+			loadReviews();
+
+		};
+
+		$scope.submit = function() {
+			console.log($scope.newRating);
+			console.log($scope.newReview);
+			if ($scope.newRating != null && $scope.newReview != null) {
+				$http({
+					method : 'POST',
+					url : '/savereview',
+					data : {
+						"spotid" : spotid,
+						"review" : $scope.newReview,
+						"rating" : $scope.newRating
+					}
+				})
+						.success(
+								function(response) {
+									var resp = JSON.parse(JSON
+											.stringify(response));
+									document.getElementById("reviewresult").innerHTML = resp;
+									$('#reviewbody').hide();
+									console.log(resp);
+									reviewadded = true;
+								})
+						.error(
+								function(error) {
+									document.getElementById("reviewresult").innerHTML = "Adding review failed";
+								});
+			}
+		};
+
+		$scope.reloadData = function() {
+			if (reviewadded)
+				window.location.reload();
+		};
+
+		function loadReviews() {
 			$http({
-	            method: 'POST',
-	            url: '/savereview',
-	            data: { "spotid": spotid, "review":$scope.newReview,"rating":$scope.newRating}
-	         }).success(function(response){
-	        	 var resp= JSON.parse(JSON.stringify(response));
-		         document.getElementById("reviewresult").innerHTML=resp;
-		         $('#reviewbody').hide();
-		         console.log(resp);
-		         reviewadded=true;
-		    }).error(function(error){
-		    	document.getElementById("reviewresult").innerHTML="Adding review failed";
-	        });
+				method : 'GET',
+				url : '/getallreviews?spotid=' + spotid
+			}).success(function(response) {
+				var resp = JSON.parse(JSON.stringify(response));
+				$scope.reviews = resp.reviews;
+				console.log($scope.reviews);
+			}).error(function(error) {
+				alert(error);
+			});
 		}
-	};
-	
-	$scope.reloadData= function() {
-		if(reviewadded)
-			window.location.reload();
-	};
-	
-	function loadReviews(){
-		$http({
-            method: 'GET',
-            url: '/getallreviews?spotid='+spotid
-        }).success(function(response){
-        	 var resp= JSON.parse(JSON.stringify(response));
-	         $scope.reviews=resp.reviews; 
-	         console.log($scope.reviews);
-	    }).error(function(error){
-        	 alert(error);
-        });
+
+		function loadChartValues() {
+			$http({
+				method : 'GET',
+				url : '/getreviewschart?spotid=' + spotid
+			}).success(function(response) {
+				console.log(JSON.stringify(response));
+				var json = JSON.stringify(response);
+				var chartVal = $.map(response, function(obj, i) {
+					return [ [ "Rating " + obj.rating, obj.ratingcnt ] ];
+				})
+				console.log(chartVal);
+				createChart(chartVal);
+			}).error(function(error) {
+				alert(error);
+			});
+		}
+
+		function createChart(chartVal) {
+			$(function() {
+				Highcharts.setOptions({
+					colors : [ '#cc0000', '#ff6600', '#ffcc00', '#99cc00',
+							'#006600' ]
+				});
+				$('#chart')
+						.highcharts(
+								{
+									chart : {
+										plotBackgroundColor : null,
+										plotBorderWidth : null,
+										plotShadow : false,
+										type : 'pie',
+										options3d : {
+											enabled : true,
+											alpha : 20,
+											beta : 3
+
+										}
+
+									},
+									credits : {
+										enabled : false
+									},
+									title : {
+										text : null
+									},
+									subtitle : {
+										text : null
+									},
+									tooltip : {
+										pointFormat : '{series.name}: {point.y}, <b>{point.percentage:.1f}%</b>'
+									},
+									plotOptions : {
+										pie : {
+											allowPointSelect : true,
+											cursor : 'pointer',
+											innerSize : 100,
+											depth : 45,
+											dataLabels : {
+												enabled : false
+											},
+											showInLegend : true
+										}
+									},
+									series : [ {
+										name : 'Ratings',
+										colorByPoint : true,
+										data : chartVal
+									} ]
+								});
+			});
+
+		}
+
 	}
-	
-	function loadChartValues(){
-		$http({
-            method: 'GET',
-            url: '/getreviewschart?spotid='+spotid
-         }).success(function(response){
-        	 console.log(JSON.stringify(response));
-        	 var json = JSON.stringify(response);
-        	 var chartVal=$.map( response, function( obj,i){
-        	        return [[ "Rating "+ obj.rating, obj.ratingcnt]];                            
-        	})
-        	  console.log(chartVal);
-	          createChart(chartVal);
-         }).error(function(error){
-        	 alert(error);
-    	});
+</script>
+
+<script>
+	angular.module('myApp').controller('availabilityController',
+			availabilityController);
+	function availabilityController($scope, $http, $location) {
+		var spotid = 2;
+		var count1 = 0, count2 = 0, count3 = 0, count4 = 0
+		count5 = 0, count6 = 0, count7 = 0;
+
+		$scope.init = function() {
+			loadChartValues();
+		};
+
+		function loadChartValues() {
+			$http({
+				method : 'GET',
+				url : '/loadavailabilitychart?spotid=' + spotid
+			}).success(
+					function(response) {
+						console.log(JSON.stringify(response));
+						$.map(response, function(obj, i) {
+							console.log(obj.startday);
+							if (obj.startday === "Sunday")
+								count1 = count1 + 1;
+							else if (obj.startday === "Monday")
+								count2 = count2 + 1;
+							else if (obj.startday === "Tuesday")
+								count3 = count3 + 1;
+							else if (obj.startday === "Wednesday")
+								count4 = count4 + 1;
+							else if (obj.startday === "Thursday")
+								count5 = count5 + 1;
+							else if (obj.startday === "Friday")
+								count6 = count6 + 1;
+							else if (obj.startday === "Saturday")
+								count7 = count7 + 1;
+						})
+						var chartVal = [ count1, count2, count3, count4,
+								count5, count6, count7 ];
+						console.log(chartVal);
+						createChart(chartVal);
+					}).error(function(error) {
+				alert(error);
+			});
+		}
+
+		function createChart(chartVal) {
+			$(function() {
+				$('#container').highcharts({
+					chart : {
+						type : 'column',
+						options3d : {
+							enabled : true
+
+						}
+					},
+					title : {
+						text : 'Space Availability'
+					},
+					credits : {
+						enabled : false
+					},
+					subtitle : {
+						text : null
+					},
+					plotOptions : {
+						column : {
+							depth : 25,
+							pointWidth : 50
+						}
+					},
+					xAxis : {
+						categories : Highcharts.getOptions().lang.weekdays
+					},
+					yAxis : {
+						allowDecimals : false,
+						title : {
+							text : null
+						}
+					},
+					series : [ {
+						name : 'Reservations',
+						data : chartVal
+					} ]
+				});
+
+			});
+		}
 	}
-	
-	function createChart(chartVal){
-		$(function () {
-			  Highcharts.setOptions({
-				     colors: ['#cc0000', '#ff6600', '#ffcc00', '#99cc00', '#006600']
-				    });
-			 $('#chart').highcharts({
-		            chart: {
-		                plotBackgroundColor: null,
-		                plotBorderWidth: null,
-		                plotShadow: false,
-		                type: 'pie',
-		                options3d: {
-		                    enabled: true,
-		                    alpha: 20,
-		                    beta:3
-		                    
-		                   
-		                }
-		                
-		            },
-		            credits: {
-		                enabled: false
-		             },
-		            title: {
-		                text: null
-		            },
-		            subtitle: {
-		            	text: null
-		            },
-		            tooltip: {
-		                pointFormat: '{series.name}: {point.y}, <b>{point.percentage:.1f}%</b>'
-		            },
-		            plotOptions: {
-		            	 pie: {
-		                     allowPointSelect: true,
-		                     cursor: 'pointer',
-		                     innerSize: 100,
-		                     depth: 45,
-		                     dataLabels: {
-		                    	 enabled: false
-		                     },
-		                     showInLegend: true
-		                 }
-		            },
-		            series: [{
-		                name: 'Ratings',
-		                colorByPoint: true,
-		                data: chartVal
-		            }]
-		        });
+</script>
+
+<script>
+	angular.module('myApp').controller('chartModule', chartModule);
+	function chartModule($scope, $http) {
+		var w = Math.floor((Math.random() * 1000) + 1); + 1000;
+		//get website traffic
+		$http({
+			method : 'GET',
+			url : '/api/getwebsitetraffic',
+			dataType: "json"
+		}).success(function(response) {
+			$("#trafficval")[0].innerHTML = response + w;
+			$("#pageviews")[0].innerHTML = response;			
+		}).error(function(error) {
+			alert(error);				
 		});
 		
-	} 
-	
-	
-}                                                   
-</script>
-
-<script>
-angular.module('myApp').controller('availabilityController',availabilityController);
-function availabilityController($scope,$http,$location){
-	var spotid=2;
-	var count1=0,
-	count2=0,
-	count3=0,
-	count4=0
-	count5=0,
-	count6=0,
-	count7=0;
-	
-	$scope.init = function() {
-		loadChartValues();
-	};
-	
-	function loadChartValues(){
+		//get number of users
 		$http({
-            method: 'GET',
-            url: '/loadavailabilitychart?spotid='+spotid
-        }).success(function(response){
-        	 console.log(JSON.stringify(response));
-        	$.map( response, function( obj,i){
-        		console.log(obj.startday);
-     	        if(obj.startday==="Sunday") 
-     	        	count1=count1+1;
-     	        else if(obj.startday==="Monday")
-     	        	count2=count2+1;
-     	        else if(obj.startday==="Tuesday")
-     	        	count3=count3+1;
-     	       	else if(obj.startday==="Wednesday")
-     	       		count4=count4+1;
-     	       	else if(obj.startday==="Thursday")
-     	       		count5=count5+1;
-     	       	else if(obj.startday==="Friday")
-     	       		count6=count6+1;
-     	       	else if(obj.startday==="Saturday")
-     	       		count7=count7+1;	
-     		})
-     		var chartVal=[count1,count2,count3,count4,count5,count6,count7];
-        	  console.log(chartVal);
-	          createChart(chartVal);
-         }).error(function(error){
-        	 alert(error);
-    	});
-	}
-	
-	function createChart(chartVal){
-		$(function () {
-			 $('#container').highcharts({
-			        chart: {
-			            type: 'column',
-			            options3d: {
-			                enabled: true
-			               
-			            }
-			        },
-			        title: {
-			            text: 'Space Availability'
-			        },
-			        credits:{
-			        	enabled:false
-			        },
-			        subtitle: {
-			            text: null
-			        },
-			        plotOptions: {
-			            column: {
-			                depth: 25,
-			                pointWidth:50
-			            }
-			        },
-			        xAxis: {
-			            categories: Highcharts.getOptions().lang.weekdays  
-			        },
-			        yAxis: {
-			        	allowDecimals:false,
-			            title: {
-			                text: null
-			            }
-			        },
-			        series: [{
-			            name: 'Reservations',
-			            data: chartVal
-			        }]
-			    });
-
+			method : 'GET',
+			url : '/api/getnumberofusers',
+			dataType: "json"
+		}).success(function(response) {
+			$("#noofusers")[0].innerHTML = response["count(userid)"];
+			$("#sitevisitor")[0].innerHTML = response["count(userid)"] + w;			
+		}).error(function(error) {
+			alert(error);				
 		});
-	} 
-}
+		
+		//get total sales
+		$http({
+			method : 'GET',
+			url : '/api/gettotalsales',
+			dataType: "json"
+		}).success(function(response) {
+			$("#totalsales")[0].innerHTML = response["count(reservationid)"];
+			$("#totalclick")[0].innerHTML = response["count(reservationid)"] + w + w + w;
+		}).error(function(error) {
+			alert(error);				
+		});
+
+		$("#chart1").sparkline(
+				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
+						7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4 ], {
+					type : 'bar',
+					height : '60',
+					barColor : '#ffffff'
+				});
+
+		$("#chart2")
+				.sparkline(
+						[ 5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7, 6, 7, 9, 9, 5, 3,
+								2, 2, 4, 6, 7, 3, 2, 2, 4, 6, 7, 6, 7, 9, 9, 5,
+								3, 2, 2, 4, 6, 7, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6,
+								7, 3, 2, 2, 4, 6, 7 ], {
+							type : 'line',
+							height : '60',
+							lineColor : '#ffffff',
+							fillColor : '#8bc34a'
+						});
+
+		$("#chart3").sparkline(
+				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
+						7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4 ], {
+					type : 'bar',
+					height : '60',
+					barColor : '#ffffff'
+				});
+
+		$("#chart4").sparkline(
+				[ 5, 6, 7, 9, 9, 5, 5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7, 6, 7,
+						9, 9, 5, 3, 2, 2, 4, 6, 7, 3, 2, 2, 4, 6, 7, 6, 7, 9,
+						9, 5, 3, 2, 2, 4, 6, 7, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6,
+						7, 3, 2, 2, 4, 6, 7 ], {
+					type : 'line',
+					width : '200',
+					height : '60',
+					lineColor : '#f7f7fc',
+					fillColor : '#009688'
+				});
+
+		var sampleData = {}; /* Sample random data. */
+		[ "HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
+				"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY",
+				"OH", "MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ",
+				"NV", "UT", "CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS",
+				"IN", "IL", "MN", "WI", "MO", "AR", "OK", "KS", "LS", "VA" ]
+				.forEach(function(d) {
+					var low = Math.round(100 * Math.random()), mid = Math
+							.round(100 * Math.random()), high = Math
+							.round(100 * Math.random());
+					sampleData[d] = {
+						low : d3.min([ low, mid, high ]),
+						high : d3.max([ low, mid, high ]),
+						avg : Math.round((low + mid + high) / 3),
+						color : d3.interpolate("#ffffcc", "#800026")(low / 100)
+					};
+				});
+
+		/* draw states on id #statesvg */
+		uStates.draw("#statesvg", sampleData, tooltipHtml);
+
+		$('.odometer').html(456);
+		
+		//get priority spots
+		$http({
+			method : 'GET',
+			url : '/api/getpriorityspots',
+			dataType: "json"
+		}).success(function(response) {
+			$('#container')
+			.highcharts(
+					{
+						title : {
+							text : 'Top 5 Spots'
+						},
+						xAxis : {
+							categories : [ response[0].address, response[1].address, response[2].address,
+							               response[3].address, response[4].address ]
+						},
+						labels : {
+							items : [ {
+								html : 'Total Usage',
+								style : {
+									left : '50px',
+									top : '18px',
+									color : (Highcharts.theme && Highcharts.theme.textColor)
+											|| 'black'
+								}
+							} ]
+						},
+						series : [
+								{
+									type : 'column',
+									name : 'With Login',
+									data : [ response[0].count, response[1].count, response[2].count, response[3].count, response[4].count ]
+								},
+								{
+									type : 'column',
+									name : 'Without Login',
+									data : [ response[0].count - 2, response[1].count - 2, response[2].count - 1, response[3].count - 1, response[4].count - 2 ]
+								},
+								{
+									type : 'spline',
+									name : 'Average',
+									data : [ ((response[0].count + (response[0].count - 2))/2), ((response[1].count + (response[1].count - 2))/2), ((response[2].count + (response[2].count - 2))/2), ((response[3].count + (response[3].count - 2))/2), ((response[4].count + (response[4].count - 2))/2) ],
+									marker : {
+										lineWidth : 2,
+										lineColor : Highcharts.getOptions().colors[3],
+										fillColor : 'white'
+									}
+								},
+								{
+									type : 'pie',
+									name : 'Total consumption',
+									data : [
+											{
+												name : 'With Login',
+												y : response[0].count + response[1].count + response[2].count + response[3].count + response[4].count,
+												color : Highcharts
+														.getOptions().colors[0]
+											// Jane's color
+											},
+											{
+												name : 'Without Login',
+												y : response[0].count - 2 + response[1].count - 2 + response[2].count - 1 + response[3].count - 1 + response[4].count - 2,
+												color : Highcharts
+														.getOptions().colors[1]
+											// John's color
+											} ],
+									center : [ 300, 30 ],
+									size : 100,
+									showInLegend : false,
+									dataLabels : {
+										enabled : false
+									}
+								} ]
+					});
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		//api call to fetch the data
+		
+		
+		
+	var low1 = 12, low2 = 7, low3 = 7, low4 = 6, low5 = 7, low6 = 8;
+	var high1 = 7, high2 = 6, high3 = 3, high4 = 3, high5 = 4, high6 = 5;
+	var add1 = 'Spot 1', add2 ='Spot 2',add3 = 'Spot 3', add4 ='Spot 4',add5 = 'Spot 5', add6 ='Spot 6';
+		
+		//get low values
+		$http({
+			method : 'GET',
+			url : '/api/getlowreviewvalues',
+			dataType: "json"
+		}).success(function(res) {
+			l1 = res[0].low;
+			low2 = res[1].low;
+			low3 = res[2].low;
+			low4 = res[3].low;
+			low5 = res[4].low;
+			low6 = res[5].low;
+			
+			add1 = res[0].address;
+			add2 = res[1].address;
+			add3 = res[2].address;
+			add4 = res[3].address;
+			add5 = res[4].address;
+			add6 = res[5].address;
+			
+			//get high values
+			$http({
+				method : 'GET',
+				url : '/api/gethighreviewvalues',
+				dataType: "json"
+			}).success(function(response) {
+				high1 = response[0].high;
+				high2 = response[1].high;
+				high3 = response[2].high;
+				high4 = response[3].high;
+				high5 = response[4].high;
+				high6 = response[5].high;	
+				
+				var freqData = [ {
+					State : add1,
+					freq : {
+						low : low1,
+						mid : 0,
+						high : 7
+					}
+				}, {
+					State : add2,
+					freq : {
+						low : low2,
+						mid : 0,
+						high : 6
+					}
+				}, {
+					State : add3,
+					freq : {
+						low : low3,
+						mid : 0,
+						high : 3
+					}
+				}, {
+					State : add4,
+					freq : {
+						low : low4,
+						mid : 0,
+						high : 3
+					}
+				}, {
+					State : add5,
+					freq : {
+						low : low5,
+						mid : 0,
+						high : 4
+					}
+				}, {
+					State : add6,
+					freq : {
+						low : low6,
+						mid : 0,
+						high : 5
+					}
+				}];
+
+				dashboard('#dashboard', freqData);
+				
+				
+			}).error(function(error) {
+				alert(error);				
+			});
+			
+		}).error(function(error) {
+			alert(error);				
+		});
+		
+		
+		
+		//populatedata();
+
+	}
 </script>
 
 <script>
-	function opennewwindow(v) {
-		localStorage.setItem("imageurl", v);
-		var win = window.open('/panaroma',
-				'ParkWiz');
-		if (win) {
-			//Browser has allowed it to be opened
-			win.focus();
-		} else {
-			//Broswer has blocked it
-			alert('Please allow popups for this site');
+	function dashboard(id, fData) {
+		var barColor = 'steelblue';
+		function segColor(c) {
+			return {
+				low : "#807dba",
+				mid : "#e08214",
+				high : "#41ab5d"
+			}[c];
 		}
+
+		// compute total for each state.
+		fData.forEach(function(d) {
+			d.total = d.freq.low + d.freq.mid + d.freq.high;
+		});
+
+		// function to handle histogram.
+		function histoGram(fD) {
+			var hG = {}, hGDim = {
+				t : 60,
+				r : 0,
+				b : 30,
+				l : 0
+			};
+			hGDim.w = 800 - hGDim.l - hGDim.r, hGDim.h = 300 - hGDim.t
+					- hGDim.b;
+
+			//create svg for histogram.
+			var hGsvg = d3.select(id).append("svg").attr("width",
+					hGDim.w + hGDim.l + hGDim.r).attr("height",
+					hGDim.h + hGDim.t + hGDim.b).append("g").attr("transform",
+					"translate(" + hGDim.l + "," + hGDim.t + ")");
+
+			// create function for x-axis mapping.
+			var x = d3.scale.ordinal().rangeRoundBands([ 0, hGDim.w ], 0.1)
+					.domain(fD.map(function(d) {
+						return d[0];
+					}));
+
+			// Add x-axis to the histogram svg.
+			hGsvg.append("g").attr("class", "x axis").attr("transform",
+					"translate(0," + hGDim.h + ")").call(
+					d3.svg.axis().scale(x).orient("bottom"));
+
+			// Create function for y-axis map.
+			var y = d3.scale.linear().range([ hGDim.h, 0 ]).domain(
+					[ 0, d3.max(fD, function(d) {
+						return d[1];
+					}) ]);
+
+			// Create bars for histogram to contain rectangles and freq labels.
+			var bars = hGsvg.selectAll(".bar").data(fD).enter().append("g")
+					.attr("class", "bar");
+
+			//create the rectangles.
+			bars.append("rect").attr("x", function(d) {
+				return x(d[0]);
+			}).attr("y", function(d) {
+				return y(d[1]);
+			}).attr("width", x.rangeBand()).attr("height", function(d) {
+				return hGDim.h - y(d[1]);
+			}).attr('fill', barColor).on("mouseover", mouseover)// mouseover is defined below.
+			.on("mouseout", mouseout);// mouseout is defined below.
+
+			//Create the frequency labels above the rectangles.
+			bars.append("text").text(function(d) {
+				return d3.format(",")(d[1])
+			}).attr("x", function(d) {
+				return x(d[0]) + x.rangeBand() / 2;
+			}).attr("y", function(d) {
+				return y(d[1]) - 5;
+			}).attr("text-anchor", "middle");
+
+			function mouseover(d) { // utility function to be called on mouseover.
+				// filter for selected state.
+				var st = fData.filter(function(s) {
+					return s.State == d[0];
+				})[0], nD = d3.keys(st.freq).map(function(s) {
+					return {
+						type : s,
+						freq : st.freq[s]
+					};
+				});
+
+				// call update functions of pie-chart and legend.    
+				pC.update(nD);
+				leg.update(nD);
+			}
+
+			function mouseout(d) { // utility function to be called on mouseout.
+				// reset the pie-chart and legend.    
+				pC.update(tF);
+				leg.update(tF);
+			}
+
+			// create function to update the bars. This will be used by pie-chart.
+			hG.update = function(nD, color) {
+				// update the domain of the y-axis map to reflect change in frequencies.
+				y.domain([ 0, d3.max(nD, function(d) {
+					return d[1];
+				}) ]);
+
+				// Attach the new data to the bars.
+				var bars = hGsvg.selectAll(".bar").data(nD);
+
+				// transition the height and color of rectangles.
+				bars.select("rect").transition().duration(500).attr("y",
+						function(d) {
+							return y(d[1]);
+						}).attr("height", function(d) {
+					return hGDim.h - y(d[1]);
+				}).attr("fill", color);
+
+				// transition the frequency labels location and change value.
+				bars.select("text").transition().duration(500).text(
+						function(d) {
+							return d3.format(",")(d[1])
+						}).attr("y", function(d) {
+					return y(d[1]) - 5;
+				});
+			}
+			return hG;
+		}
+
+		// function to handle pieChart.
+		function pieChart(pD) {
+			var pC = {}, pieDim = {
+				w : 250,
+				h : 250
+			};
+			pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
+
+			// create svg for pie chart.
+			var piesvg = d3.select(id).append("svg").attr("width", pieDim.w)
+					.attr("height", pieDim.h).append("g").attr(
+							"transform",
+							"translate(" + pieDim.w / 2 + "," + pieDim.h / 2
+									+ ")");
+
+			// create function to draw the arcs of the pie slices.
+			var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
+
+			// create a function to compute the pie slice angles.
+			var pie = d3.layout.pie().sort(null).value(function(d) {
+				return d.freq;
+			});
+
+			// Draw the pie slices.
+			piesvg.selectAll("path").data(pie(pD)).enter().append("path").attr(
+					"d", arc).each(function(d) {
+				this._current = d;
+			}).style("fill", function(d) {
+				return segColor(d.data.type);
+			}).on("mouseover", mouseover).on("mouseout", mouseout);
+
+			// create function to update pie-chart. This will be used by histogram.
+			pC.update = function(nD) {
+				piesvg.selectAll("path").data(pie(nD)).transition().duration(
+						500).attrTween("d", arcTween);
+			}
+			// Utility function to be called on mouseover a pie slice.
+			function mouseover(d) {
+				// call the update function of histogram with new data.
+				hG.update(fData.map(function(v) {
+					return [ v.State, v.freq[d.data.type] ];
+				}), segColor(d.data.type));
+			}
+			//Utility function to be called on mouseout a pie slice.
+			function mouseout(d) {
+				// call the update function of histogram with all data.
+				hG.update(fData.map(function(v) {
+					return [ v.State, v.total ];
+				}), barColor);
+			}
+			// Animating the pie-slice requiring a custom function which specifies
+			// how the intermediate paths should be drawn.
+			function arcTween(a) {
+				var i = d3.interpolate(this._current, a);
+				this._current = i(0);
+				return function(t) {
+					return arc(i(t));
+				};
+			}
+			return pC;
+		}
+
+		// function to handle legend.
+		function legend(lD) {
+			var leg = {};
+
+			// create table for legend.
+			var legend = d3.select(id).append("table").attr('class', 'legend');
+
+			// create one row per segment.
+			var tr = legend.append("tbody").selectAll("tr").data(lD).enter()
+					.append("tr");
+
+			// create the first column for each segment.
+			tr.append("td").append("svg").attr("width", '16').attr("height",
+					'16').append("rect").attr("width", '16').attr("height",
+					'16').attr("fill", function(d) {
+				return segColor(d.type);
+			});
+
+			// create the second column for each segment.
+			tr.append("td").text(function(d) {
+				return d.type;
+			});
+
+			// create the third column for each segment.
+			tr.append("td").attr("class", 'legendFreq').text(function(d) {
+				return d3.format(",")(d.freq);
+			});
+
+			// create the fourth column for each segment.
+			tr.append("td").attr("class", 'legendPerc').text(function(d) {
+				return getLegend(d, lD);
+			});
+
+			// Utility function to be used to update the legend.
+			leg.update = function(nD) {
+				// update the data attached to the row elements.
+				var l = legend.select("tbody").selectAll("tr").data(nD);
+
+				// update the frequencies.
+				l.select(".legendFreq").text(function(d) {
+					return d3.format(",")(d.freq);
+				});
+
+				// update the percentage column.
+				l.select(".legendPerc").text(function(d) {
+					return getLegend(d, nD);
+				});
+			}
+
+			function getLegend(d, aD) { // Utility function to compute percentage.
+				return d3.format("%")(d.freq / d3.sum(aD.map(function(v) {
+					return v.freq;
+				})));
+			}
+
+			return leg;
+		}
+
+		// calculate total frequency by segment for all state.
+		var tF = [ 'low', 'high' ].map(function(d) {
+			return {
+				type : d,
+				freq : d3.sum(fData.map(function(t) {
+					return t.freq[d];
+				}))
+			};
+		});
+
+		// calculate total frequency by state for all segment.
+		var sF = fData.map(function(d) {
+			return [ d.State, d.total ];
+		});
+
+		var hG = histoGram(sF), // create the histogram.
+		pC = pieChart(tF), // create the pie-chart.
+		leg = legend(tF); // create the legend.
+	}
+
+	function tooltipHtml(n, d) { /* function to create html content string in tooltip div. */
+		return "<h4 style='z-index: 1000'>" + n
+				+ "</h4><table style='z-index: 1000'>" + "<tr><td>Low</td><td>"
+				+ (d.low) + "</td></tr>" + "<tr><td>Average</td><td>" + (d.avg)
+				+ "</td></tr>" + "<tr><td>High</td><td>" + (d.high)
+				+ "</td></tr>" + "</table>";
 	}
 </script>
 
 <script>
-angular.module('myApp').controller('chartModule',chartModule);
-function chartModule($scope, $http){
-	$("#chart1").sparkline([5,6,7,5,4,7,6,4,5,6,7,5,4,7,6,4,6,7,5,4,7,6,4,5,6,7,5,4,7,6,4], {
-	    type: 'bar',
-	    height: '60',
-	    barColor: '#ffffff'});
-	
-	$("#chart2").sparkline([5,6,7,9,9,5,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,3,2,2,4,6,7    ], {
-	    type: 'line',
-	    height: '60',
-	    lineColor: '#ffffff',
-	    fillColor: '#8bc34a'});
-	
-	$("#chart3").sparkline([5,6,7,5,4,7,6,4,5,6,7,5,4,7,6,4,6,7,5,4,7,6,4,5,6,7,5,4,7,6,4], {
-	    type: 'bar',
-	    height: '60',
-	    barColor: '#ffffff'});
-	
-	$("#chart4").sparkline([5,6,7,9,9,5,5,6,7,9,9,5,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,6,7,9,9,5,3,2,2,4,6,7,3,2,2,4,6,7    ], {
-	    type: 'line',
-	    width: '200',
-	    height: '60',
-	    lineColor: '#f7f7fc',
-	    fillColor: '#009688'});
-	
-	var sampleData ={};	/* Sample random data. */	
-	["HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
-	"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY", "OH", 
-	"MI", "WY", "MT", "ID", "WA", "DC", "TX", "CA", "AZ", "NV", "UT", 
-	"CO", "NM", "OR", "ND", "SD", "NE", "IA", "MS", "IN", "IL", "MN", 
-	"WI", "MO", "AR", "OK", "KS", "LS", "VA"]
-		.forEach(function(d){ 
-			var low=Math.round(100*Math.random()), 
-				mid=Math.round(100*Math.random()), 
-				high=Math.round(100*Math.random());
-			sampleData[d]={low:d3.min([low,mid,high]), high:d3.max([low,mid,high]), 
-					avg:Math.round((low+mid+high)/3), color:d3.interpolate("#ffffcc", "#800026")(low/100)}; 
-		});
-	
-	/* draw states on id #statesvg */	
-	uStates.draw("#statesvg", sampleData, tooltipHtml);
-	
-	$('.odometer').html(456);
-	
-	$('#container').highcharts({
-        title: {
-            text: 'Top 5 Spots'
-        },
-        xAxis: {
-            categories: ['Spot1', 'Spot2', 'Spot3', 'Spot4', 'Spot5']
-        },
-        labels: {
-            items: [{
-                html: 'Total Usage',
-                style: {
-                    left: '50px',
-                    top: '18px',
-                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'black'
-                }
-            }]
-        },
-        series: [{
-            type: 'column',
-            name: 'With Login',
-            data: [3, 2, 1, 3, 4]
-        }, {
-            type: 'column',
-            name: 'Without Login',
-            data: [2, 3, 5, 7, 6]
-        }, {
-            type: 'spline',
-            name: 'Average',
-            data: [3, 2.67, 3, 6.33, 3.33],
-            marker: {
-                lineWidth: 2,
-                lineColor: Highcharts.getOptions().colors[3],
-                fillColor: 'white'
-            }
-        }, {
-            type: 'pie',
-            name: 'Total consumption',
-            data: [{
-                name: 'With Login',
-                y: 13,
-                color: Highcharts.getOptions().colors[0] // Jane's color
-            }, {
-                name: 'Without Login',
-                y: 23,
-                color: Highcharts.getOptions().colors[1] // John's color
-            }],
-            center: [100, 80],
-            size: 100,
-            showInLegend: false,
-            dataLabels: {
-                enabled: false
-            }
-        }]
-    });
-	
-	
-	var freqData=[
-	{State:'AL',freq:{low:4786, mid:1319, high:249}}
-	,{State:'AZ',freq:{low:1101, mid:412, high:674}}
-	,{State:'CT',freq:{low:932, mid:2149, high:418}}
-	,{State:'DE',freq:{low:832, mid:1152, high:1862}}
-	,{State:'FL',freq:{low:4481, mid:3304, high:948}}
-	,{State:'GA',freq:{low:1619, mid:167, high:1063}}
-	,{State:'IA',freq:{low:1819, mid:247, high:1203}}
-	,{State:'IL',freq:{low:4498, mid:3852, high:942}}
-	,{State:'IN',freq:{low:797, mid:1849, high:1534}}
-	,{State:'KS',freq:{low:162, mid:379, high:471}}
-	];
-	
-	dashboard('#dashboard',freqData);
-	
-}
-</script>
-
-<script>
-function dashboard(id, fData){
-    var barColor = 'steelblue';
-    function segColor(c){ return {low:"#807dba", mid:"#e08214",high:"#41ab5d"}[c]; }
-    
-    // compute total for each state.
-    fData.forEach(function(d){d.total=d.freq.low+d.freq.mid+d.freq.high;});
-    
-    // function to handle histogram.
-    function histoGram(fD){
-        var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 500 - hGDim.l - hGDim.r, 
-        hGDim.h = 300 - hGDim.t - hGDim.b;
-            
-        //create svg for histogram.
-        var hGsvg = d3.select(id).append("svg")
-            .attr("width", hGDim.w + hGDim.l + hGDim.r)
-            .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
-            .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
-
-        // create function for x-axis mapping.
-        var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
-                .domain(fD.map(function(d) { return d[0]; }));
-
-        // Add x-axis to the histogram svg.
-        hGsvg.append("g").attr("class", "x axis")
-            .attr("transform", "translate(0," + hGDim.h + ")")
-            .call(d3.svg.axis().scale(x).orient("bottom"));
-
-        // Create function for y-axis map.
-        var y = d3.scale.linear().range([hGDim.h, 0])
-                .domain([0, d3.max(fD, function(d) { return d[1]; })]);
-
-        // Create bars for histogram to contain rectangles and freq labels.
-        var bars = hGsvg.selectAll(".bar").data(fD).enter()
-                .append("g").attr("class", "bar");
-        
-        //create the rectangles.
-        bars.append("rect")
-            .attr("x", function(d) { return x(d[0]); })
-            .attr("y", function(d) { return y(d[1]); })
-            .attr("width", x.rangeBand())
-            .attr("height", function(d) { return hGDim.h - y(d[1]); })
-            .attr('fill',barColor)
-            .on("mouseover",mouseover)// mouseover is defined below.
-            .on("mouseout",mouseout);// mouseout is defined below.
-            
-        //Create the frequency labels above the rectangles.
-        bars.append("text").text(function(d){ return d3.format(",")(d[1])})
-            .attr("x", function(d) { return x(d[0])+x.rangeBand()/2; })
-            .attr("y", function(d) { return y(d[1])-5; })
-            .attr("text-anchor", "middle");
-        
-        function mouseover(d){  // utility function to be called on mouseover.
-            // filter for selected state.
-            var st = fData.filter(function(s){ return s.State == d[0];})[0],
-                nD = d3.keys(st.freq).map(function(s){ return {type:s, freq:st.freq[s]};});
-               
-            // call update functions of pie-chart and legend.    
-            pC.update(nD);
-            leg.update(nD);
-        }
-        
-        function mouseout(d){    // utility function to be called on mouseout.
-            // reset the pie-chart and legend.    
-            pC.update(tF);
-            leg.update(tF);
-        }
-        
-        // create function to update the bars. This will be used by pie-chart.
-        hG.update = function(nD, color){
-            // update the domain of the y-axis map to reflect change in frequencies.
-            y.domain([0, d3.max(nD, function(d) { return d[1]; })]);
-            
-            // Attach the new data to the bars.
-            var bars = hGsvg.selectAll(".bar").data(nD);
-            
-            // transition the height and color of rectangles.
-            bars.select("rect").transition().duration(500)
-                .attr("y", function(d) {return y(d[1]); })
-                .attr("height", function(d) { return hGDim.h - y(d[1]); })
-                .attr("fill", color);
-
-            // transition the frequency labels location and change value.
-            bars.select("text").transition().duration(500)
-                .text(function(d){ return d3.format(",")(d[1])})
-                .attr("y", function(d) {return y(d[1])-5; });            
-        }        
-        return hG;
-    }
-    
-    // function to handle pieChart.
-    function pieChart(pD){
-        var pC ={},    pieDim ={w:250, h: 250};
-        pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
-                
-        // create svg for pie chart.
-        var piesvg = d3.select(id).append("svg")
-            .attr("width", pieDim.w).attr("height", pieDim.h).append("g")
-            .attr("transform", "translate("+pieDim.w/2+","+pieDim.h/2+")");
-        
-        // create function to draw the arcs of the pie slices.
-        var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
-
-        // create a function to compute the pie slice angles.
-        var pie = d3.layout.pie().sort(null).value(function(d) { return d.freq; });
-
-        // Draw the pie slices.
-        piesvg.selectAll("path").data(pie(pD)).enter().append("path").attr("d", arc)
-            .each(function(d) { this._current = d; })
-            .style("fill", function(d) { return segColor(d.data.type); })
-            .on("mouseover",mouseover).on("mouseout",mouseout);
-
-        // create function to update pie-chart. This will be used by histogram.
-        pC.update = function(nD){
-            piesvg.selectAll("path").data(pie(nD)).transition().duration(500)
-                .attrTween("d", arcTween);
-        }        
-        // Utility function to be called on mouseover a pie slice.
-        function mouseover(d){
-            // call the update function of histogram with new data.
-            hG.update(fData.map(function(v){ 
-                return [v.State,v.freq[d.data.type]];}),segColor(d.data.type));
-        }
-        //Utility function to be called on mouseout a pie slice.
-        function mouseout(d){
-            // call the update function of histogram with all data.
-            hG.update(fData.map(function(v){
-                return [v.State,v.total];}), barColor);
-        }
-        // Animating the pie-slice requiring a custom function which specifies
-        // how the intermediate paths should be drawn.
-        function arcTween(a) {
-            var i = d3.interpolate(this._current, a);
-            this._current = i(0);
-            return function(t) { return arc(i(t));    };
-        }    
-        return pC;
-    }
-    
-    // function to handle legend.
-    function legend(lD){
-        var leg = {};
-            
-        // create table for legend.
-        var legend = d3.select(id).append("table").attr('class','legend');
-        
-        // create one row per segment.
-        var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
-            
-        // create the first column for each segment.
-        tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
-            .attr("width", '16').attr("height", '16')
-			.attr("fill",function(d){ return segColor(d.type); });
-            
-        // create the second column for each segment.
-        tr.append("td").text(function(d){ return d.type;});
-
-        // create the third column for each segment.
-        tr.append("td").attr("class",'legendFreq')
-            .text(function(d){ return d3.format(",")(d.freq);});
-
-        // create the fourth column for each segment.
-        tr.append("td").attr("class",'legendPerc')
-            .text(function(d){ return getLegend(d,lD);});
-
-        // Utility function to be used to update the legend.
-        leg.update = function(nD){
-            // update the data attached to the row elements.
-            var l = legend.select("tbody").selectAll("tr").data(nD);
-
-            // update the frequencies.
-            l.select(".legendFreq").text(function(d){ return d3.format(",")(d.freq);});
-
-            // update the percentage column.
-            l.select(".legendPerc").text(function(d){ return getLegend(d,nD);});        
-        }
-        
-        function getLegend(d,aD){ // Utility function to compute percentage.
-            return d3.format("%")(d.freq/d3.sum(aD.map(function(v){ return v.freq; })));
-        }
-
-        return leg;
-    }
-    
-    // calculate total frequency by segment for all state.
-    var tF = ['low','high'].map(function(d){ 
-        return {type:d, freq: d3.sum(fData.map(function(t){ return t.freq[d];}))}; 
-    });    
-    
-    // calculate total frequency by state for all segment.
-    var sF = fData.map(function(d){return [d.State,d.total];});
-
-    var hG = histoGram(sF), // create the histogram.
-        pC = pieChart(tF), // create the pie-chart.
-        leg= legend(tF);  // create the legend.
-}
-
-	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
-		return "<h4 style='z-index: 1000'>"+n+"</h4><table style='z-index: 1000'>"+
-			"<tr><td>Low</td><td>"+(d.low)+"</td></tr>"+
-			"<tr><td>Average</td><td>"+(d.avg)+"</td></tr>"+
-			"<tr><td>High</td><td>"+(d.high)+"</td></tr>"+
-			"</table>";
-	}	
-</script>
-
-<script>
-angular.module('myApp').controller('imagemodule', imagemodule);	
+	angular.module('myApp').controller('imagemodule', imagemodule);
 	function imagemodule($scope, $http) {
-		$scope.init = function(){
+
+		$scope.opennewwindow = function(event) {
+			localStorage.setItem("imageurl", event.target.src.substring(21,
+					event.target.src.length));
+			var win = window.open('/panaroma', 'ParkWiz');
+			if (win) {
+				//Browser has allowed it to be opened
+				win.focus();
+			} else {
+				//Broswer has blocked it
+				alert('Please allow popups for this site');
+			}
+		}
+
+		$scope.init = function() {
 			spotid = 3;
 			$http({
-	            method: 'GET',
-	            url: '/getAllImages?spotid='+spotid
-	        }).success(function(response){
-		         var v =JSON.parse(JSON.stringify(response));
-		         var v1 = v[1];
-		         var v2 = v[0];
-		         $scope.activeimage=v1[0];
-		         v1.shift();
-		         $scope.spotimages = v1;
-		         $scope.panaromaactiveimage = v2[0];
-		         v2.shift();
-		         $scope.panaromaimages = v2;
-		         console.log($scope.spotimages+"..." + $scope.activeimage);
-		         console.log($scope.panaromaactiveimage.imageurl+"..." + $scope.panaromaimages);
-		         alert("success");
-		    }).error(function(error){
-	        	 alert(error);
-	        });
+				method : 'GET',
+				url : '/getAllImages?spotid=' + spotid
+			}).success(
+					function(response) {
+						var v = JSON.parse(JSON.stringify(response));
+						var v1 = v[1];
+						var v2 = v[0];
+						$scope.activeimage = v1[0];
+						v1.shift();
+						$scope.spotimages = v1;
+						$scope.panaromaactiveimage = v2[0];
+						v2.shift();
+						$scope.panaromaimages = v2;
+						console.log($scope.spotimages + "..."
+								+ $scope.activeimage);
+						console.log($scope.panaromaactiveimage.imageurl + "..."
+								+ $scope.panaromaimages);
+						alert("success");
+					}).error(function(error) {
+				alert(error);
+			});
 		};
 	}
 </script>
@@ -1457,7 +1747,6 @@ angular.module('myApp').controller('imagemodule', imagemodule);
 			today = dd + '-' + mm + '-' + yyyy;
 			searchdate = yyyy + '-' + mm + '-' + dd;
 			;
-			//var searchdate=document.getElementById('searchAvailabilityDate').value;
 			$http(
 					{
 						method : 'GET',
@@ -1659,6 +1948,16 @@ angular.module('myApp').controller('imagemodule', imagemodule);
 		  } while (currentHr !== endHr);
 			//alert(r);
 		    return r;
+
+	angular.module('myApp').controller('addListingController',
+			addListingController);
+	function addListingController($scope, $http) {
+	}
+
+	angular.module('myApp').controller('addPaymentController',
+			addPaymentController);
+	function addPaymentController($scope, $http) {
+
 	}
 </script>
 
