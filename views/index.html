@@ -307,7 +307,6 @@
 	var autocomplete;
 	//var searchdata;
 	var privateParkingList;
-
 	angular.module('myApp', [ 'ngAnimate', 'ui.bootstrap' ]);
 	angular.module('myApp').controller('layoutmodule', layoutmodule);
 	function layoutmodule($scope, $http) {
@@ -320,39 +319,31 @@
 				sessionStorage.removeItem("template");
 			}
 		}
-
 		$scope.addlistings = function() {
 			$scope.template = $scope.templates[5];
 			$("#navMenus").hide();
 		};
-
 		$scope.details = function() {
 			$scope.template = $scope.templates[6];
 			$("#navMenus").hide();
 		}
-
 		$scope.billing = function() {
 			$scope.template = $scope.templates[1];
 			$("#navMenus").hide();
 		};
-
 		$scope.dashboard = function() {
 			$scope.template = $scope.templates[7];
 			$("#navMenus").hide();
 		};
-
 		$scope.bookinghistory = function() {
 			$scope.template = $scope.templates[4];
 			$("#navMenus").hide();
 		};
-
 		$scope.account = function() {
 			$scope.template = $scope.templates[3];
 			initializeMyAccount($scope, $http);
-
 			$("#navMenus").hide();
 		};
-
 		$scope.templates = [ {
 			name : 'Search Page',
 			url : '/search',
@@ -399,7 +390,6 @@
 			name : 'Dashboard',
 			url : '/dashboard'
 		} ];
-
 		$scope.templates.forEach(function(template) {
 			if (template['name'] == templateName) {
 				$scope.template = template;
@@ -411,22 +401,18 @@
 				}
 			}
 		});
-
 		if (sessionStorage.getItem("latest_template")) {
 			var o = JSON.parse(sessionStorage.getItem("latest_template"));
 			sessionStorage.setItem("latest_template", null);
 			$scope.template = o;
 		}
-
 		$scope.detail = function(spotid) {
 			sessionStorage.setItem("spot_id", spotid);
 			sessionStorage.setItem("latest_template", JSON
 					.stringify($scope.templates[6]));
 			location.reload();
 		}
-
 		//initialize();
-
 		$scope.logout = function() {
 			$http({
 				method : 'DELETE',
@@ -440,12 +426,9 @@
 	}
 	angular.module('myApp').controller('searchmodule', searchmodule);
 	function searchmodule($scope, $http) {
-
 		initMap();
 		$scope.searchParking = function() {
-
 			searchParkings();
-
 			setTimeout(
 					function() {
 						var data = getParkingList();
@@ -453,9 +436,7 @@
 						var privateparkingresult = JSON.parse(data);
 						//alert(data[0].state);
 						//console.log(JSON.stringify(data));
-
 						var htmlval = "";
-
 						for (var i = 0; i < privateparkingresult.length; i++) {
 							htmlval += '<tr>';
 							htmlval += '<td style="width: 20%"><div align="center" class="image">';
@@ -474,15 +455,11 @@
 									+ ')">Reserve</button>';
 							htmlval += '</div></td></tr>';
 						}
-
 						$("#tbodyTabularview").append(htmlval);
 						//alert("data "+data);
 					}, 1000);
-
 		};
-
 	}
-
 	function reserveParking(spotid) {
 		alert("Here" + spotid);
 		var userid = 1;
@@ -490,20 +467,17 @@
 		//searchdata = {"startdate": $scope.startdate};
 		reserveParkingSpot(userid, spotid);
 	}
-
 	function getDetails(el, spotid) {
 		var $s = angular.element(el).scope();
 		//$scope.thing = newVal;
 		$s.$parent.detail(spotid);
 	}
-
 	angular.module('myApp').controller('profilemodule', profilemodule);
 	function profilemodule($scope, $http) {
 		$(".progress-bar").animate({
 			width : "70%"
 		}, 2500);
 	}
-
 	angular.module('myApp').controller('bookingModule', bookingModule);
 </script>
 
@@ -512,15 +486,12 @@
 		$(".aNav").each(function(val) {
 			this.className = "aNav";
 		});
-
 		this.className = "aNav active";
 	});
-
 	function togglenav(e) {
 		$(".bookingnav").each(function(val) {
 			this.className = "bookingnav";
 		});
-
 		e.className = "bookingnav active";
 	}
 </script>
@@ -531,7 +502,6 @@
 	function toggle(e) {
 		$("#navMenus").toggle();
 	}
-
 	$(function() {
 		$('#tabs a:last').tab('show');
 	});
@@ -544,7 +514,6 @@
 		var width = document.getElementById('mapContent').offsetWidth;
 		var height = document.getElementById('mapContent').offsetHeight;
 		$("#map").width(width).height(height);
-
 		var mapDiv = document.getElementById('map');
 		map = new google.maps.Map(mapDiv, {
 			center : {
@@ -561,7 +530,6 @@
 			}
 		}
 	}
-
 	function createMarker(place) {
 		var placeLoc = place.geometry.location;
 		var marker = new google.maps.Marker({
@@ -569,19 +537,16 @@
 			animation : google.maps.Animation.DROP,
 			position : place.geometry.location
 		});
-
 		google.maps.event.addListener(marker, 'click', function() {
 			infowindow.setContent(place.name);
 			infowindow.open(map, this);
 		});
 	}
-
 	function searchParkings() {
 		//alert("Looking for place: " +document.getElementById('txtAddress').value);
 		var geocoder = new google.maps.Geocoder();
 		var address = document.getElementById('txtAddress').value;
 		var latitude = 44.540, longitude = -78.546;
-
 		//to convert the destination address into lat long values
 		geocoder.geocode({
 			'address' : address
@@ -594,17 +559,13 @@
 			}
 		});
 	}
-
 	function progressWithLatLong(latitude, longitude) {
-
 		//alert(map.getCenter());
 		map.setCenter(new google.maps.LatLng(latitude, longitude));
-
 		var pyrmont = {
 			lat : latitude,
 			lng : longitude
 		};
-
 		infowindow = new google.maps.InfoWindow();
 		var service = new google.maps.places.PlacesService(map);
 		service.nearbySearch({
@@ -612,11 +573,9 @@
 			radius : 1000,
 			type : [ 'parking' ]
 		}, callback);
-
 		createDestinationMarker(latitude, longitude);
 		getPrivateParking(latitude, longitude);
 	}
-
 	function createDestinationMarker(latitude, longitude) {
 		var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_yellow';
 		var markerIcon = MARKER_PATH + 'D' + '.png';
@@ -635,21 +594,9 @@
 			infowindow.setContent(this.title);
 		});
 	}
-
 	function getPrivateParking(latitude, longitude) {
 		var latlongvalues = [];
 		$.ajax({
-            type: 'GET',
-            url: '/privateParking',
-            data: { "latitude": latitude, "longitude": longitude }
-         }).success(function(response){
-       	 	latlongvalues.push(JSON.stringify(response));
-       		var privateparkingjson = {'locations': latlongvalues[0]};
-       		setParkingList(privateparkingjson)
-       		plotPins(privateparkingjson);
-         }).error(function(error){
-        	 alert("error");
-        });
 			type : 'GET',
 			url : '/privateParking',
 			data : {
@@ -668,24 +615,19 @@
 		}).error(function(error) {
 			alert("error");
 		});
->>>>>>> 3cd845f7dfe8f8245bd72a628bd4a82deb2d7351
 	}
-
 	function getParkingList() {
 		return privateParkingList;
 	}
-
 	function setParkingList(privateparkingjson) {
 		privateParkingList = privateparkingjson.locations;
 		//alert("getting parking" +privateParkingList);
 		//alert("privateParkingList: "+privateParkingList);
 	}
-
 	function plotPins(privateparkingjson) {
 		var MARKER_PATH = 'https://maps.gstatic.com/intl/en_us/mapfiles/marker_green';
 		var privateparking = privateparkingjson;
 		var locations = JSON.parse(privateparking.locations);
-
 		for (var i = 0; i < locations.length; i++) {
 			var address2 = locations[i].addressline2 == null ? ''
 					: locations[i].addressline2;
@@ -717,13 +659,11 @@
 							});
 		}
 	}
-
 	function geolocate() {
 		autocomplete = new google.maps.places.Autocomplete((document
 				.getElementsByClassName('locationservice')[0]), {
 			types : [ 'geocode' ]
 		});
-
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(function(position) {
 				var geolocation = {
@@ -738,11 +678,9 @@
 			});
 		}
 	}
-
 	function reserveParkingSpot(userid, spotid) {
 		validatePaymentInfo(userid, spotid);
 	}
-
 	function validatePaymentInfo(userid, spotid) {
 		$.ajax({
 			type : 'GET',
@@ -763,7 +701,6 @@
 			alert("error");
 		});
 	}
-
 	function createReservation() {
 		console.log("inside create reservation");
 		$.ajax({
@@ -785,7 +722,6 @@
 <script>
 	angular.module('myApp').controller('detailsModule', detailsModule);
 	function detailsModule($scope, $http) {
-
 		$scope.detailtemplates = [ {
 			name : 'Availability',
 			url : '/availability'
@@ -799,24 +735,19 @@
 			name : 'reviews',
 			url : '/reviews'
 		} ];
-
 		$scope.details = $scope.detailtemplates[0];
 		$scope.availability = function() {
 			$scope.details = $scope.detailtemplates[0];
 		};
-
 		$scope.availabilitychart = function() {
 			$scope.details = $scope.detailtemplates[1];
 		};
-
 		$scope.images = function() {
 			$scope.details = $scope.detailtemplates[2];
 		};
-
 		$scope.reviews = function() {
 			$scope.details = $scope.detailtemplates[3];
 		};
-
 		$('#carouselHacked').carousel();
 	}
 </script>
@@ -826,13 +757,10 @@
 	function reviewController($scope, $http, $location) {
 		var spotid = 2;
 		var reviewadded = false;
-
 		$scope.init = function() {
 			loadChartValues();
 			loadReviews();
-
 		};
-
 		$scope.submit = function() {
 			console.log($scope.newRating);
 			console.log($scope.newReview);
@@ -861,12 +789,10 @@
 								});
 			}
 		};
-
 		$scope.reloadData = function() {
 			if (reviewadded)
 				window.location.reload();
 		};
-
 		function loadReviews() {
 			$http({
 				method : 'GET',
@@ -879,7 +805,6 @@
 				alert(error);
 			});
 		}
-
 		function loadChartValues() {
 			$http({
 				method : 'GET',
@@ -896,7 +821,6 @@
 				alert(error);
 			});
 		}
-
 		function createChart(chartVal) {
 			$(function() {
 				Highcharts.setOptions({
@@ -915,9 +839,7 @@
 											enabled : true,
 											alpha : 20,
 											beta : 3
-
 										}
-
 									},
 									credits : {
 										enabled : false
@@ -950,9 +872,7 @@
 									} ]
 								});
 			});
-
 		}
-
 	}
 </script>
 
@@ -963,11 +883,9 @@
 		var spotid = 2;
 		var count1 = 0, count2 = 0, count3 = 0, count4 = 0
 		count5 = 0, count6 = 0, count7 = 0;
-
 		$scope.init = function() {
 			loadChartValues();
 		};
-
 		function loadChartValues() {
 			$http({
 				method : 'GET',
@@ -1000,7 +918,6 @@
 				alert(error);
 			});
 		}
-
 		function createChart(chartVal) {
 			$(function() {
 				$('#container').highcharts({
@@ -1008,7 +925,6 @@
 						type : 'column',
 						options3d : {
 							enabled : true
-
 						}
 					},
 					title : {
@@ -1040,7 +956,6 @@
 						data : chartVal
 					} ]
 				});
-
 			});
 		}
 	}
@@ -1085,7 +1000,6 @@
 		}).error(function(error) {
 			alert(error);				
 		});
-
 		$("#chart1").sparkline(
 				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
 						7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4 ], {
@@ -1093,7 +1007,6 @@
 					height : '60',
 					barColor : '#ffffff'
 				});
-
 		$("#chart2")
 				.sparkline(
 						[ 5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7, 6, 7, 9, 9, 5, 3,
@@ -1105,7 +1018,6 @@
 							lineColor : '#ffffff',
 							fillColor : '#8bc34a'
 						});
-
 		$("#chart3").sparkline(
 				[ 5, 6, 7, 5, 4, 7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4, 6, 7, 5, 4,
 						7, 6, 4, 5, 6, 7, 5, 4, 7, 6, 4 ], {
@@ -1113,7 +1025,6 @@
 					height : '60',
 					barColor : '#ffffff'
 				});
-
 		$("#chart4").sparkline(
 				[ 5, 6, 7, 9, 9, 5, 5, 6, 7, 9, 9, 5, 3, 2, 2, 4, 6, 7, 6, 7,
 						9, 9, 5, 3, 2, 2, 4, 6, 7, 3, 2, 2, 4, 6, 7, 6, 7, 9,
@@ -1125,7 +1036,6 @@
 					lineColor : '#f7f7fc',
 					fillColor : '#009688'
 				});
-
 		var sampleData = {}; /* Sample random data. */
 		[ "HI", "AK", "FL", "SC", "GA", "AL", "NC", "TN", "RI", "CT", "MA",
 				"ME", "NH", "VT", "NY", "NJ", "PA", "DE", "MD", "WV", "KY",
@@ -1143,10 +1053,8 @@
 						color : d3.interpolate("#ffffcc", "#800026")(low / 100)
 					};
 				});
-
 		/* draw states on id #statesvg */
 		uStates.draw("#statesvg", sampleData, tooltipHtml);
-
 		$('.odometer').html(456);
 		
 		//get priority spots
@@ -1311,7 +1219,6 @@
 						high : 5
 					}
 				}];
-
 				dashboard('#dashboard', freqData);
 				
 				
@@ -1326,7 +1233,6 @@
 		
 		
 		//populatedata();
-
 	}
 </script>
 
@@ -1340,12 +1246,10 @@
 				high : "#41ab5d"
 			}[c];
 		}
-
 		// compute total for each state.
 		fData.forEach(function(d) {
 			d.total = d.freq.low + d.freq.mid + d.freq.high;
 		});
-
 		// function to handle histogram.
 		function histoGram(fD) {
 			var hG = {}, hGDim = {
@@ -1356,34 +1260,28 @@
 			};
 			hGDim.w = 800 - hGDim.l - hGDim.r, hGDim.h = 300 - hGDim.t
 					- hGDim.b;
-
 			//create svg for histogram.
 			var hGsvg = d3.select(id).append("svg").attr("width",
 					hGDim.w + hGDim.l + hGDim.r).attr("height",
 					hGDim.h + hGDim.t + hGDim.b).append("g").attr("transform",
 					"translate(" + hGDim.l + "," + hGDim.t + ")");
-
 			// create function for x-axis mapping.
 			var x = d3.scale.ordinal().rangeRoundBands([ 0, hGDim.w ], 0.1)
 					.domain(fD.map(function(d) {
 						return d[0];
 					}));
-
 			// Add x-axis to the histogram svg.
 			hGsvg.append("g").attr("class", "x axis").attr("transform",
 					"translate(0," + hGDim.h + ")").call(
 					d3.svg.axis().scale(x).orient("bottom"));
-
 			// Create function for y-axis map.
 			var y = d3.scale.linear().range([ hGDim.h, 0 ]).domain(
 					[ 0, d3.max(fD, function(d) {
 						return d[1];
 					}) ]);
-
 			// Create bars for histogram to contain rectangles and freq labels.
 			var bars = hGsvg.selectAll(".bar").data(fD).enter().append("g")
 					.attr("class", "bar");
-
 			//create the rectangles.
 			bars.append("rect").attr("x", function(d) {
 				return x(d[0]);
@@ -1393,7 +1291,6 @@
 				return hGDim.h - y(d[1]);
 			}).attr('fill', barColor).on("mouseover", mouseover)// mouseover is defined below.
 			.on("mouseout", mouseout);// mouseout is defined below.
-
 			//Create the frequency labels above the rectangles.
 			bars.append("text").text(function(d) {
 				return d3.format(",")(d[1])
@@ -1402,7 +1299,6 @@
 			}).attr("y", function(d) {
 				return y(d[1]) - 5;
 			}).attr("text-anchor", "middle");
-
 			function mouseover(d) { // utility function to be called on mouseover.
 				// filter for selected state.
 				var st = fData.filter(function(s) {
@@ -1413,28 +1309,23 @@
 						freq : st.freq[s]
 					};
 				});
-
 				// call update functions of pie-chart and legend.    
 				pC.update(nD);
 				leg.update(nD);
 			}
-
 			function mouseout(d) { // utility function to be called on mouseout.
 				// reset the pie-chart and legend.    
 				pC.update(tF);
 				leg.update(tF);
 			}
-
 			// create function to update the bars. This will be used by pie-chart.
 			hG.update = function(nD, color) {
 				// update the domain of the y-axis map to reflect change in frequencies.
 				y.domain([ 0, d3.max(nD, function(d) {
 					return d[1];
 				}) ]);
-
 				// Attach the new data to the bars.
 				var bars = hGsvg.selectAll(".bar").data(nD);
-
 				// transition the height and color of rectangles.
 				bars.select("rect").transition().duration(500).attr("y",
 						function(d) {
@@ -1442,7 +1333,6 @@
 						}).attr("height", function(d) {
 					return hGDim.h - y(d[1]);
 				}).attr("fill", color);
-
 				// transition the frequency labels location and change value.
 				bars.select("text").transition().duration(500).text(
 						function(d) {
@@ -1453,7 +1343,6 @@
 			}
 			return hG;
 		}
-
 		// function to handle pieChart.
 		function pieChart(pD) {
 			var pC = {}, pieDim = {
@@ -1461,22 +1350,18 @@
 				h : 250
 			};
 			pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
-
 			// create svg for pie chart.
 			var piesvg = d3.select(id).append("svg").attr("width", pieDim.w)
 					.attr("height", pieDim.h).append("g").attr(
 							"transform",
 							"translate(" + pieDim.w / 2 + "," + pieDim.h / 2
 									+ ")");
-
 			// create function to draw the arcs of the pie slices.
 			var arc = d3.svg.arc().outerRadius(pieDim.r - 10).innerRadius(0);
-
 			// create a function to compute the pie slice angles.
 			var pie = d3.layout.pie().sort(null).value(function(d) {
 				return d.freq;
 			});
-
 			// Draw the pie slices.
 			piesvg.selectAll("path").data(pie(pD)).enter().append("path").attr(
 					"d", arc).each(function(d) {
@@ -1484,7 +1369,6 @@
 			}).style("fill", function(d) {
 				return segColor(d.data.type);
 			}).on("mouseover", mouseover).on("mouseout", mouseout);
-
 			// create function to update pie-chart. This will be used by histogram.
 			pC.update = function(nD) {
 				piesvg.selectAll("path").data(pie(nD)).transition().duration(
@@ -1515,65 +1399,52 @@
 			}
 			return pC;
 		}
-
 		// function to handle legend.
 		function legend(lD) {
 			var leg = {};
-
 			// create table for legend.
 			var legend = d3.select(id).append("table").attr('class', 'legend');
-
 			// create one row per segment.
 			var tr = legend.append("tbody").selectAll("tr").data(lD).enter()
 					.append("tr");
-
 			// create the first column for each segment.
 			tr.append("td").append("svg").attr("width", '16').attr("height",
 					'16').append("rect").attr("width", '16').attr("height",
 					'16').attr("fill", function(d) {
 				return segColor(d.type);
 			});
-
 			// create the second column for each segment.
 			tr.append("td").text(function(d) {
 				return d.type;
 			});
-
 			// create the third column for each segment.
 			tr.append("td").attr("class", 'legendFreq').text(function(d) {
 				return d3.format(",")(d.freq);
 			});
-
 			// create the fourth column for each segment.
 			tr.append("td").attr("class", 'legendPerc').text(function(d) {
 				return getLegend(d, lD);
 			});
-
 			// Utility function to be used to update the legend.
 			leg.update = function(nD) {
 				// update the data attached to the row elements.
 				var l = legend.select("tbody").selectAll("tr").data(nD);
-
 				// update the frequencies.
 				l.select(".legendFreq").text(function(d) {
 					return d3.format(",")(d.freq);
 				});
-
 				// update the percentage column.
 				l.select(".legendPerc").text(function(d) {
 					return getLegend(d, nD);
 				});
 			}
-
 			function getLegend(d, aD) { // Utility function to compute percentage.
 				return d3.format("%")(d.freq / d3.sum(aD.map(function(v) {
 					return v.freq;
 				})));
 			}
-
 			return leg;
 		}
-
 		// calculate total frequency by segment for all state.
 		var tF = [ 'low', 'high' ].map(function(d) {
 			return {
@@ -1583,17 +1454,14 @@
 				}))
 			};
 		});
-
 		// calculate total frequency by state for all segment.
 		var sF = fData.map(function(d) {
 			return [ d.State, d.total ];
 		});
-
 		var hG = histoGram(sF), // create the histogram.
 		pC = pieChart(tF), // create the pie-chart.
 		leg = legend(tF); // create the legend.
 	}
-
 	function tooltipHtml(n, d) { /* function to create html content string in tooltip div. */
 		return "<h4 style='z-index: 1000'>" + n
 				+ "</h4><table style='z-index: 1000'>" + "<tr><td>Low</td><td>"
@@ -1606,7 +1474,6 @@
 <script>
 	angular.module('myApp').controller('imagemodule', imagemodule);
 	function imagemodule($scope, $http) {
-
 		$scope.opennewwindow = function(event) {
 			localStorage.setItem("imageurl", event.target.src.substring(21,
 					event.target.src.length));
@@ -1619,7 +1486,6 @@
 				alert('Please allow popups for this site');
 			}
 		}
-
 		$scope.init = function() {
 			spotid = 3;
 			$http({
@@ -1640,7 +1506,6 @@
 								+ $scope.activeimage);
 						console.log($scope.panaromaactiveimage.imageurl + "..."
 								+ $scope.panaromaimages);
-						alert("success");
 					}).error(function(error) {
 				alert(error);
 			});
@@ -1648,6 +1513,16 @@
 	}
 </script>
 
+<script>
+	angular.module('myApp').controller('addListingController',
+			addListingController);
+	function addListingController($scope, $http) {
+	}
+	angular.module('myApp').controller('addPaymentController',
+			addPaymentController);
+	function addPaymentController($scope, $http) {
+	}
+</script>
 <script>
 	angular.module('myApp')
 			.controller('availabilitymodule', availabilitymodule);
@@ -1747,6 +1622,7 @@
 			today = dd + '-' + mm + '-' + yyyy;
 			searchdate = yyyy + '-' + mm + '-' + dd;
 			;
+			//var searchdate=document.getElementById('searchAvailabilityDate').value;
 			$http(
 					{
 						method : 'GET',
@@ -1948,16 +1824,6 @@
 		  } while (currentHr !== endHr);
 			//alert(r);
 		    return r;
-
-	angular.module('myApp').controller('addListingController',
-			addListingController);
-	function addListingController($scope, $http) {
-	}
-
-	angular.module('myApp').controller('addPaymentController',
-			addPaymentController);
-	function addPaymentController($scope, $http) {
-
 	}
 </script>
 

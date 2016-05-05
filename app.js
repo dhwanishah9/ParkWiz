@@ -140,7 +140,6 @@ app.get('/api/loggedin_userinfo',function(req,res){
 	user.getuserinfo(userid, res);
 	/*if(req.session.userid) {
 		var userid = req.session.userid;
-
 		//mysql data fetch.
 		user.getuserinfo(userid, res);
 	}
@@ -197,6 +196,7 @@ app.get('/getAllImages',function(req,res){
 app.get('/getSpotAvailability',function(req,res){
     console.log("Inside app.js /getSpotAvailability "+req.query.searchdate);
     reservation.getSpotAvailability(req,res);
+});
 
 //website traffic
 app.get('/api/getwebsitetraffic',function(req,res){
@@ -226,7 +226,6 @@ app.get('/api/gethighreviewvalues',function(req,res){
 //get priority spots
 app.get('/api/getpriorityspots',function(req,res){
     dashboard.getpriorityspots(req, res);
-
 });
 
 http.createServer(app).listen(app.get('port'), function(){
