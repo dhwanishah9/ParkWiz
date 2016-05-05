@@ -8,6 +8,7 @@ exports.trafficupdate = function() {
 	mysql.fetchData(function(err, results) {
 		if (err) {
 			console.log("Error while updating traffic logs");
+			res.send({"login":"Success"});
 		} else {
 			if (results.length > 0) {
 				res.send({"login":"Success"});
